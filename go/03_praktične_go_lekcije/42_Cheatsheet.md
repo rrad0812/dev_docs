@@ -69,8 +69,8 @@ s[8]
 ```
 
 > [!Note]
-Budite oprezni, indeks počinje od 0.  
-Pristup elementu van opsega izazvaće paniku.
+> Budite oprezni, indeks počinje od 0.  
+> Pristup elementu van opsega izazvaće paniku.
 
 ### Kopiranje
 
@@ -103,7 +103,7 @@ b = append([]int{1}, b...)
 ```
 
 > [!Note]
-Obratite pažnju na tri tačke na kraju drugog parametra.
+> Obratite pažnju na tri tačke na kraju drugog parametra.
 
 ### Uklonite element na indeksu
 
@@ -119,7 +119,7 @@ Obratite pažnju na tri tačke na kraju drugog parametra.
 Moraćete da iterirate preko isečka (sa for petljom).  
 
 > [!Note]
-Možda umesto isečka treba da koristite map?
+> Možda umesto isečka treba da koristite map?
 
 ### Postavite element na indeks
 
@@ -549,5 +549,5 @@ if !found {
 [Preporuke za dizajn][41]  
 [Sadržaj][00]
 
-[41]: 41_Preporuke_za_dizajn.md
+[41]: 41_Preporuke_za_dizajn.md  
 [00]: 00_Sadržaj.md

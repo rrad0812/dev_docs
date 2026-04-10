@@ -52,28 +52,35 @@ Koristi pip u komandnoj liniji za instaliranje Djanga:
 
 > [!Note]
 >
-> Nadalje sve što radimo na projektu radimo sa aktiviranom (django-venv) virtuelnom okolinom.
+> Nadalje sve što radimo na projektu radimo sa aktiviranom (django-venv)
+> virtuelnom okolinom.
 
 ### Izgradnja novog projekta
 
 Sada koristi `django-admin` komandu za kreiranje novog projekta.
 
-> [!Note]  
+> [!Note]
 > Tri su načina:
 >
-> - Prosledi ime projekta, `project_name`, biće napravljen novi direktorijum sa prosledjenim imenom i u njemu subdirektorijum sa istim imenom i fajlovima projekta:
+> - Prosledi ime projekta, `project_name`, biće napravljen novi direktorijum sa
+> prosledjenim imenom i u njemu subdirektorijum sa istim imenom i fajlovima
+> projekta:
 >
 >    ```shell
 >    django-admin startproject project_name
 >    ```
 >
-> - Prosledi ime projekta, `project_name` i ime projektnog direktorijuma. Projektni direktorijum već mora postojati. Biće stvoren novi `project_name` direktorijum sa fajlovima projekta unutar projektnog direktorijuma:
+> - Prosledi ime projekta, `project_name` i ime projektnog direktorijuma.
+> Projektni direktorijum već mora postojati. Biće stvoren novi `project_name`
+> direktorijum sa fajlovima projekta unutar projektnog direktorijuma:
 >
 >    ```shell
 >    django-admin startproject project_name project_dir_name
 >    ```
 >
-> - Prosledi ime projekta, `project_name`, biće stvoren novi `project_name` direktorijum sa fajlovima projekta, unutar tekućeg (`project_dir_name`) direktorijuma:
+> - Prosledi ime projekta, `project_name`, biće stvoren novi `project_name`
+> direktorijum sa fajlovima projekta, unutar tekućeg (`project_dir_name`)
+> direktorijuma:
 >
 >    ```shell
 >    django-admin startproject project_name .

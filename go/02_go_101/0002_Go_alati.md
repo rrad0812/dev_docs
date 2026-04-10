@@ -49,7 +49,8 @@ func main() {
 - Preostali kod deklariše funkciju koja se takođe naziva **main**. Ova **main** funkcija u **main** paketu određuje ulaznu tačku programa.
 
   > [!Note]
-  > Imajte na umu da se neki drugi korisnički kod može izvršiti pre nego što se funkcija **main** pozove.
+  > Imajte na umu da se neki drugi korisnički kod može izvršiti pre nego što se
+  > funkcija **main** pozove.
 
 ### Pokretanje Go programa
 
@@ -71,11 +72,17 @@ Ako se u paketu programa nalazi više izvornih datoteka u paketu **main**, onda 
 go run .
 ```
 
-> [!Note] 
+> [!Note]
 >
-> - Komanda **go run** se ne preporučuje za kompajliranje i pokretanje velikih Go projekata. To je samo zgodan način za pokretanje jednostavnih Go programa, poput onih u člancima Go 101. Za velike Go projekte, koristite komande **go build** ili **go install** da biste izgradili, a zatim pokrenuli izvršne binarne datoteke.
+> - Komanda **go run** se ne preporučuje za kompajliranje i pokretanje velikih
+> Go projekata. To je samo zgodan način za pokretanje jednostavnih Go programa,
+> poput onih u člancima Go 101. Za velike Go projekte, koristite komande **go
+> build** ili **go install** da biste izgradili, a zatim pokrenuli izvršne
+> binarne datoteke.
 >
-> - Svaki formalni Go projekat koji podržava Go module zahteva **go.mod** datoteku koja se nalazi u korenskom folderu tog projekta. **go.mod** datoteku može generisati potkomanda **go mod init** (videti dole).
+> - Svaki formalni Go projekat koji podržava Go module zahteva **go.mod**
+> datoteku koja se nalazi u korenskom folderu tog projekta. **go.mod** datoteku
+> može generisati potkomanda **go mod init** (videti dole).
 >
 > - Go Toolchain ignoriše izvorne datoteke koje počinju sa **_** ili **..**.
 

@@ -414,8 +414,10 @@ Hajde sada Y da potvrdimo da želimo da uklonimo ovu zavisnost.
 
 > [!Warning]
 >
-> Uklanjanje zavisnosti može, u najgorem slučaju, dovesti do toga da sistem postane neupotrebljiv  
-  – uvek treba biti oprezan kada to radite. Ako uklonite zavisnost koja je deo lanca, uklanjanja će se kaskadno širiti po lancu kako se svaka zavisnost i paket koji zavisi od nje budu uklanjali. Možete na kraju ukloniti više nego što ste prvobitno očekivali!
+> Uklanjanje zavisnosti može, u najgorem slučaju, dovesti do toga da sistem postane neupotrebljiv
+> – uvek treba biti oprezan kada to radite. Ako uklonite zavisnost koja je deo lanca, uklanjanja
+> će se kaskadno širiti po lancu kako se svaka zavisnost i paket koji zavisi od nje budu uklanjali.
+  Možete na kraju ukloniti više nego što ste prvobitno očekivali!
 
 #### Autoremove zavisnosti
 

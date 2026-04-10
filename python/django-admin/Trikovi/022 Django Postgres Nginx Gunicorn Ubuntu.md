@@ -155,8 +155,8 @@ Sa aktivnim virtuelnim okruženjem, instalirajte `Django`, `Gunicorn` i `psycopg
 
 > [!Note]
 >
-> Kada je virtuelno okruženje aktivirano (kada vaš prompt ima `(myprojectenv)`), koristite `pip` umesto `pip3`, čak i ako koristite `Python3`. Kopija alata u  
-  virtuelnom okruženju se uvek zove `pip`, bez obzira na verziju Python-a.
+> Kada je virtuelno okruženje aktivirano (kada vaš prompt ima `(myprojectenv)`), koristite `pip` umesto `pip3`, čak i ako koristite `Python3`. Kopija alata u
+> virtuelnom okruženju se uvek zove `pip`, bez obzira na verziju Python-a.
 
 ```sh
 pip install django gunicorn psycopg2-binary
@@ -198,7 +198,7 @@ U uglastim zagradama navedite `IP adrese` ili `imena domena` koji su povezani sa
 > [!Note]
 >
 > Obavezno uključite `localhost` kao jednu od opcija jer ćete proksirati veze preko lokalne Nginx
-  instance.
+> instance.
 
 `~/myprojectdir/myproject/settings.py`
 
@@ -323,7 +323,7 @@ Ovo će pokrenuti Gunicorn na istom interfejsu na kojem je radio Django razvojni
 > [!Note]
 >
 > Admin interfejs neće imati primenjen nijedan od stilova jer Gunicorn ne zna kako da pronađe
-  statički CSS sadržaj odgovoran za ovo.
+> statički CSS sadržaj odgovoran za ovo.
 
 Prosledili ste modul programu Gunicorn tako što ste naveli relativnu putanju direktorijuma do Django `wsgi.py` datoteke, koja je ulazna tačka za vašu aplikaciju, koristeći Python-ovu sintaksu modula. Unutar ove datoteke, definisana je funkcija `application`, koja se koristi za komunikaciju sa aplikacijom.
 
@@ -641,7 +641,8 @@ sudo ufw allow 'Nginx Full'
 Sada bi trebalo da možete da odete na domen ili IP adresu vašeg servera da biste videli svoju aplikaciju.
 
 > [!Note]
-> Nakon konfigurisanja Nginx-a, sledeći korak bi trebalo da bude   obezbeđivanje saobraćaja ka serveru  pomoću SSL/TLS-a. Ovo je važno jer se bez njega sve informacije, uključujući lozinke, šalju preko mreže u običnom tekstu.
+> Nakon konfigurisanja Nginx-a, sledeći korak bi trebalo da bude obezbeđivanje saobraćaja ka serveru pomoću SSL/TLS-a. Ovo je važno jer se bez njega sve informacije,
+> uključujući lozinke, šalju preko mreže u običnom tekstu.
 
 Ako imate ime domena, najlakši način da dobijete SSL sertifikat za zaštitu vašeg saobraćaja je korišćenje `Let's Encrypt`-a.
 

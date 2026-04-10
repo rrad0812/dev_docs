@@ -8,7 +8,8 @@
 Ovaj članak će objasniti blokove koda i opsege identifikatora u Go-u.
 
 > [!Note]
-> Imajte na umu da se definicije hijerarhija blokova koda u ovom članku malo razlikuju od stanovišta go/*standardnih paketa.
+> Imajte na umu da se definicije hijerarhija blokova koda u ovom članku malo
+> razlikuju od stanovišta go/*standardnih paketa.
 
 ## Blokovi koda
 

@@ -384,7 +384,8 @@ Sačekajte da se server osveži i testirajte polje za pretragu.
 
 > [!Note]
 >
-> Da bi pretraga bila efikasna polja pretrge treba da su indeksirana. To važi i za polja pretrage povezanih modela.
+> Da bi pretraga bila efikasna polja pretrge treba da su indeksirana. To važi i za polja pretrage
+> povezanih modela.
 
 ## Rukovanje redovima ugradjenih modela
 

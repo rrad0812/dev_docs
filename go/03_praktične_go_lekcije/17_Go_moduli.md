@@ -242,8 +242,8 @@ Sa ovom definicijom možemo reći da go paket "fmt" izlaže API go programeru za
 Takođe možemo reći da Linux kernel otkriva API za interakciju sa njim, na primer, funkcija "bitmap_find_free_region" će reći kernelu da pronađe susedni, poravnati memorijski region.
 
 > [!Note]
-> Go moduli otkrivaju API koji je sastavljen od svih izvezenih identifikatora paketa(a) od kojih je
-  modul sastavljen.
+> Go moduli otkrivaju API koji je sastavljen od svih izvezenih identifikatora
+> paketa(a) od kojih je modul sastavljen.
 
 **Rečnik: Verzija**  
 Programi se prirodno razvijaju:

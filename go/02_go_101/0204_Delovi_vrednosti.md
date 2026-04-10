@@ -31,8 +31,12 @@ Sledeći članci o programu Go 101 daće detaljna objašnjenja za mnoge vrste ti
 
 > [!Note]
 >
-> - Da li vrednosti interfejsa i stringova mogu da sadrže osnovne delove zavisi od kompajlera. Za standardnu implementaciju Go kompajlera, vrednosti interfejsa i stringova mogu da sadrže osnovne delove.
-> - Teško je, čak i nemoguće, dokazati da li vrednosti funkcija mogu sadržati osnovne delove. U Go 101, videćemo da vrednosti funkcija mogu sadržati osnovne delove.
+> - Da li vrednosti interfejsa i stringova mogu da sadrže osnovne delove zavisi
+> od kompajlera. Za standardnu implementaciju Go kompajlera, vrednosti
+> interfejsa i stringova mogu da sadrže osnovne delove.
+> - Teško je, čak i nemoguće, dokazati da li vrednosti funkcija mogu sadržati
+> osnovne delove. U Go 101, videćemo da vrednosti funkcija mogu sadržati osnovne
+> delove.
 
 Vrste tipova u drugoj kategoriji donose mnogo pogodnosti Go programiranju tako što obuhvataju mnoge detalje implementacije. Različiti Go kompajleri mogu usvojiti različite interne implementacije za ove tipove, ali eksterno ponašanje vrednosti ovih tipova mora zadovoljiti zahteve navedene u Go specifikaciji.
 

@@ -59,8 +59,8 @@ To get or set the field's value of the current record use the `value` property:
 
 > [!Note]
 >
-> When reading, the value is converted to the type of a field. So for
-  fields of type `integer`, `float` and `currency`, if the value of this field is `null`, the value returned by this property is `0`,
+> When reading, the value is converted to the type of a field. So for fields of type `integer`, `float` and `currency`, if the value of this field is `null`, the value
+> returned by this property is `0`,
 
 To get an unconverted value use the `data` property.
 
@@ -102,7 +102,7 @@ For the `date`, `time`, `currency` and `float` fields, the text displayed to the
 > Data and display_text properties are read-only,
 >
 > [!Note]
-> The changes to lookup_value and lookup_text properties are not stored in > the database.
+> The changes to lookup_value and lookup_text properties are not stored in the database.
 
 ### Field event handlers
 
@@ -183,7 +183,8 @@ We will assign it dynamically:
 ```
 
 > [!Note]
-> The above code can be placed anywhere in the jam.py code and even in some other event handler. In other words, it may take different forms depending on the value of some external variables or fields.
+> The above code can be placed anywhere in the jam.py code and even in some other event handler. In other words, it may take different forms depending on the value of some
+> external variables or fields.
 
 Write the *on_field_select_value* event handler to specify fields that will be displayed, set up filters for the lookup item.
 

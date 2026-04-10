@@ -742,10 +742,16 @@ Možete uporediti dve promenljive koristeći šest postojećih operatora. Sintak
 Ta poređenja će vratiti bulove vrednosti koje se mogu bezbedno koristiti sa uslovnim izjavama.
 
 > [!Note]
-> Bolje je upoređivati samo promenljive koje imaju isti tip. Paket dozvoljava upoređivanje promenljivih koje nisu istog tipa. Ne preporučujem to jer može dovesti do grešaka.
+> Bolje je upoređivati samo promenljive koje imaju isti tip. Paket dozvoljava
+> upoređivanje promenljivih koje nisu istog tipa. Ne preporučujem to jer može
+> dovesti do grešaka.
 >
-> Uzmimo konkretan primer: .Price je tipa float64 (definisanog u našoj strukturi podataka), 100 je ceo broj. Dva tipa nisu ista. Rezultat poređenja je netačan.
-> Tekst "Only 100\$" se neće pojaviti na HTML stranici kada se šablon izvrši, pojaviće se "Only 100\$ it's a deal!".
+> Uzmimo konkretan primer: .Price je tipa float64 (definisanog u našoj
+> strukturi podataka), 100 je ceo broj. Dva tipa nisu ista. Rezultat poređenja
+> je netačan.  
+>
+> Tekst "Only 100\$" se neće pojaviti na HTML stranici kada se šablon izvrši,
+> pojaviće se "Only 100\$ it's a deal!".
 
   ```html
   {{ if eq.Price  100 }}

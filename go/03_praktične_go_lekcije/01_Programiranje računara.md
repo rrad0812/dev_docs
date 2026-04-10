@@ -105,7 +105,8 @@ Prateći zvaničniju definiciju,
 > [!Info]
 >
 >[@institute1990ieee]  
-> Program je "kombinacija računarskih instrukcija i definicija podataka koje omogućavaju računarskom hardveru da vrši izračunavanje".
+> Program je "kombinacija računarskih instrukcija i definicija podataka koje
+> omogućavaju računarskom hardveru da vrši izračunavanje".
 
 Uzmimo primer. Zamislite program koji traži od korisnika da unese dva broja. Program sabira te brojeve, a rezultat se zatim prikazuje na monitoru. Instrukcije koje treba napisati su:
 

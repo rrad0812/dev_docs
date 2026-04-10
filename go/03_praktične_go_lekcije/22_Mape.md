@@ -231,7 +231,7 @@ Sledeća vremenska složenost se generalno primenjuje na heš tabele:
 
 > [!Info]
 > **Pretraga i umetanje**  
-> ... će zahtevati isti broj osnovnih operacija na mapi koja sadrži tri elementa i mapi koja sadrži 3 miliona elemenata!
+> ... će zahtevati isti broj osnovnih operacija na mapi koja sadrži tri elementa > i mapi koja sadrži 3 miliona elemenata!
 
 Kažemo da je to algoritam konstantnog vremena. Takođe kažemo da je reda 1. Ovde sam koristio notaciju Big-O.
 
@@ -503,8 +503,8 @@ Zašto se ovo ovako ponaša? Zato što Go može da promeni memorijsku lokaciju p
 > [!Note]
 > **Razmatranje korišćenja memorije**
 >
-> Imajte na umu da kada čuvate vrednost izvučenu iz mape (i ako više ne koristite mapu), Go će
-> čuvati celu mapu u memoriji.
+> Imajte na umu da kada čuvate vrednost izvučenu iz mape (i ako više ne koristite
+> mapu), Go će čuvati celu mapu u memoriji.
 
 Sakupljač smeća neće obaviti svoj posao i ukloniti neiskorišćenu memoriju.
 

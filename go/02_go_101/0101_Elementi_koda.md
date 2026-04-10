@@ -97,7 +97,10 @@ U programu se koristi mnogo operatora, kao što su operator poređenja *manje od
 Imamo pozive dve ugrađene funkcije, **print** i **println**. Prilagođena funkcija *StatRandomNumbers* je deklarisana i definisanaa. Nadaje pozivamo funkciju, **Intn**, koja je funkcija deklarisana u **math/rands** standardnom paketu. Poziv funkcije je **operacija** funkcije. Ulazne vrednosti koje se koriste u pozivu funkcije nazivaju se **argumenti**. Molimo vas da pročitate deklaracije i pozive funkcija za više informacija.
 
 > [!Note]
-> Ugrađene funkcije **print** i **println** se ne preporučuju za upotrebu u formalnom Go programiranju. Umesto toga, u formalnim Go projektima treba koristiti odgovarajuće funkcije iz **fmt** standardnog paketa. U Go 101, ove dve funkcije se koriste samo u nekoliko početnih članaka.
+> Ugrađene funkcije **print** i **println** se ne preporučuju za upotrebu u
+> formalnom Go programiranju. Umesto toga, u formalnim Go projektima treba
+> koristiti odgovarajuće funkcije iz **fmt** standardnog paketa. U Go 101, ove
+> dve funkcije se koriste samo u nekoliko početnih članaka.
 
 Na početku navodi se ime paketa trenutne izvorne datoteke. Funkcija **main** unosa mora biti deklarisana u paketu koji se takođe zove **main**. Nadalje ide uvoz paketa, **math/rand** standardni paket koda. Njegovo ime za uvoz je **rand**. Funkcija **Intn** deklarisana u ovom standardnom paketu poziva se kao **rand.intn**. Molimo vas da pročitate pakete koda i uvoz paketa za više informacija o tome kako organizovati pakete koda i uvoziti pakete.
 

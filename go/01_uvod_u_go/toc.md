@@ -35,7 +35,7 @@
 
 ---
 
-[Nazad](../README.md
+[Nazad](../README.md)
 
 Priredio Radosav Radovanović,  
 april. 2026. god.

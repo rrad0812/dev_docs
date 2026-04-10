@@ -211,8 +211,8 @@ totalPrice, err := newCart.TotalPrice()
 > [!Warning]
 > Jesi li primetio/la nešto čudno?
 >
-> Naučili smo da parametar funkcije ima tip. Ovaj tip treba poštovati (ne možete dati funkciji tip
-  `uint8` ako očekuje `string`).  
+> Naučili smo da parametar funkcije ima tip. Ovaj tip treba poštovati (ne možete
+> dati funkciji tip `uint8` ako očekuje `string`).  
 >
 > - Tip "newCart" je "Cart" (iz "cart" paketa).
 > - Tip prijemnika je "*Cart".

@@ -110,8 +110,10 @@ python manage.py compilemessages
 
 > [!Warning]
 >
-> Jezički kod i naziv lokala mogu biti različiti! Na primer, uzmite pojednostavljeni kineski: Kod jezika je "ZH-Hans", ali ime lokala je "zh_hans". Primetite podvlaku i velika slova.
+> Jezički kod i naziv lokala mogu biti različiti! Na primer, uzmite pojednostavljeni kineski: Kod jezika je "ZH-Hans", ali ime lokala je "zh_hans". Primetite podvlaku i
+> velika slova.
 >
-> Imena lokala često uključuju šifru zemlje i različite jezičke nijanse, poput američkog engleskog vs. britanskog engleskog. Pogledajte django/contrib/admin/local za listu primera.
+> Imena lokala često uključuju šifru zemlje i različite jezičke nijanse, poput američkog engleskog vs. britanskog engleskog. Pogledajte django/contrib/admin/local za listu
+> primera.
 
 [Sadržaj](00_sadrzaj.md)

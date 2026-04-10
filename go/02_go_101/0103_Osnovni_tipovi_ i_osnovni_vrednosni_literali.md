@@ -144,7 +144,8 @@ Na primer, sledeća četiri cela literala označavaju 15 u decimalnom sistemu.
 ```
 
 > [!Note]
-> Binarni i oktalni oblik koji počinju sa **0o** ili **0O** su podržani od verzije Go 1.13.
+> Binarni i oktalni oblik koji počinju sa **0o** ili **0O** su podržani od
+> verzije Go 1.13.
 
 Sledeći program će ispisati dva **true** teksta.
 
@@ -221,7 +222,11 @@ Međutim, sledeći su nedozvoljeni:
 ```
 
 > [!Note]
-> Sledeći literal je validan, ali nije literal sa pokretnim zarezom. U stvari, to je aritmetički izraz za oduzimanje. "ein" znači 14 u decimalnom formatu. 0x15e je heksadecimalni celobrojni literal, - je operator oduzimanja, a 2 je decimalni celobrojni literal. (Aritmetički operatori biće predstavljeni u članku Uobičajeni operatori.)
+> Sledeći literal je validan, ali nije literal sa pokretnim zarezom. U stvari,
+> to je aritmetički izraz za oduzimanje. "ein" znači 14 u decimalnom formatu.
+> 0x15e je heksadecimalni celobrojni literal, - je operator oduzimanja, a 2 je
+> decimalni celobrojni literal. (Aritmetički operatori biće predstavljeni u
+> članku Uobičajeni operatori.)
 
 ```go
 0x15e-2 // == 0x15e - 2 // a subtraction expression
@@ -435,10 +440,18 @@ Neki primeri:
 
 > [!Note]
 >
-> - Pošto nijedna vrednost osnovnih celobrojnih tipova datih u Gou ne može da sadrži **0x10000000000000000**, literal se ne može predstaviti kao vrednost bilo kog osnovnog celobrojnog tipa.
-> - Maksimalna IEEE-754 vrednost tipa float32 koja se može tačno predstaviti je **3.40282346638528859811704183484516925440e+38**, tako da 3.5e38 se ne može predstaviti kao vrednosti bilo kog tipa float32 i complex64.
-> - Maksimalna IEEE-754 float64 vrednost koja se može tačno predstaviti je **1.797693134862315708145274237317043567981e+308**, tako da 2e+308se ne može predstaviti kao vrednosti bilo kog tipa float64 i complex128.
-> - Na kraju, imajte na umu da, iako **0x10000000000000000** može da predstavlja vrednosti **float32** tipova, ne može tačno da predstavi nijednu float32 vrednost u memoriji. Drugim rečima, biće zaokružen na najbližu **float32** vrednost koja može biti tačno predstavljena u memoriji kada se koristi kao vrednost **float32** tipova.
+> - Pošto nijedna vrednost osnovnih celobrojnih tipova datih u Gou ne može da
+> sadrži **0x10000000000000000**, literal se ne može predstaviti kao vrednost
+> bilo kog osnovnog celobrojnog tipa.
+> - Maksimalna IEEE-754 vrednost tipa float32 koja se može tačno predstaviti je > **3.40282346638528859811704183484516925440e+38**, tako da 3.5e38 se ne može predstaviti kao vrednosti bilo kog tipa float32 i complex64.
+> - Maksimalna IEEE-754 float64 vrednost koja se može tačno predstaviti je **1.
+> 797693134862315708145274237317043567981e+308**, tako da 2e+308se ne može
+> predstaviti kao vrednosti bilo kog tipa float64 i complex128.
+> - Na kraju, imajte na umu da, iako **0x10000000000000000** može da predstavlja
+> vrednosti **float32** tipova, ne može tačno da predstavi nijednu float32
+> vrednost u memoriji. Drugim rečima, biće zaokružen na najbližu **float32**
+> vrednost koja može biti tačno predstavljena u memoriji kada se koristi kao
+> vrednost **float32** tipova.
 
 - [Ključne reči i identfikatori][0102]  
 - [Sadržaj][00]  

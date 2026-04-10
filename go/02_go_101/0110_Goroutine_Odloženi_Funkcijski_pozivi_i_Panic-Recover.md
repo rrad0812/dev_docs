@@ -384,7 +384,8 @@ func recover() interface{}
 Tipovi i vrednosti interfejsa biće objašnjeni kasnije u članku o interfejsima u Go-u. Ovde samo treba da znamo da se prazan tip interfejsa **interface{}** može posmatrati kao **any** tip ili **Object** tip u mnogim drugim jezicima. Drugim rečima, možemo proslediti vrednost bilo kog tipa pozivu **panic** funkcije.
 
 > [!Note]
-> Vrednost koju vraća **recover** poziv je vrednost koju je **panic** poziv potrošio.
+> Vrednost koju vraća **recover** poziv je vrednost koju je **panic** poziv
+> potrošio.
 
 Primer ispod pokazuje kako stvoriti paniku i kako se od nje oporaviti.
 

@@ -39,7 +39,9 @@ Kao što vidimo, nulta vrednost mape je `nil`.
 Mapa `nil` nema ključeve. Štaviše, svaki pokušaj dodavanja ključeva mapi `nil` rezultiraće greškom tokom izvršavanja.
 
 > [!Note]
-> Ovako deklarisana mapa ne služi ničemu, jer nema svoj alocirani prostor, zbog toga se njoj ne može dodati ni jedan par `key:value`. Jedino se može ići sa `new` funkcijom, dobiti alokacija i potom to dodeliti ovako deklarisanoj mapi.
+> Ovako deklarisana mapa ne služi ničemu, jer nema svoj alocirani prostor, zbog
+> toga se njoj ne može dodati ni jedan par `key:value`. Jedino se može ići sa
+> `new` funkcijom, dobiti alokacija i potom to dodeliti ovako deklarisanoj mapi.
 
 ## Inicijalizacija
 

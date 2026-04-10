@@ -480,8 +480,8 @@ Inicijalizacija, primanje, slanje i zatvaranje
 #### Nebaferovani kanal (kapacitet = 0)
 
 > [!Info]
-> Kada šaljete podatke u nebaferovani kanal, vaša trenutna gorutina će biti blokirana dok druga
-> gorutina ne primi podatke.
+> Kada šaljete podatke u nebaferovani kanal, vaša trenutna gorutina će biti
+> blokirana dok druga gorutina ne primi podatke.
 
 Ne postoji bafer dodeljen za čuvanje poslate poruke, što posledično dovodi do toga da pošiljalac blokira kanal dok neka druga gorutina ne primi poruku.
 

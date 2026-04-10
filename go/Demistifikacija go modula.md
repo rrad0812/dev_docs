@@ -44,7 +44,10 @@ Zamislite `go get` kao  bibliotekara za vaš specifični projekat. Njegov zadata
 
 > [!Info]
 > **Napomena o evoluciji Goa**  
-> U verzijama Goa pre verzije 1.17, komanda `go get` se takođe koristila za instaliranje izvršnih datoteka. Ovo je ključna tačka zabune za mnoge. U modernom Gou to više nije slučaj. Njegova uloga je usavršena da bi se isključivo fokusirala na upravljanje zavisnostima projekata.
+> U verzijama Goa pre verzije 1.17, komanda `go get` se takođe koristila za
+> instaliranje izvršnih datoteka. Ovo je ključna tačka zabune za mnoge. U
+> modernom Gou to više nije slučaj. Njegova uloga je usavršena da bi se
+> isključivo fokusirala na upravljanje zavisnostima projekata.
 
 ### `go install` - Sistemski alat
 

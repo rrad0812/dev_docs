@@ -124,7 +124,10 @@ cartDeref = *cartPtr    // dereferenciranje
 > [!Warning]
 > **Rizik od zabune**:
 >
-> Operator dereferenciranja "**\***" je isti simbol kao onaj koji se koristi za označavanje tipa pokazivača. "**\*card**" može označavati tip pokazivača, ali i dereferenciranu promenljivu pokazivača. Pažljivo analizirajte kontekst upotrebe i lako ćete razlikovati ova dva.
+> Operator dereferenciranja "**\***" je isti simbol kao onaj koji se koristi za
+> označavanje tipa pokazivača. "**\*card**" može označavati tip pokazivača, ali
+> i dereferenciranu promenljivu pokazivača. Pažljivo analizirajte kontekst
+> upotrebe i lako ćete razlikovati ova dva.
 
 ### Dereferenciranje nil pokazivača
 

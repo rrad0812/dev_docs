@@ -32,6 +32,19 @@
 [27 Enum, iota i bitmask][27]  
 [28 Datumi i vreme][28]  
 [29 Skladištenje podataka - datoteke i baze podataka][29]  
+[30 Konkurentnost][30]  
+[31 Evidencija][31]  
+[32 Šabloni][32]
+[33 Konfiguracija aplikacije][33]  
+[34 Referentne vrednosti][34]  
+[35 Izgradnja HTTP klijenta][35]  
+[36 Profilisanje programa][36]  
+[37 Kontekst][37]  
+[38 Generici][38]  
+[39 Objektno orijentisani programski jezici][39]  
+[40 Nadogradnja ili vraćanje na staru verziju][40]  
+[41 Preporuke za dizajn][41]  
+[42 Cheetsheat][42]
 
 [Nazad](../README.md)
 
@@ -67,3 +80,16 @@ april 2026.god.
 [27]: 27_Enum_iota_i_bitmask.md
 [28]: 28_Datumi_i_vreme.md
 [29]: 29_Skladištenje_podataka_Datoteke_i_baze_podataka.md
+[30]: 30_Konkurentnost.md
+[31]: 31_Evidencija.md
+[32]: 32_Šabloni.md
+[33]: 33_Konfigurqacija_aplikacije.md
+[34]: 34_Referentne_vrednosti.md
+[35]: 35_Izgradnja_HTTP_klijenta.md
+[36]: 36_Profilisanje_programa.md
+[37]: 37_Kontekst.md
+[38]: 38_Generici.md
+[39]: 39_Objektno_orijentisani_programski_jezik.md
+[40]: 40_Nadogradnja_ili_vraćanje_na%20staru_verziju.md
+[41]: 41_Preporuke_za_dizajn.md
+[42]: 42_Cheatsheet.md

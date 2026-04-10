@@ -134,9 +134,10 @@ Use the `execute_select` method to execute the sql select query. This method ret
   ```
 
 > [!Note]
-> For the catalog item, the value of the 'Soft Delete' attribute is set to
-> true, which means that the delete method does not remove the record from > the table, but uses the deleted field to mark the record as deleted. The > item's open method takes this into account, in all other cases you must
-> add this condition: </br>  
+> For the catalog item, the value of the 'Soft Delete' attribute is set to true, which means that
+> the delete method does not remove the record from > the table, but uses the deleted field to mark
+> the record as deleted. The > item's open method takes this into account, in all other cases you
+> must add this condition: </br>  
 >
 > `deleted = 0`
 
@@ -172,7 +173,8 @@ Let's empty the catalog table and add 10 records using the `execute` method of t
 >
 > [!Note]
 >
-> All queries are executed in one transaction and if execution succeeds the commit command is called, otherwise rollback command is executed.
+> All queries are executed in one transaction and if execution succeeds the commit command is called,
+> otherwise rollback command is executed.
 
 ### Create independent connection
 

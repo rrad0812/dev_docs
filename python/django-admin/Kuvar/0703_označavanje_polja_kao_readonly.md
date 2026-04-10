@@ -7,7 +7,9 @@ UMSRA je odlučila da privremeno zaustavi praćenje drveta familija mitoloških 
 
 > [!Note]
 >
-> **Readonly** polja se mogu postaviti samo ona koja su na `listview` strani, tj., ne možete proglasiti polje `readonly` ako se ono ne prikazuje na `listview` strani.
+> **Readonly** polja se mogu postaviti samo ona koja su na `listview` strani,
+> tj., ne možete proglasiti polje `readonly` ako se ono ne prikazuje na
+> `listview` strani.
 
 ```py
 @admin.register(Hero)

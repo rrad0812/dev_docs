@@ -12,7 +12,12 @@ Iako Go apsorbuje mnoge karakteristike iz svih vrsta drugih jezika, Go se uglavn
 Memorijska adresa znači određena memorijska lokacija u programu.
 
 > [!Note]
-> Memorijska adresa se čuva kao neoznačena izvorna (celobrojna) reč. Veličina izvorne reči je 4 (bajta) na 32-bitnim arhitekturama i 8 (bajtova) na 64-bitnim arhitekturama. Dakle, teoretska maksimalna veličina memorijskog prostora je 2^32, odnosno 4GB (1GB == 2^30), na 32-bitnim arhitekturama, i 2^64, odnosno 16EB (exabyte) (1EB == 1024PB, 1PB == 1024TB, 1TB == 1024GB), na 64-bitnim arhitekturama.
+> Memorijska adresa se čuva kao neoznačena izvorna (celobrojna) reč. Veličina
+> izvorne reči je 4 (bajta) na 32-bitnim arhitekturama i 8 (bajtova) na
+> 64-bitnim arhitekturama. Dakle, teoretska maksimalna veličina memorijskog
+> prostora je 2^32, odnosno 4GB (1GB == 2^30), na 32-bitnim arhitekturama, i
+> 2^64, odnosno 16EB (exabyte) (1EB == 1024PB, 1PB == 1024TB, 1TB == 1024GB), na
+> 64-bitnim arhitekturama.
 
 Memorijske adrese se često predstavljaju heksadecimalnim celim literalima, kao što je 0x1234CDEF.
 

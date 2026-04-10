@@ -39,8 +39,13 @@ def make_published(modeladmin, request, queryset):
 
 > [!Note]
 >
-> Ovo bi moglo izgledati poznato, admin `list_display` opcija koristi sličnu tehniku sa `display()` dekoratorom da pruži čoveku čitljive opise za funkcije povratnog poziva koje su tamo takođe registrovane.  
+> Ovo bi moglo izgledati poznato, admin `list_display` opcija koristi sličnu
+> tehniku sa `display()` dekoratorom da pruži čoveku čitljive opise za funkcije
+> povratnog poziva koje su tamo takođe registrovane.  
 >
-> **Promenjeno Django v3.2**: `description` argument u `action()` dekoratoru ekvivalentan je postavljanju `short_description` atributa akcionoj funkciji u prethodnim verzijama. Direktno postavljanje atributa i dalje je podržano radi povratne kompatibilnosti.
+> **Promenjeno Django v3.2**: `description` argument u `action()` dekoratoru
+> ekvivalentan je postavljanju `short_description` atributa akcionoj funkciji u
+> prethodnim verzijama. Direktno postavljanje atributa i dalje je podržano radi
+> povratne kompatibilnosti.
 
 [Sadržaj](00_sadrzaj.md)

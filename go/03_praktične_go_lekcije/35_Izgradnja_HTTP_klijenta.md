@@ -295,7 +295,8 @@ req.Header.Add("Accept", `application/json`)
 
 > [!Note]
 > **Headers**  
-> Imajte na umu da se polje "Zaglavlje zahteva" nalazi "ispod haube", element tipa mape gde su ključevi stringovi, a vrednosti su isečci stringova: `map[string][]string`.
+> Imajte na umu da se polje "Zaglavlje zahteva" nalazi "ispod haube", element
+> tipa mape gde su ključevi stringovi, a vrednosti su isečci stringova: `map[string][]string`.
 
 Zahtev se šalje sa `c.Do(req)`.
 

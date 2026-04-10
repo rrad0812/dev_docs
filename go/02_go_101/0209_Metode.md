@@ -251,7 +251,9 @@ func main() {
 ```
 
 > [!Note]
-> Za razliku od C jezika, u Go-u ne postoji -> operator za pozivanje metoda sa pokazivačkim prijemnicima, tako da (&book)->SetPages(123)je nedozvoljeno u Go-u.
+> Za razliku od C jezika, u Go-u ne postoji -> operator za pozivanje metoda sa
+> pokazivačkim prijemnicima, tako da (&book)->SetPages(123)je nedozvoljeno u
+> Go-u.
 
 Čekajte! Zašto se linija book.SetPages(123) u gornjem primeru kompajlira ispravno? Na kraju krajeva, metoda SetPagesnije deklarisana za taj Booktip. S jedne strane, ovo se može posmatrati kao sintaksički šećer radi lakšeg programiranja. Ovaj šećer radi samo za adresabilne prijemnike vrednosti. Kompajler će implicitno uzeti adresu adresabilne vrednosti bookkada se ona prosledi kao argument prijemnika SetPagespoziva metode. S druge strane, trebalo bi da mislimo aBookExpression.SetPagesda je uvek legalan selektor (sa stanovišta sintakse), čak i ako aBookExpressionse izraz proceni kao neadresabilna Bookvrednost, u kom slučaju je selektor aBookExpression.SetPagesnevažeći (ali legalan).
 

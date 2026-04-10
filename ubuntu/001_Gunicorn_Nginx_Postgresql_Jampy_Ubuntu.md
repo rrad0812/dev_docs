@@ -143,7 +143,8 @@ Postgres podrazumevano koristi koncept koji se zove `role` za rukovanje autentif
 
 > [!Note]  
 > Nakon instalacije, Postgres je podešen da koristi `peer` autentifikaciju, što znači da povezuje
-`postgres` rolu sa odgovarajućim Unix/Linux sistemskim nalogom. Ako rola postoji u Postgresu, Unix/Linux korisničko ime sa istim imenom može da se prijavi kao ta uloga.
+> `postgres` rolu sa odgovarajućim Unix/Linux sistemskim nalogom. Ako rola postoji u Postgresu,
+> Unix/Linux korisničko ime sa istim imenom može da se prijavi kao ta uloga.
 
 Procedura instalacije kreirala je korisnički nalog pod nazivom `postgres` koji je povezan sa podrazumevanom rolom PostgreSQL-a. Postoji nekoliko načina da koristite ovaj nalog za pristup PostgreSQL-u:
 
@@ -283,7 +284,7 @@ ispravne vrednosti svaki put kada se veza uspostavi:
 
   Ovo dodeljuje privilegije na nivou baze kao CONNECT, ali ne i dozvole na specifičnim tabelama.
 
-  > [!Napomena]  
+  > [!Note]  
   > Ovo automatski ne dodeljuje dozvole za pregled ili izmenu tabela u bazi; potrebne su dodatne GRANT komande nad šemom ( public ) i samim tabelama.
 
 - **Izlaz iz postgres sesije**: Sada možete napustiti `psql` prompt za `postgres` korisnika.

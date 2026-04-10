@@ -19,6 +19,8 @@ admin.site.index_title = "Welcome to UMSRA Researcher Portal"
 
 > [!Note]
 >
-> Ispravan način je nasledjivanje admin klase i zadavanje ova tri atributa klase. Kako mi radimo sa admin.site klasom (default klasa admin strana) ove klasne atribute zadajemo u `urls.py`.
+> Ispravan način je nasledjivanje admin klase i zadavanje ova tri atributa
+> klase. Kako mi radimo sa admin.site klasom (default klasa admin strana) ove
+> klasne atribute zadajemo u `urls.py`.
 
 [Sadržaj](00_sadrzaj.md)

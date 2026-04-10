@@ -63,7 +63,9 @@ Go podržava šest binarnih aritmetičkih operatora na više bitova:
 
 > [!Info]
 > [1] Oba operanda moraju biti vrednosti istog celobrojnog tipa.  
-> [2] Levi operand mora biti ceo broj, a desni operand takođe mora biti ceo broj (ako je konstanta, onda mora biti nenegativna), njihovi tipovi ne moraju biti identični.
+> [2] Levi operand mora biti ceo broj, a desni operand takođe mora biti ceo broj
+> (ako je konstanta, onda mora biti nenegativna), njihovi tipovi ne moraju biti
+> identični.
 
 **Napomena**:  
 Pre verzije 1.13, desni operand mora biti neoznačeni ceo broj ili netipizovana celobrojna konstanta koja se može predstaviti kao uintvrednost. Negativan desni operand (mora biti nekonstantan) će izazvati paniku tokom izvršavanja.
@@ -409,8 +411,10 @@ Go podržava šest binarnih operatora za poređenje:
 | >= | veće ili jednako | [2] |
 
 > [!Info]  
-> [1] - Generalno, tipovi njegova dva operanda moraju biti isti. Za detaljna pravila, pročitajte pravila poređenja u Go-u.  
-> [2] - Oba operanda moraju biti vrednosti istog celobrojnog tipa, tipa sa pokretnim zarezom ili tipa stringa.
+> [1] - Generalno, tipovi njegova dva operanda moraju biti isti. Za detaljna
+> pravila, pročitajte pravila poređenja u Go-u.  
+> [2] - Oba operanda moraju biti vrednosti istog celobrojnog tipa, tipa sa
+> pokretnim zarezom ili tipa stringa.
 
 Tip rezultata bilo koje operacije poređenja je uvek netipizovana bulova vrednost. Ako su oba operanda operacije poređenja konstantna, rezultat je takođe konstantna (bulova) vrednost.
 

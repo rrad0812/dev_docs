@@ -46,8 +46,11 @@ class ArticleAdmin(admin.ModelAdmin):actions = ['make_published']
 
 > [!Note]
 >
-> **Promenjeno u Django 3.2**: `permissions` argument u `action()` dekoratoru ekvivalentan je postavljanju `allowed_permissions` atributa akcionoj funkciji direktno u prethodnim verzijama.
+> **Promenjeno u Django 3.2**: `permissions` argument u `action()` dekoratoru
+> ekvivalentan je postavljanju `allowed_permissions` atributa akcionoj funkciji
+> direktno u prethodnim verzijama.
 >
-> Direktno postavljanje atributa i dalje je podržano radi povratne kompatibilnosti.
+> Direktno postavljanje atributa i dalje je podržano radi povratne
+> kompatibilnosti.
 
 [Sadržaj](00_sadrzaj.md)

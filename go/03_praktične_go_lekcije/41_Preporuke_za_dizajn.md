@@ -63,7 +63,13 @@ Evo nekih standardnih pravila kojih se možemo pridržavati
 
 > [!Note]
 > **O utils paketima**  
-  Posedovanje utils paketa može delovati legitimno programerima koji dolaze iz drugih jezika, ali za "gofere" to nema smisla jer će nužno mešati funkcije koje su mogle biti direktno umetnute tamo gde se koriste. To je neka vrsta refleksa koji imamo na početku projekta da u ovu vrstu paketa ubacimo funkcije koje bi mogle biti korisne negde drugde. Ali uslužni programi nisu zabranjeni. Standardna Go biblioteka otkriva uslužne funkcije, ali teži da ih grupiše po tipu. Na primer, stringovi ili bajtovi.
+> Posedovanje utils paketa može delovati legitimno programerima koji dolaze iz
+> drugih jezika, ali za "gofere" to nema smisla jer će nužno mešati funkcije
+> koje su mogle biti direktno umetnute tamo gde se koriste. To je neka vrsta
+> refleksa koji imamo na početku projekta da u ovu vrstu paketa ubacimo funkcije
+> koje bi mogle biti korisne negde drugde. Ali uslužni programi nisu zabranjeni.
+> Standardna Go biblioteka otkriva uslužne funkcije, ali teži da ih grupiše po
+> tipu. Na primer, stringovi ili bajtovi.
 
 ## Koristite interfejse
 

@@ -207,10 +207,16 @@ for i := 0; i < 3; i++ {
 > [!Note]
 > Go 1.22 je izmenio semantiku for blokova petlji.
 >
-> - Pre verzije Go 1.22, svaka deklarisana promenljiva petlje korišćena u for bloku petlje bila je deljena od strane svih iteracija tokom izvršavanja bloka petlje.
-> - Od verzije Go 1.22, svaka deklarisana promenljiva petlje koja se koristi u for petlji biće instancirana kao posebna instanca na početku svake iteracije.
+> - Pre verzije Go 1.22, svaka deklarisana promenljiva petlje korišćena u for
+> bloku petlje bila je deljena od strane svih iteracija tokom izvršavanja bloka
+> petlje.
+> - Od verzije Go 1.22, svaka deklarisana promenljiva petlje koja se koristi u
+> for petlji biće instancirana kao posebna instanca na početku svake iteracije.
 >
-> U većini slučajeva, semantička promena ne menja ponašanje koda. Ali ponekad menja. Dakle, semantička promena narušava kompatibilnost sa prethodnim verzijama. Od Go verzije 1.22, svaka Go izvorna datoteka treba da ima navedenu Go verziju kako bi se šteta što više smanjila.
+> U većini slučajeva, semantička promena ne menja ponašanje koda. Ali ponekad
+> menja. Dakle, semantička promena narušava kompatibilnost sa prethodnim
+> verzijama. Od Go verzije 1.22, svaka Go izvorna datoteka treba da ima navedenu
+> Go verziju kako bi se šteta što više smanjila.
 
 **break** iskaza se može koristiti da bi se prevremeno izašlo iz kontrole toka petlje, ako je blok kontrole toka petlje najdublji prekinuti blok kontrole toka koji sadrži iskazu. Na primer, sledeći kod se takođe ispisuje od 0 do 9.
 

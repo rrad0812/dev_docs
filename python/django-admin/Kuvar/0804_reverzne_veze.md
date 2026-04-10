@@ -9,7 +9,8 @@
 
 > [!Note]
 >
-> **Pravilo**: Ako niste sigurni šta bi trebalo da bude `related_name`, koristite množinu imena modela.
+> **Pravilo**: Ako niste sigurni šta bi trebalo da bude `related_name`,
+> koristite množinu imena modela.
 
 ```py
 class Company:

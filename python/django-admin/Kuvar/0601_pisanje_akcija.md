@@ -9,7 +9,12 @@ Ako pogledate bilo koju listu zapisa u adminu, videćete ovu funkciju na delu, D
 
 > [!Warning]
 >
-> Akcija "brisanje izabranih objekata" koristi `QuerySet.delete()` iz razloga efikasnosti, što ima važnu posledicu: `delete()` metoda vašeg modela neće biti pozvana. Ako želite da zamenite ovo ponašanje, možete da zamenite `ModelAdmin.delete_queryset()` ili napišete prilagođenu akciju koja vrši brisanje na vaš omiljeni način na primer, pozivanjem `Model.delete()` svake od izabranih stavki.
+> Akcija "brisanje izabranih objekata" koristi `QuerySet.delete()` iz razloga
+> efikasnosti, što ima važnu posledicu: `delete()` metoda vašeg modela neće biti
+> pozvana. Ako želite da zamenite ovo ponašanje, možete da zamenite `ModelAdmin.
+> delete_queryset()` ili napišete prilagođenu akciju koja vrši brisanje na vaš
+> omiljeni način na primer, pozivanjem `Model.delete()` svake od izabranih
+> stavki.
 
 ## Pisanje akcija
 

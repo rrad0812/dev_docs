@@ -9,7 +9,10 @@
 
 Takođe sam želeo da ova knjiga bude praktična i sažeta za kolege programere. Stoga, pretpostavljam da već imate neko iskustvo u programiranju i da možemo razgovarati o stvarima poput "kako deklarisati promenljivu" i izbeći dugačko objašnjenje "šta je uopšte promenljiva i koja je njena svrha". Kada obrađujem osnove, daću kratak opis, a zatim preći na ovo: promenljiva je kontejner za neku vrednost; kontejner ima ime; vrednost koju sadrži može se menjati tokom vremena.
 
-> [!Note] Naglašavam reč `moderan` u "Moderan Objekt Paskal". To je zato što se Paskal mnogo razvio i prilično se razlikuje od npr.: Turbo Paskala koji su mnogi ljudi učili u školama pre mnogo vremena. Što se tiče karakteristika, moderni Paskal je prilično sličan C++ ili Javi ili C#:
+> [!Note]
+> Naglašavam reč `moderan` u "Moderan Objekt Paskal". To je zato što se Paskal > mnogo razvio i prilično se razlikuje od npr.: Turbo Paskala koji su mnogi  
+> ljudi učili u školama pre mnogo vremena. Što se tiče karakteristika, moderni
+> Paskal je prilično sličan C++ ili Javi ili C#:
 >
 >- Ima sve moderne funkcije koje očekujete — klase, unite, interfejse, generike…
 >- Kompajlira se u brz, mašinski kod,
@@ -59,7 +62,10 @@ Ovo je kompletan program koji možete kompajlirati i pokrenuti.
 Ovo je program komandne linije, pa samo pokrenite kompajliranu izvršnu datoteku iz komandne linije.
 
 > [!Note]  
-> Takođe ga možete pokrenuti iz Lazarus ili Delphi IDE koristeći stavku menija "Pokreni" (prečica F9 u oba IDE-a). U ovom slučaju, imajte na umu da će se konzola brzo pojavljivati i nestajati. Najjednostavniji način da to izbegnete je da dodate `Readln` ( sačekajte Enter ) na kraj aplikacije.
+> Takođe ga možete pokrenuti iz Lazarus ili Delphi IDE koristeći stavku menija
+> "Pokreni" (prečica F9 u oba IDE-a). U ovom slučaju, imajte na umu da će se
+> konzola brzo pojavljivati i nestajati. Najjednostavniji način da to izbegnete
+> je da dodate `Readln` ( sačekajte Enter ) na kraj aplikacije.
 
 Ostatak ovog članka govori o jeziku `Object Pascal`, tako da ne očekujete da vidite nešto otmenije od komandne linije. Ako želite da vidite nešto kul, samo kreirajte novi GUI projekat u Lazarus-u ( "Project → New Project → Application" ) ili Delphi-ju ( "File → New → Multi-Device Application" ). Voila — funkcionalna GUI aplikacija, cross-platformm, sa izvornim izgledom svuda, koristeći udobnu biblioteku vizuelnih komponenti.
 
@@ -303,7 +309,8 @@ type
 Konvencija je da se ispred imena nabrajanja doda prečica od dva slova tipa ime, dakle "ak" prečica za "animal kind". Ovo je korisna konvencija, jer se imena nabrajanja nalaze u unit (globalnom) imenskom prostoru. Dakle, dodavanjem prefiksa "ak", minimizirate šanse za kolizije sa drugim identifikatorima.
 
 > [!Note]
-> Kolizije u imenima nisu prepreka. U redu je da različiti uniti definišu isti identifikator. Ali je dobra ideja pokušati izbeći kolizije u svakom slučaju, kako bi kod bio jednostavan za razumevanje i grep.  
+> Kolizije u imenima nisu prepreka. U redu je da različiti uniti definišu isti > identifikator. Ali je dobra ideja pokušati izbeći kolizije u svakom slučaju,
+> kako bi kod bio jednostavan za razumevanje i grep.  
 
 Možete izbeći postavljanje imena nabrajanja u globalni imenski prostor pomoću direktive kompajlera `{$scopedenums on}`. To znači da ćete morati da im pristupite kvalifikovani imenom tipa, kao što je `TAnimalKind.akDuck`. Potreba za ak prefiksom nestaje u ovoj situaciji i verovatno ćete jednostavno pozvati nabrajanja Duck, Cat, Dog. Ovo je slično C# nabrajanjima.
 
@@ -587,7 +594,13 @@ Sačuvajte datoteku unita MyUnit kao "myunit.pas". To jest, malim slovima sa ".p
 >
 > Npr. FPC dozvoljava druge ekstenzije datoteka za unite. A neki ljudi koriste ".pp" za unit  datoteke, kao što je "myunit.pp".  
 >
-> Moguće je i korišćenje različitih velikih i malih slova. Na Windows fajl sistemima, velika i mala slova nisu bitna. Ali na Unix fajl sistemima jesu bitna i FPC dozvoljava korišćenje samo potpuno istih velikih i malih slova kao što je navedeno u Pascal `uses` klauzuli ( MyUnit.pas ) ili samo malih slova ("myunit.pas"). Pošto Pascal ne razlikuje velika i mala slova, prvo pravilo ponekad izaziva probleme kada ljudi navedu imena unita sa različitim velikim i malim slovima na različitim mestima.
+> Moguće je i korišćenje različitih velikih i malih slova. Na Windows fajl
+> sistemima, velika i mala slova nisu bitna. Ali na Unix fajl sistemima jesu
+> bitna i FPC dozvoljava korišćenje samo potpuno istih velikih i malih slova
+> kao što je navedeno u Pascal `uses` klauzuli ( MyUnit.pas ) ili samo malih
+> slova ("myunit.pas"). Pošto Pascal ne razlikuje velika i mala slova, prvo
+> pravilo ponekad izaziva probleme kada ljudi navedu imena unita sa različitim
+> velikim i malim slovima na različitim mestima.
 
 Sve u svemu, preporučujemo jednostavno pravilo iznad, sa svim malim slovima, ".pas" ekstenziju za vaše projekte. Ovo se poklapa sa najčešćim ustaljenim praksama i radi sa svim kompajlerima i fajl sistemima bez problema.
 
@@ -598,7 +611,12 @@ Sačuvajte programu datoteku sa:
 - ".lpr" ekstenzija (skraćeno od "Lazarus Project" ), ako želite da koristite samo FPC/Lazarus.
 
 > [!Note]
-> Moguće su i druge konvencije koje koriste neki projekti. Npr. neki projekti koriste ".pas" za glavnu programsku datoteku. Neki projekti koriste ".pp" za unite ili programe. Postoje razumni razlozi za to (npr. za FPC programe, koji ne koriste Lazarus LCL, ni opis "Lazarus Project" ni "Delphi Project" nisu potpuno tačni). Ali radi jednostavnosti, preporučujemo gore navedene konvencije ( ".dpr" ili ".lpr" ), jer pokrivaju najčešće ustaljene prakse.
+> Moguće su i druge konvencije koje koriste neki projekti. Npr. neki projekti
+> koriste ".pas" za glavnu programsku datoteku. Neki projekti koriste ".pp" za
+> unite ili programe. Postoje razumni razlozi za to (npr. za FPC programe, koji
+> ne koriste Lazarus LCL, ni opis "Lazarus Project" ni "Delphi Project" nisu
+> potpuno tačni). Ali radi jednostavnosti, preporučujemo gore navedene
+> konvencije ( ".dpr" ili ".lpr" ), jer pokrivaju najčešće ustaljene prakse.
 
 ### 3.3 Inicijalizacija i finalizacija
 
@@ -920,7 +938,9 @@ Podrazumevano, metode nisu virtuelne, deklarišite ih sa `virtual` da biste ih u
 Primer u gornjem odeljku prikazuje klasu pod nazivom TMyClass (i drugu klasu pod nazivom TMyClassDescendant). Klasa je tipa TMyClass, možete je smatrati i šablonom. Sama klasa ne sadrži nikakve vrednosti — nema memorije rezervisane za polje MyInt: Integer deklarisano u gornjem primeru.
 
 > [! Note]  
-> Zapravo je moguće da klasa "čuva vrednosti" koristeći promenljive klase, ali za sada zaboravimo na ovu mogućnost. Fokusirajte se na jednostavne klase koje imaju samo regularna polja.
+> Zapravo je moguće da klasa "čuva vrednosti" koristeći promenljive klase, ali
+> za sada zaboravimo na ovu mogućnost. Fokusirajte se na jednostavne klase koje
+> imaju samo regularna polja.
 
 Da bismo rezervisali memoriju za polja, potrebno je da kreiramo instancu klase.
 
@@ -1158,7 +1178,9 @@ Tehnički gledano, za kompajler, metode "getter" i "setter" su samo normalne met
 - Tehnički je moguće napraviti svojstva koja se mogu samo podesiti, ali još uvek nisam video dobar primer tako nešto :)
 
 > [! Note]
-> Svojstva se takođe mogu definisati van klase, na nivou jedinice. Ona tada služe analognoj svrsi: izgledaju kao globalna promenljiva, ali su podržana rutinama za dobijanje i postavljanje.
+> Svojstva se takođe mogu definisati van klase, na nivou jedinice. Ona tada
+> služe analognoj svrsi: izgledaju kao globalna promenljiva, ali su podržana
+> rutinama za dobijanje i postavljanje.
 
 #### 4.5.1 Serijalizacija svojstava
 
