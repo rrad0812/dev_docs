@@ -65,7 +65,7 @@ Isečak je deo nečega. Na primer, isečak sira nije ceo sir već samo njegov de
 - pokazivač na niz
 - isečak
 
-Rezultat ove operacije (zvane isecanje) je isečak. Da biste isekli element e, možete koristiti sledeću sintaksu:
+Rezultat ove operacije (zvane isecanje) je isečak. Da biste isekli element "e", možete koristiti sledeću sintaksu:
 
 ```go
 s := e[low:high]
@@ -202,12 +202,14 @@ fmt.Printf("length of slice vatRates is %d", len(vatRates))
 
 Interno, struktura isečka sadrži pokazivač na niz.
 
-- Kada kreiramo isecanje, Go će kreirati niz. Nikada mu nećete imati pristup. Ovaj niz je interni.
+- Kada kreiramo isecanje, Go će kreirati niz. Nikada mu nećete imati pristup.
+  Ovaj niz je interni.
 - Kada isecamo niz, Go će uzeti pokazivač na taj postojeći niz.
 
 Isečak je spoj tri elementa:
 
-- Pokazivač na osnovni niz. Pokazivač pokazuje na osnovni niz gde počinje isečak. Pokazuje na prvi
+- Pokazivač na osnovni niz. Pokazivač pokazuje na osnovni niz gde počinje
+  isečak. Pokazuje na prvi
   element isečka.
 - Dužina isečka ( uint )
 - Kapacitet isečka ( uint )
@@ -271,11 +273,13 @@ Ovde definišemo isečak "s" (sastavljen od celih brojeva). Kreiramo funkciju "m
 
 **Uobičajena greška**!
 
-- Kada funkciji prosledite isečak, funkcija može da ga izmeni promenom vrednosti osnovnog niza.
-- Kada dodate elemente u isečak unutar funkcije i vaš segment dostigne svoj maksimalni kapacitet,
+- Kada funkciji prosledite isečak, funkcija može da ga izmeni promenom vrednosti
+  osnovnog niza.
+- Kada dodate elemente u isečak unutar funkcije i vaš segment dostigne svoj
+  maksimalni kapacitet,
   okruženje za izvršavanje dodeljuje novi osnovni niz.
-- To ponašanje je normalno, međutim, na kraju izvršavanja funkcije, elementi dodati u isečak neće
-  biti prisutni kao što biste očekivali.
+- To ponašanje je normalno, međutim, na kraju izvršavanja funkcije, elementi
+  dodati u isečak neće biti prisutni kao što biste očekivali.
 
 **Primer**:
 
@@ -313,7 +317,8 @@ func addGo(languages []string) {
 - Kreiramo funkciju "addGo" koja će dodati element isečku stringova.
 - U funkciji main, inicijalizujemo isečak stringova pod nazivom "languages".
 - Inicijalizujemo isečak sa tri elementa. NJen kapacitet i dužina su jednaki 3.
-- Zatim pozivamo funkciju "addGo". Nakon poziva, ispisujemo isečak i nijedan element nije dodat.
+- Zatim pozivamo funkciju "addGo". Nakon poziva, ispisujemo isečak i nijedan
+  element nije dodat.
 
 Šta se dešava u funkciji?
 
@@ -321,7 +326,8 @@ func addGo(languages []string) {
 - Novi osnovni niz je dodeljen unutar funkcije jer je kapacitet prekoračen.
 - Referenca na osnovni niz koji isečak sadrži interno je promenjena.
 - Ali, promenjeno je samo na kopiji isečka.
-- Kada se funkcija vrati, kopirani isečak se uništava. Isečak "languages" i dalje referencira stari
+- Kada se funkcija vrati, kopirani isečak se uništava. Isečak "languages" i
+  dalje referencira stari
   osnovni niz.
 
 **Kako to izbeći**?
@@ -355,7 +361,8 @@ func addGoFixed(languages *[]string) {
 }
 ```
 
-- `*` znači "prati adresu", ovo je operator dereferenciranja (ako to nije jasno, pogledajte poglavlje posvećeno pokazivačima)
+- `*` znači "prati adresu", ovo je operator dereferenciranja (ako to nije jasno,
+  pogledajte poglavlje posvećeno pokazivačima)
 
 ## Ugrađene funkcije za rad sa isečcima
 
@@ -886,7 +893,8 @@ U prethodnom primeru, možda možemo koristiti drugu strukturu podataka... Pogle
      - Pokazivač na osnovni niz
      - Dužina (jedinica)
      - Kapacitet (jedinica)
-4. Koliki je kapacitet namesu sledećem primeru:. Objasnite zašto.names := []string{"John", "Bob",
+4. Koliki je kapacitet namesu sledećem primeru:. Objasnite zašto.names := []
+   string{"John", "Bob",
    "Claire", "Nik"}
    - Kapacitet je jednak 4. Kada se kreiraju imena isečaka, Go će dodeliti osnovni niz dužine i
      kapaciteta jednakog 4.
@@ -896,7 +904,8 @@ U prethodnom primeru, možda možemo koristiti drugu strukturu podataka... Pogle
      - Dužina ovog isečka će biti 2 (u isečku postoje dva elementa).
      - Kapacitet je jednak "broju elemenata za koje je dodeljen prostor u osnovnom nizu".
      - U osnovnom nizu su dodeljena još dva elementa. Kapacitet je jednak 4.
-6. Šta se dešava interno kada dodate element na isečak čiji je kapacitet jednak njegovoj dužini?
+6. Šta se dešava interno kada dodate element na isečak čiji je kapacitet jednak
+   njegovoj dužini?
    - Kada je kapacitet segmenta jednak njegovoj dužini, to znači da nema preostalog prostora na
      osnovnom nizu.
      - Kada dodate element u isečak, izvršno okruženje će kreirati novi niz (njegova dužina će biti
@@ -909,7 +918,8 @@ U prethodnom primeru, možda možemo koristiti drugu strukturu podataka... Pogle
 - Isečak je pokazivač na osnovni niz
 - Dužina : broj elemenata isečka
 - Kapacitet : broj elemenata za koje je dodeljen prostor u osnovnom nizu
-- Da biste kreirali prazan isečak sa datom dužinom i kapacitetom, možete koristiti ugrađenu komandu
+- Da biste kreirali prazan isečak sa datom dužinom i kapacitetom, možete
+  koristiti ugrađenu komandu
   `make`:
 
   ```go

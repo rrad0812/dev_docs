@@ -479,7 +479,7 @@ Inicijalizacija, primanje, slanje i zatvaranje
 
 #### Nebaferovani kanal (kapacitet = 0)
 
-> [!Info]
+> [!Note]
 > Kada šaljete podatke u nebaferovani kanal, vaša trenutna gorutina će biti
 > blokirana dok druga gorutina ne primi podatke.
 

@@ -529,7 +529,8 @@ func (a Authenticator) IsValidJWT(jwt string) bool {
     1. Anonimna funkcija može biti deklarisana pomoću literala tipa.
 5. Navedite jedan uobičajeni slučaj upotrebe zatvaranja.
     1. Rukovaoci za omotavanje
-6. Može li anonimna funkcija koristiti promenljivu koja nije definisana u njenom telu ili listi parametara?
+6. Može li anonimna funkcija koristiti promenljivu koja nije definisana u njenom
+   telu ili listi parametara?
     1. Da
     2. Anonimna funkcija može da koristi elemente definisane u svojoj okružujućoj funkciji.
 

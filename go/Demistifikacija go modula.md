@@ -42,7 +42,7 @@ Zamislite `go get` kao  bibliotekara za vaš specifični projekat. Njegov zadata
   go get example.com/some/package@latest
   ```
 
-> [!Info]
+> [!Note]
 > **Napomena o evoluciji Goa**  
 > U verzijama Goa pre verzije 1.17, komanda `go get` se takođe koristila za
 > instaliranje izvršnih datoteka. Ovo je ključna tačka zabune za mnoge. U

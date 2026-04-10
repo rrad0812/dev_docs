@@ -102,7 +102,7 @@ Da bi računari nešto uradili, moramo im dati precizna uputstva. Ovaj skup inst
 
 Prateći zvaničniju definiciju,
 
-> [!Info]
+> [!Note]
 >
 >[@institute1990ieee]  
 > Program je "kombinacija računarskih instrukcija i definicija podataka koje

@@ -50,12 +50,14 @@ func main() {
 }
 ```
 
-- Prethodni program je u prvom redu definisao promenljivu pod nazivom "myArray" koja je niz celih
+- Prethodni program je u prvom redu definisao promenljivu pod nazivom "myArray"
+  koja je niz celih
   brojeva ( int ) i dužine 2.
 - Drugim rečima, ovo je kolekcija dva elementa tipa int.
-- Zatim postavljamo prvi element izrazom myArray[0] = 156. 0 (nula) predstavlja indeks prvog
-  elementa niza myArray. Elementi su indeksirani od 0.
-- Nakon toga, drugom elementu niza dodeljujemo vrednost 147. A zatim ispisujemo naš niz.
+- Zatim postavljamo prvi element izrazom myArray[0] = 156. 0 (nula) predstavlja
+  indeks prvog elementa niza myArray. Elementi su indeksirani od 0.
+- Nakon toga, drugom elementu niza dodeljujemo vrednost 147. A zatim ispisujemo
+  naš niz.
 
 ### Sažetiji način
 
@@ -573,7 +575,8 @@ U stvarnom svetu, podaci koje želite da sačuvate retko imaju fiksnu veličinu 
 - Veličina niza se naziva dužina.
 - Dužina niza je poznata u vreme kompajliranja.
 - Drugim rečima, jednom kreiran niz ne može da raste
-- Da biste iterativno prelazili kroz niz, možete koristiti petlju for (sa ili bez klauzule range)
+- Da biste iterativno prelazili kroz niz, možete koristiti petlju for (sa ili
+  bez klauzule range)
 - Kada se niz prosledi funkciji, on se kopira, funkcija ga ne može menjati
 - Kada funkciji prosledite pokazivač na niz, omogućavate funkciji da menja niz.
 - Ne postoji ugrađena funkcija za pronalaženje elementa u nizu.

@@ -229,9 +229,10 @@ Sledeća vremenska složenost se generalno primenjuje na heš tabele:
 - Umetanje: O(1)
 - Pretraga: O(1)
 
-> [!Info]
+> [!Note]
 > **Pretraga i umetanje**  
-> ... će zahtevati isti broj osnovnih operacija na mapi koja sadrži tri elementa > i mapi koja sadrži 3 miliona elemenata!
+> ... će zahtevati isti broj osnovnih operacija na mapi koja sadrži tri elementa
+> i mapi koja sadrži 3 miliona elemenata!
 
 Kažemo da je to algoritam konstantnog vremena. Takođe kažemo da je reda 1. Ovde sam koristio notaciju Big-O.
 
@@ -501,8 +502,7 @@ Rezultat će biti greška kompajlera:
 Zašto se ovo ovako ponaša? Zato što Go može da promeni memorijsku lokaciju para ključ-vrednost kada doda novi par ključ-vrednost. Go će to uraditi "ispod haube" kako bi složenost preuzimanja para ključ-vrednost održao na konstantnom nivou. Kao posledica toga, adresa može postati nevažeća. Go više voli da zabrani pristup potencijalno nevažećoj adresi nego da vam dozvoli da pokušate svoju šansu. Ovo je dobra stvar!
 
 > [!Note]
-> **Razmatranje korišćenja memorije**
->
+> **Razmatranje korišćenja memorije**  
 > Imajte na umu da kada čuvate vrednost izvučenu iz mape (i ako više ne koristite
 > mapu), Go će čuvati celu mapu u memoriji.
 

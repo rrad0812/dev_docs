@@ -44,7 +44,7 @@ Go podržava pet osnovnih binarnih aritmetičkih operatora:
 | / | divizija | [1] |
 | % | ostatak | [2] |
 
-> [!Info]
+> [!Note]
 > [1] - Oba operanda moraju biti vrednosti istog osnovnog numeričkog tipa.  
 > [2] - Oba operanda moraju biti vrednosti istog osnovnog celobrojnog tipa.
 
@@ -61,7 +61,7 @@ Go podržava šest binarnih aritmetičkih operatora na više bitova:
 | << | bitsko pomeranje ulevo | [2] | `1100 << 3` rezultira `1100000` |
 | >> | bitsko pomeranje udesno | [2] | `1100 >> 3`  rezultira `1` |
 
-> [!Info]
+> [!Note]
 > [1] Oba operanda moraju biti vrednosti istog celobrojnog tipa.  
 > [2] Levi operand mora biti ceo broj, a desni operand takođe mora biti ceo broj
 > (ako je konstanta, onda mora biti nenegativna), njihovi tipovi ne moraju biti
@@ -379,7 +379,7 @@ Go podržava dva bulova binarna operatora i jedan bulov unarni operator:
 | \|\| | bulov OR (binarni) - poznati kao uslovni OR | [1] |
 | ! | bulov not (unarni) | [2] |
 
-> [!Info]
+> [!Note]
 > [1] - Oba operanda moraju biti vrednosti istog bulovog tipa.  
 > [2] - Tip jedinog operanda mora biti bulov tip.
 
@@ -410,7 +410,7 @@ Go podržava šest binarnih operatora za poređenje:
 | > | veći od | [2] |
 | >= | veće ili jednako | [2] |
 
-> [!Info]  
+> [!Note]  
 > [1] - Generalno, tipovi njegova dva operanda moraju biti isti. Za detaljna
 > pravila, pročitajte pravila poređenja u Go-u.  
 > [2] - Oba operanda moraju biti vrednosti istog celobrojnog tipa, tipa sa

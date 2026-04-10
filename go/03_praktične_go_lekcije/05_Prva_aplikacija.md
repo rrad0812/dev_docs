@@ -144,27 +144,26 @@ $./main
 
 ## Testirajte sebe
 
-### Pitanja
+### Pitanja i odgovori
 
 1. Kako kompajlirati Go aplikaciju?
-2. Kako se naziva rezultat kompilacije?
-3. Kako se zove funkcija ulazne tačke Go aplikacije?
-4. Koja je upotreba naredbe za uvoz?
-
-### Odgovori
-
-1. - Otvorite terminal
+   - Otvorite terminal
    - Idite u direktorijum vaše aplikacije.
-   - Pod uslovom da postoji datoteka pod nazivom main.go koja sadrži glavnu funkciju, izdajte sledeće komande:
+   - Pod uslovom da postoji datoteka pod nazivom main.go koja sadrži glavnu  
+     funkciju, izdajte sledeće komande:
 
      ```sh
      cd /code/myApp
      go build main.go
      ```
 
-2. Zove se izvršna ili binarna datoteka
-3. main
-4. - Koristi se za uvoz paketa (iz standardne biblioteke ili drugih izvora) u program.
+2. Kako se naziva rezultat kompilacije?
+   - Zove se izvršna ili binarna datoteka
+3. Kako se zove funkcija ulazne tačke Go aplikacije?
+   - main
+4. Koja je upotreba naredbe za uvoz?
+   - Koristi se za uvoz paketa (iz standardne biblioteke ili drugih izvora) u
+     program.
    - Uvezeni paket se zatim može koristiti unutar koda.
 
 ### Vežba
@@ -207,7 +206,8 @@ Napomene:
     ```
 
   - Ova datoteka je označena kao "izvorna datoteka".  
-  - Iz ove izvorne datoteke možemo kreirati izvršni program (koji se može pokrenuti).
+  - Iz ove izvorne datoteke možemo kreirati izvršni program (koji se može
+    pokrenuti).
   - Kreiranje izvršne datoteke naziva se „kompilacija“.
   - Da biste kompajlirali program, unesite sledeću komandu u terminal
 
