@@ -1,7 +1,7 @@
 
 # Build web aplication with Golang
 
-[Back](../../README.md)
+[Back](../README.md)
 
 ##
 
@@ -130,4 +130,4 @@
 
 ### Appendix A [References](ref.md)
 
-[Back](../../README.md)
+[Back](../README.md)
