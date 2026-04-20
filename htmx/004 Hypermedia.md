@@ -1,0 +1,699 @@
+
+# Hypermedia 004
+
+## Veb 1.0 aplikacija
+
+Da bismo započeli naše putovanje u hipermedijske aplikacije, kreiraćemo jednostavnu veb aplikaciju za upravljanje kontaktima pod nazivom Contact.app. Počećemo sa osnovnom, višestraničnom aplikacijom (MPA) u "Web 1.0 stilu", u velikoj CRUD (kreiraj, čitaj, ažuriraj, briši) tradiciji. Neće biti najbolja aplikacija za upravljanje kontaktima na svetu, ali će biti jednostavna i obavljaće svoj posao.
+
+Ova aplikacija će takođe biti lako postepeno poboljšana u narednim poglavljima korišćenjem biblioteke htmx orijentisane na hipermediju.
+
+Dok završimo sa izgradnjom i unapređenjem aplikacije, tokom narednih nekoliko poglavlja, ona će imati neke veoma uglađene funkcije za koje bi većina programera danas pretpostavila da zahtevaju upotrebu SPA JavaScript frejmvorka.
+
+### Izbor "veb steka"
+
+Da bismo demonstrirali kako funkcionišu veb 1.0 aplikacije, potrebno je da izaberemo serverski jezik i biblioteku za obradu HTTP zahteva. Kolokvijalno, ovo se naziva naš "serverski" ili "veb" stek, i bukvalno postoje stotine opcija koje možete izabrati, od kojih mnoge imaju strastvene sledbenike. Verovatno imate veb frejmvork koji preferirate i, iako bismo voleli da možemo da napišemo ovu knjigu za svaki mogući stek, u interesu jednostavnosti (i zdravog razuma) možemo izabrati samo jedan.
+
+Za ovu knjigu koristićemo sledeći stek:
+
+- Pajton kao naš programski jezik.
+- Flask kao naš veb frejmvork, koji nam omogućava povezivanje HTTP zahteva sa Pajton logikom.
+- Jinja2 za naš jezik za šablone na strani servera, što nam omogućava da renderujemo HTML odgovore koristeći poznatu i intuitivnu sintaksu.
+
+Zašto baš ovaj stek?
+
+Pajton je, u vreme pisanja ovog teksta, najpopularniji programski jezik na svetu, prema TIOBE indeksu, poštovanoj meri popularnosti programskih jezika. Još važnije, Pajton je lak za čitanje čak i ako vam nije poznat.
+
+Izabrali smo Flask veb frejmvork jer je jednostavan i ne nameće mnogo strukture pored osnova obrade HTTP zahteva.
+
+Ovaj osnovni pristup je dobar za naše potrebe: u drugim slučajevima možete razmotriti Pajton frejmvork sa više funkcija, kao što je Django, koji pruža mnogo više funkcionalnosti odmah po instalaciji nego Flask.
+
+Korišćenjem Flask-a za našu knjigu, moći ćemo da naš kod bude fokusiran na hipermedijske razmene.
+
+Izabrali smo šablone Jinja2 jer su podrazumevani jezik za šablone za Flask. Dovoljno su jednostavni i slični većini drugih jezika za šablone na strani servera da bi većina ljudi koji su upoznati sa bilo kojom bibliotekom za šablone na strani servera (ili klijenta) trebalo da bude u stanju da ih brzo i lako razume.
+
+Čak i ako ova kombinacija tehnologija nije vaš omiljeni stek, molimo vas da nastavite da čitate: naučićete dosta iz obrazaca koje ćemo predstaviti u narednim poglavljima i ne bi trebalo da bude teško da ih mapirate u vaš željeni jezik i okvire.
+
+Sa ovim stekom ćemo renderovati HTML na strani servera da bismo ga vratili klijentima, umesto da proizvodimo JSON.
+
+Ovo je tradicionalni pristup izgradnji veb aplikacija. Međutim, sa porastom SPA, ovaj pristup nije toliko široko korišćena tehnika kao nekada. Danas, kako ljudi ponovo otkrivaju ovaj stil veb aplikacija, termin "Server-Side Rendering" ili SSR se pojavljuje kao način na koji se o tome govori. Ovo je u suprotnosti sa "Client-Side Rendering", odnosno renderovanjem šablona u pregledaču sa podacima preuzetim u JSON obliku sa servera, kao što je uobičajeno u SPA bibliotekama.
+
+U Contact.app-u namerno ćemo stvari učiniti što jednostavnijim kako bismo maksimizirali nastavnu vrednost našeg koda: neće biti savršeno faktorisan kod, ali će ga čitaoci lako pratiti, čak i ako imaju malo iskustva sa Pajtonom, a trebalo bi da bude lako prevesti i aplikaciju i demonstrirane tehnike u vaše željeno programsko okruženje.
+
+#### Pajton
+
+Pošto je ova knjiga namenjena učenju efikasnog korišćenja hipermedije, samo ćemo ukratko predstaviti različite tehnologije koje koristimo u vezi sa tom hipermedijom. Ovo ima neke očigledne nedostatke: ako niste sigurni u Pajton, na primer, neki primeri Pajton koda u knjizi mogu biti pomalo zbunjujući ili misteriozni u početku.
+
+Ako smatrate da vam je potreban kratak uvod u jezik pre nego što se upustite u kod, preporučujemo sledeće knjige i veb stranice:
+
+- Kratki kurs Pajtona od strane No Starch Press-a
+- Naučite Pajton na teži način od Zeda Šoa
+- Pajton za svakoga, autor dr Čarls R. Severans
+
+Mislimo da bi većina veb programera, čak i programeri koji nisu upoznati sa Pajtonom, trebalo da budu u stanju da prate naše primere. Većina autora ove knjige nije mnogo pisala o Pajtonu pre nego što su je napisali, i mi smo se prilično brzo navikli na to.
+
+#### Flask
+
+Naša prva ruta Flask je jednostavan, ali fleksibilan veb frejmvork za Pajton. Upoznaćemo se sa njim postepeno dotičući se njegovih osnovnih elemenata.
+
+Flask aplikacija se sastoji od niza ruta povezanih sa funkcijama koje se izvršavaju kada se napravi HTTP zahtev ka datoj putanji. Koristi Pajton funkciju pod nazivom "dekoratori" da bi deklarisala rutu koja će biti obrađivana, nakon čega sledi funkcija za obradu zahteva ka toj ruti. Koristićemo termin "obrađivač" da bismo označili funkcije povezane sa rutom.
+
+Hajde da kreiramo našu prvu definiciju rute, jednostavnu rutu "Zdravo svete". U sledećem Pajton kodu videćete simbol @app. Ovo je flask dekorator koji nam omogućava da podesimo naše rute. Ne brinite previše o tome kako dekoratori rade u Pajtonu, samo znajte da nam ova funkcija omogućava da mapiramo datu putanju do određene funkcije (tj. rukovaoca).
+
+Flask aplikacija, kada se pokrene, primaće HTTP zahteve i potražiće odgovarajući rukovalac i pozvati ga.
+
+```py
+@app.route("/")            <1>
+def index():               <2>
+    return "Hello World!"  <3>
+```
+
+Jednostavna ruta "Zdravo svete"
+
+1. Utvrđuje da mapiramo / putanju kao rutu.
+2. Sledeća metoda je rukovalac za tu rutu.
+3. Vraća string "Zdravo svete!" klijentu.
+
+Metoda `route()` na Flask dekoratoru prihvata argument: putanju kojom želite da ruta obrađuje. Ovde prosleđujemo koren ili /putanju, kao string, da bismo obrađivali zahteve ka korenskoj putanji.
+
+Nakon ove deklaracije rute sledi jednostavna definicija funkcije, `index()`. U Pajtonu, dekoratori pozvani na ovaj način primenjuju se na funkciju koja odmah sledi nakon njih. Stoga, ova funkcija postaje "hendler" za tu rutu i biće izvršena kada se napravi HTTP zahtev ka datoj putanji.
+
+Imajte na umu da ime funkcije nije bitno, možemo je nazvati kako god želimo, sve dok je jedinstveno. U ovom slučaju smo izabrali ime `index()` jer to odgovara ruti kojom upravljamo: korenskom "indeksu" veb aplikacije.
+
+Dakle, imamo `index()` funkciju koja odmah sledi našu definiciju rute za koren, i ona će postati rukovalac za korenski URL u našoj veb aplikaciji.
+
+Rukovalac u ovom slučaju je izuzetno jednostavan, on samo vraća string "Zdravo svete!" klijentu. Ovo još nije hipermedija, ali kao što možemo videti na *<http://localhost:5000>*, pregledač će to prikazati sasvim dobro.
+
+Odlično, evo našeg prvog koraka u Flask, koji prikazuje osnovnu tehniku koju ćemo koristiti za odgovaranje na HTTP zahteve: rute mapirane na rukovaoce.
+
+Za Contact.app, umesto da prikazujemo "Hello World!" na korenskoj putanji, uradićemo nešto malo neobičnije: preusmerićemo na drugu putanju, putanju /contacts. Preusmeravanja su funkcija HTTP-a koja vam omogućava da preusmerite klijenta na drugu lokaciju pomoću HTTP odgovora.
+
+Prikazaćemo listu kontakata kao našu korensku stranicu i, verovatno, preusmeravanje na "/contacts" putanju za prikazivanje ovih informacija je malo konzistentnije sa pojmom resursa sa REST-om. Ovo je naša procena i ne smatramo da je previše važno, ali ima smisla u smislu ruta koje ćemo kasnije podesiti u aplikaciji.
+
+Da bismo promenili našu rutu "Zdravo svete" u preusmeravanje, potrebno je da promenimo samo jednu liniju koda:
+
+```py
+@app.route("/")
+def index():
+    return redirect("/contacts") <1>
+```
+
+Promena "Zdravo svete" u preusmeravanje
+
+Ažuriranje poziva `redirect()`
+
+Sada `index()` funkcija vraća rezultat funkcije koju je dala Flask `redirect()` sa putanjom koju smo naveli. U ovom slučaju, putanja je "/contacts", prosleđena kao string argument. Sada, ako se krećete do korenske putanje, "/", naša Flask aplikacija će vas preusmeriti na tu "/contacts" putanju.
+
+Sada kada razumemo kako se definišu rute, hajde da pređemo na specifikaciju, a zatim implementaciju naše veb aplikacije.
+
+Šta će Contact.app uraditi?
+
+U početku će korisnicima omogućiti:
+
+- Pregladanje liste kontakata, uključujući ime, prezime, telefon i adresu e-pošte
+- Pretraživanje kontakte
+- Dodavanje novog kontakta
+- Prikazivanje detalja kontakta
+- Izmena detalja kontakta
+- Brisanje kontakta
+
+Dakle, kao što vidite, Contact.app je CRUD aplikacija, vrsta aplikacije koja je savršena za staromodni web 1.0 pristup.
+
+Imajte na umu da je izvorni kod Contact.app dostupan na GitHub-u.
+
+### Prikazivanje pretražive liste kontakata
+
+Dodajmo naš prvi pravi deo funkcionalnosti: mogućnost prikazivanja svih kontakata u našoj aplikaciji u listi (zapravo, u tabeli).
+
+Ova funkcionalnost će se nalaziti na "/contacts" putanji, što je putanja na koju nas je preusmerila naša prethodna ruta.
+
+Koristićemo Flask da usmerimo putanju "/contacts" do funkcije za rukovanje, "contacts()". Ova funkcija će uraditi jednu od dve stvari:
+
+- Ako se u zahtevu pronađe termin za pretragu, filtriraće se samo kontakti koji odgovaraju tom terminu.
+- Ako ne, jednostavno će navesti sve kontakte
+
+Ovo je uobičajen pristup u aplikacijama veb 1.0 stila: isti URL koji prikazuje sve instance nekog resursa služi i kao stranica sa rezultatima pretrage za te resurse. Korišćenje ovog pristupa olakšava ponovnu upotrebu prikaza liste koji je zajednički za obe vrste zahteva.
+
+Evo kako izgleda kod za ovaj hendler:
+
+```py
+@app.route("/contacts")
+def contacts():
+    search = request.args.get("q")            <1>
+  
+    if search is not None:
+        contacts_set = Contact.search(search) <2>
+    else:
+        contacts_set = Contact.all()          <3>
+  
+    return render_template("index.html", contacts=contacts_set)
+```
+
+Rukovalac za pretragu na strani servera
+
+1. Potražite parametar upita pod nazivom "q", što je skraćenica od "upit".
+2. Ako parametar postoji, pozovite "Contact.search()" funkciju sa njim.
+3. Ako ne, pozovite "Contact.all()" funkciju.
+4. Prosledite rezultat šablonu index.htmlza prikazivanje klijentu.
+
+Vidimo isti kod za rutiranje kao u našem prvom primeru, ali imamo složeniju funkciju za rukovanje. Prvo proveravamo da li qje parametar upita za pretragu sa nazivom deo zahteva.
+
+#### String upita
+
+"String upita" je deo specifikacije URL-a. Evo primera URL-a sa nizom upita u njemu: <https://example.com/contacts?q=joe>. String upita je sve posle "?", i ima format para ime-vrednost. U ovom URL-u, parametar upita "q" je podešen na vrednost stringa "joe". U običnom HTML-u, string upita može biti uključen u zahtev ili tako što će biti čvrsto kodiran u oznaci sidra ili, dinamičnije, korišćenjem oznake forme sa GET zahtevom.
+
+Da bismo se vratili na našu Flask rutu, ako se pronađe parametar upita sa nazivom q, pozivamo metodu "search()" na "Contact" objektu modela da bismo izvršili stvarnu pretragu kontakata i vratili sve odgovarajuće kontakte.
+
+Ako parametar upita nije pronađen, jednostavno dobijamo sve kontakte pozivanjem "all()" metode na "Contact" objektu.
+
+Konačno, kreiramo šablon "index.html" koji prikazuje date kontakte, prosleđujući rezultate bilo koje od ove dve funkcije koju pozovemo.
+
+#### Šabloni za listu i pretragu
+
+Sada kada smo napisali logiku za obradu, kreiraćemo šablon za prikazivanje HTML-a u našem odgovoru klijentu. Na višom nivou, naš HTML odgovor treba da ima sledeće elemente:
+
+- Lista svih kontakata koji se podudaraju ili svih kontakata.
+- Polje za pretragu gde korisnik može da ukuca i pošalje pojmove za pretragu.
+- Malo "hroma" oko sebe: zaglavlje i podnožje veb stranice koje će biti isti bez obzira na to na kojoj se stranici nalazite.
+
+Koristimo šablonski jezik Jinja2, koji ima sledeće karakteristike:
+
+- Možemo koristiti dvostruke vitičaste zagrade, `{{ }}`, da ugradimo vrednosti izraza u šablon.
+- Možemo koristiti uvijene procente, {% %}, za direktive, kao što je iteracija ili uključivanje drugog sadržaja.
+
+Pored ove osnovne sintakse, Jinja2 je veoma sličan drugim jezicima za šablone koji se koriste za generisanje sadržaja i trebalo bi da bude jednostavan za praćenje za većinu veb programera.
+
+Pogledajmo prvih nekoliko redova koda u index.htmlšablonu:
+
+```html
+{% extends 'layout.html' %}                             <1>
+
+{% block content %}                                     <2>
+
+<form action="/contacts" method="get" class="tool-bar"> <3>
+<label for="search">Search Term</label>
+<input id="search" type="search" name="q"
+    value="{{ request.args.get('q') or '' }}" />        <4>
+<input type="submit" value="Search"/>
+
+</form>
+```
+
+Početak datoteke index.html
+
+1. Postavite šablon izgleda za ovaj šablon.
+2. Ograničite sadržaj koji će biti umetnut u raspored.
+3. Napravite obrazac za pretragu koji će izdati HTTP poruku GET ka "/contacts".
+4. Napravite unos za korisnika da unosi upite za pretragu.
+
+Prva linija koda referencira osnovni šablon, "layout.html", pomoću `extends` direktive. Ovaj šablon izgleda pruža raspored za stranicu (ponekad se naziva "hrom"): on obavija sadržaj šablona u oznaku `<html>`, uvozi sve potrebne CSS i JavaScript kodove u element `<head>`, postavlja `<body>` oznaku oko glavnog sadržaja i tako dalje. Sav uobičajeni sadržaj obavijan oko "normalnog" sadržaja za celu aplikaciju nalazi se u ovoj datoteci.
+
+Sledeći red koda deklariše `content` sekciju ovog šablona. Ovaj blok sadržaja koristi šablon "layout.html" za ubrizgavanje sadržaja "index.html" u svoj HTML.
+
+Zatim imamo prvi deo pravog HTML-a, a ne samo Jinja direktive. Imamo jednostavan HTML obrazac koji vam omogućava da pretražujete kontakte izdavanjem zahteva GET putanji /contacts. Sam obrazac sadrži oznaku i unos sa imenom "q". Vrednost ovog unosa biće poslata sa GET zahtevom putanji "/contacts", kao string upita (pošto je ovo GET zahtev).
+
+Imajte na umu da je vrednost ovog unosa podešena na Jinja izraz {{ request.args.get('q') or '' }}. Jinja procenjuje ovaj izraz i ubaciće zahtevanu vrednost "q" kao vrednost unosa, ako postoji. Ovo će "sačuvati" vrednost pretrage kada korisnik izvrši pretragu, tako da kada se prikažu rezultati pretrage, unos teksta sadrži termin koji je tražen.
+
+Ovo omogućava bolje korisničko iskustvo jer korisnik može tačno da vidi šta se podudara sa trenutnim rezultatima, umesto da ima prazno polje za tekst na vrhu ekrana.
+
+Konačno, imamo unos tipa "subumit". Ovo će se prikazati kao dugme i, kada se na njega klikne, pokrenuće formu da izda HTTP zahtev.
+
+Ovaj interfejs za pretragu čini vrh naše stranice sa kontaktima. Nakon njega se nalazi tabela kontakata, ili svi kontakti ili kontakti koji odgovaraju pretrazi, ako je pretraga obavljena.
+
+Evo kako izgleda šablon koda za tabelu kontakata:
+
+```html
+<table>
+  <thead>
+    <tr>
+      <th>First <th>Last <th>Phone <th>Email <th/>                  <1>
+    </tr>
+  </thead>
+  <tbody>
+    {% for contact in contacts %}                                   <2>
+    <tr>
+      <td>{{ contact.first }}</td>
+      <td>{{ contact.last }}</td>
+      <td>{{ contact.phone }}</td>
+      <td>{{ contact.email }}</td>                                  <3>
+      <td><a href="/contacts/{{ contact.id }}/edit">Edit</a>
+          <a href="/contacts/{{ contact.id }}">View</a></td>        <4>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+```
+
+Tabela kontakata
+
+1. Napišite neke zaglavlja za našu tabelu.
+2. Ponovite postupak kroz kontakte koji su prosleđeni šablonu.
+3. Iznesite vrednosti trenutnog kontakta, ime, prezime itd.
+4. Kolona "operacije" sa linkovima za uređivanje ili pregled kontakt podataka.
+
+Ovo je suština stranice: konstruišemo tabelu sa odgovarajućim zaglavljima koja odgovaraju podacima koje ćemo prikazati za svaki kontakt. Ponavljamo kontakte koji su prosleđeni u šablon pomoću metode za obradu podataka koristeći fordirektivu petlje u Jinja2. Zatim konstruišemo niz redova, po jedan za svaki kontakt, gde prikazujemo ime i prezime, telefon i imejl adresu kontakta kao ćelije tabele u redu.
+
+Pored toga, imamo ćeliju tabele koja sadrži dve veze:
+
+- Veza do stranice "Edit" za kontakt, koja se nalazi na "/contacts/{{ contact.id }}/edit". Npr. za kontakt sa ID-om 42, veza za izmene će voditi na "/contacts/42/edit".
+- Veza do stranice "View" za kontakt "/contacts/{{ contact.id }}". koristeći naš prethodni primer kontakta, stranica za pregled bi bila na "/contacts/42".
+
+Konačno, imamo malo završne stvari: vezu za dodavanje novog kontakta i direktivu Jinja2 za završetak `content` bloka:
+
+```html
+<p>
+ <a href="/contacts/new">Add Contact</a>  <1>
+</p>
+
+{% endblock %}                            <2>
+```
+
+Veza "Add contact"
+
+1. Veza do stranice koja vam omogućava da kreirate novi kontakt.
+2. Završni element bloka content.
+
+I to je naš kompletan šablon. Koristeći ovaj jednostavan šablon na strani servera, u kombinaciji sa našom metodom za rukovanje, možemo odgovoriti HTML reprezentacijom svih traženih kontakata. Za sada, hipermedija.
+
+Na slici je kako izgleda šablon, prikazan sa malo kontakt informacija.
+
+![01](images/01.png)
+
+Kontakt aplikacija
+
+Sada, naša aplikacija neće osvojiti nikakve nagrade za dizajn u ovom trenutku, ali primetite da naš šablon, kada se renderuje, pruža sve funkcionalnosti potrebne za pregled svih kontakata i njihovo pretraživanje, a takođe pruža i veze za njihovo uređivanje, pregled detalja o njima ili čak kreiranje novog.
+
+I sve ovo radi bez ikakvog znanja klijenta (to jest, pregledača) o tome šta su kontakti ili kako da radi sa njima. Sve je kodirano u hipermediji. Veb pregledač koji pristupa ovoj aplikaciji zna samo kako da izda HTTP zahteve, a zatim prikaže HTML, ništa više o specifičnostima krajnjih tačaka naše aplikacije ili osnovnom modelu domena.
+
+Koliko god naša aplikacija bila jednostavna u ovom trenutku, ona je potpuno RESTful.
+
+#### Dodavanje novog kontakta
+
+Sledeća funkcionalnost koju ćemo dodati našoj aplikaciji je mogućnost dodavanja novih kontakata. Da bismo to uradili, moraćemo da obradimo "/contacts/new" URL adresu navedenu u linku "Dodaj kontakt" iznad. Imajte na umu da kada korisnik klikne na taj link, pregledač će izdati zahtev GET za tu "/contacts/new" URL adresu.
+
+Sve ostale rute koje smo do sada koristili takođe koriste GET, ali zapravo ćemo koristiti dve različite HTTP metode za ovaj deo funkcionalnosti: HTTP GET za prikazivanje forme za dodavanje novog kontakta, a zatim HTTP POST na istu putanju da bismo zapravo kreirali kontakt, tako da ćemo biti eksplicitni u vezi sa HTTP metodom koju želimo da obrađujemo kada deklarišemo ovu rutu.
+
+Evo koda:
+
+```py
+@app.route("/contacts/new", methods=['GET'])              <1>
+def contacts_new_get():
+    return render_template("new.html", contact=Contact()) <2>
+```
+
+GET ruta za "novi kontakt"
+
+1. Deklariši rutu, eksplicitno obrađujući GET zahteve ka ovoj putanji.
+2. Prikazuje "new.html" šablon, prosledivši novi objekat kontakta.
+
+Dovoljno jednostavno. Samo prikazujemo "new.html" šablon sa novim kontaktom. "Contact()" - Tako se konstruiše nova instanca klase Contact u Pajtonu, ako niste upoznati sa tim.
+
+Iako je kod za rukovanje ovom rutom veoma jednostavan, "new.html" šablon je komplikovaniji.
+
+Za preostale šablone izostavićemo direktivu rasporeda i deklaraciju bloka sadržaja, ali možete pretpostaviti da su iste osim ako ne kažemo drugačije. Ovo će nam omogućiti da se fokusiramo na "suštinu" šablona.
+
+Ako ste upoznati sa HTML-om, verovatno očekujete element forme ovde i nećete biti razočarani. Koristićemo standardnu hipermedijsku kontrolu forme za prikupljanje kontakt informacija i njihovo slanje serveru.
+
+Evo kako izgleda naš HTML:
+
+```html
+<form action="/contacts/new" method="post"> <1>
+<fieldset>
+<legend>Contact Values</legend>
+<p>
+<label for="email">Email</label> <2>
+<input name="email" id="email"
+  type="email" placeholder="Email"
+    value="{{ contact.email or '' }}"> <3>
+
+<span class="error">
+  {{ contact.errors['email'] }} <4>
+</span>
+</p>
+```
+
+Forma "Novi kontakt"
+
+1. Forma koja se šalje na "/contacts/new" putanju, koristeći HTTP POST.
+2. Oznaka za prvi unos u formu.
+3. Prvi unos u formu, tipa imejl.
+4. Sve poruke o grešci povezane sa ovim poljem.
+
+U prvoj liniji koda kreiramo formu koji će poslati nazad na istu putanju kojom se obrađuje: "/contacts/new". Međutim, umesto da izdamo HTTP poruku GET ovoj putanji, izdaćemo HTTP POST njoj. Korišćenje POST na ovaj način će signalizirati serveru da želimo da kreiramo novi kontakt, umesto da dobijemo obrazac za kreiranje istog.
+
+Zatim imamo oznaku (uvek dobra praksa!) i unos koji beleži imejl adresu kontakta koji se kreira. Naziv unosa je emaili, kada se ovaj obrazac pošalje, vrednost ovog unosa će biti poslata u zahtevu POST, povezana sa email ključem.
+
+Zatim imamo unose za ostala polja za kontakte:
+
+```html
+<p>
+<label for="first_name">First Name</label>
+<input name="first_name" id="first_name" type="text"
+    placeholder="First Name" value="{{ contact.first or '' }}">
+<span class="error">{{ contact.errors['first'] }}</span>
+</p>
+<p>
+<label for="last_name">Last Name</label>
+<input name="last_name" id="last_name" type="text"
+    placeholder="Last Name" value="{{ contact.last or '' }}">
+<span class="error">{{ contact.errors['last'] }}</span>
+</p>
+<p>
+<label for="phone">Phone</label>
+<input name="phone" id="phone" type="text" placeholder="Phone"
+    value="{{ contact.phone or '' }}">
+<span class="error">{{ contact.errors['phone'] }}</span>
+</p>
+```
+
+Unosi i oznake za obrazac "Novi kontakt"
+
+Konačno, imamo dugme koje će poslati obrazac, oznaku za kraj obrasca i vezu nazad do glavne tabele kontakata:
+
+```html
+    <button>Save</button>
+  </fieldset>
+</form>
+
+<p>
+<a href="/contacts">Back</a>
+</p>
+```
+
+Dugme za slanje za obrazac "Novi kontakt"
+
+Lako je propustiti u ovom jednostavnom primeru: vidimo fleksibilnost hipermedija u akciji.
+
+Ako dodamo novo polje, uklonimo polje ili promenimo logiku oko toga kako se polja validiraju ili rade jedno sa drugim, ovo novo stanje stvari bi se odrazilo na novu hipermedijalnu reprezentaciju koja se daje korisnicima. Korisnik bi video ažurirani novi obrazac i mogao bi da radi sa ovim novim funkcijama, bez potrebe za ažuriranjem softvera.
+
+#### Slanje objave na /contacts/new
+
+Sledeći korak u našoj aplikaciji je obrada onoga POSTšto ovaj obrazac pravi za "/contacts/new".
+
+Da bismo to uradili, potrebno je da našoj aplikaciji dodamo još jednu rutu koja obrađuje putanju "/contacts/new". Nova ruta će obrađivati HTTP POST metod umesto HTTP metode GET. Koristićemo poslate vrednosti obrasca da pokušamo da kreiramo novi kontakt.
+
+Ako uspešno kreiramo kontakt, preusmerićemo korisnika na listu kontakata i prikazati poruku o uspehu. Ako ne uspemo, ponovo ćemo prikazati novi kontakt formular sa vrednostima koje je korisnik uneo i prikazati poruke o greškama o tome koje probleme treba ispraviti kako bi ih korisnik mogao ispraviti.
+
+Evo našeg novog obrađivača zahteva:
+
+```py
+@app.route("/contacts/new", methods=['POST'])
+def contacts_new():
+  c = Contact(
+    None,
+    request.form['first_name'],
+    request.form['last_name'],
+    request.form['phone'],
+    request.form['email'])                        <1>
+
+  if c.save():                                    <2>
+    flash("Created New Contact!")
+    return redirect("/contacts")                  <3>
+  else:
+    return render_template("new.html", contact=c) <4>
+```
+
+Kod kontrolera "novog kontakta"
+
+1. Konstruišemo novi objekat kontakta sa vrednostima iz forme.
+2. Trudimo se da ga sačuvamo.
+3. U slučaju uspeha, "prikaži" poruku o uspehu i preusmeri na "/contacts" stranicu.
+4. U slučaju neuspeha, ponovo prikažite obrazac, prikazujući korisniku sve greške.
+
+Logika u ovom rukovaocu je malo složenija od drugih metoda koje smo videli. Prvo što radimo jeste da kreiramo novi kontakt (Contact), ponovo koristeći sintaksu Contact() u Pajtonu za konstruisanje objekta. Prosleđujemo vrednosti koje je korisnik uneo u obrazac koristeći objekat request.form, funkciju koju pruža Flask.
+
+Ovo "request.form" nam omogućava da pristupimo vrednostima poslatih obrazaca na jednostavan i praktičan način, jednostavnim prosleđivanjem istog imena povezanog sa različitim ulazima.
+
+Takođe prosleđujemo None, kao prvu vrednost konstruktoru Contact. Ovo je parametar "id", i prosleđivanjem None signaliziramo da je u pitanju novi kontakt i da je potrebno generisati ID za njega. (Ponovo, nećemo ulaziti u detalje o tome kako je ovaj objekat modela implementiran, naša jedina briga je njegovo korišćenje za generisanje hipermedijskih odgovora.)
+
+Zatim, pozivamo `save()` metodu na objektu Contact. Ova metoda vraća vrednost `true` ako je čuvanje uspešno i `false` ako čuvanje nije uspelo (na primer, korisnik je poslao lošu imejl adresu).
+
+Ako uspemo da sačuvamo kontakt (to jest, nije bilo grešaka u validaciji), kreiramo fleš poruku koja ukazuje na uspeh i preusmeravamo pregledač nazad na stranicu sa listom. "Fleš" je uobičajena funkcija u veb okvirima koja vam omogućava da sačuvate poruku koja će biti dostupna pri sledećem zahtevu, obično u kolačiću ili u skladištu sesije.
+
+Konačno, ako ne možemo da sačuvamo kontakt, ponovo prikazujemo new.htmlšablon sa kontaktom. Ovo će prikazati isti šablon kao gore, ali će unosi biti popunjeni poslatim vrednostima, a sve greške povezane sa poljima biće prikazane kao povratna informacija korisniku o tome koja validacija nije uspela.
+
+U redu, dakle, podesili smo našu logiku na strani servera za čuvanje kontakata. I, verovali ili ne, ovo je otprilike najkomplikovanija moguća logika za rukovanje, čak i kada razmotrimo dodavanje sofisticiranijih ponašanja vođenih htmx-om.
+
+#### Pregled detalja kontakta
+
+Sledeći deo funkcionalnosti koji ćemo implementirati je stranica sa detaljima za kontakt. Korisnik će doći do ove stranice klikom na vezu "View" u jednom od redova na listi kontakata. Ovo će ih odvesti do putanje `/contacts/<contact id>` (npr. "/contacts/42").
+
+Ovo je uobičajeni obrazac u veb razvoju: kontakti se tretiraju kao resursi, a URL-ovi oko tih resursa su organizovani na koherentan način.
+
+- Ako želite da vidite sve kontakte, izdajete GET "/contacts".
+- Ako želite hipermedijsku reprezentaciju koja vam omogućava da kreirate novi kontakt, izdajete GET komandu "/contacts/new".
+- Ako želite da vidite određeni kontakt (recimo, sa ID-om od 42), izdajte GET "/contacts/42".
+
+Naša logika obrade detaljne rute biće veoma jednostavna: samo tražimo kontakt po ID-u, koji je ugrađen u putanju URL-a za rutu. Da bismo izvukli ovaj ID, moraćemo da uvedemo poslednji deo Flask funkcionalnosti: mogućnost pozivanja delova putanje i njihovog automatskog izdvajanja i prosleđivanja funkciji obrade.
+
+Evo kako izgleda kod, samo nekoliko redova jednostavnog Pajtona:
+
+```py
+@app.route("/contacts/<contact_id>")                  <1>
+def contacts_view(contact_id=0):                      <2>
+    contact = Contact.find(contact_id)                <3>
+
+return render_template("show.html", contact=contact)  <4>
+```
+
+1. Mapira putanju, pomoću promenljive putanje pod nazivom "contact_id".
+2. Rukovalac uzima vrednost ovog parametra putanje.
+3. Potražite odgovarajući kontakt.
+4. Renderujte "show.html" šablon.
+
+Sintaksu za izdvajanje vrednosti iz putanje možete videti u prvoj liniji koda: ugradite deo putanje koji želite da izdvojite <> i date mu ime. Ova komponenta putanje će biti izdvojena, a zatim prosleđena u funkciju za obradu, preko parametra sa istim imenom.
+
+Dakle, ako biste se kretali do putanje "/contacts/42", vrednost 42bi bila prosleđena funkciji "contacts_view()" za vrednost "contact_id".
+
+Kada dobijemo ID kontakta koji želimo da pronađemo, učitavamo ga koristeći metodu "find" na "Contact" objektu. Zatim prosleđujemo ovaj kontakt u "show.html" šablon i prikazujemo odgovor.
+
+#### Šablon za kontakt podatke
+
+Naš "show.html" šablon je relativno jednostavan, prikazuje iste informacije kao i tabela, ali u malo drugačijem formatu (možda za štampanje). Ako kasnije dodamo funkcionalnosti poput "beleški" u aplikaciju, to će nam pružiti dobro mesto za to.
+
+Ponovo ćemo izostaviti "hrom" šablona i fokusirati se na meso:
+
+```html
+<h1>{{contact.first}} {{contact.last}}</h1>
+
+<div>
+  <div>Phone: {{contact.phone}}</div>
+  <div>Email: {{contact.email}}</div>
+</div>
+
+<p>
+<a href="/contacts/{{contact.id}}/edit">Edit</a>
+<a href="/contacts">Back</a>
+
+</p>
+```
+
+Šablon "Kontakt podaci"
+
+Jednostavno prikazujemo zaglavlje Ime i Prezime, sa dodatnim kontakt informacijama ispod njega i nekoliko linkova: link
+za uređivanje kontakta i link za povratak na kompletnu listu kontakata.
+
+#### Uređivanje i brisanje kontakta
+
+Sledeće ćemo se pozabaviti funkcionalnošću na drugom kraju tog linka "Izmeni". Uređivanje kontakta će izgledati veoma slično kreiranju novog kontakta. Kao i kod dodavanja novog kontakta, biće nam potrebne dve rute koje obrađuju istu putanju, ali koriste različite HTTP metode: ruta " GETto" /contacts/<contact_id>/editće vratiti obrazac koji vam omogućava da izmenite kontakt, a ruta " POSTto" će vratiti tu putanju.
+
+Takođe ćemo zajedno sa ovom funkcijom uređivanja dodati i mogućnost brisanja kontakta. Da bismo to uradili, moraćemo da obradimo POST ka "/contacts/<contact_id>/delete".
+
+Pogledajmo kod za obradu GET, koji će, ponovo, vratiti HTML reprezentaciju interfejsa za uređivanje za dati resurs:
+
+```py
+@app.route("/contacts/<contact_id>/edit", methods=["GET"])
+def contacts_edit_get(contact_id=0):
+    contact = Contact.find(contact_id)
+
+    return render_template("edit.html", contact=contact)
+```
+
+Kod kontrolera za "uređivanje kontakta"
+
+Kao što vidite, ovo veoma liči na našu funkcionalnost "Prikaži kontakt". U stvari, gotovo je identično, osim šablona: ovde renderujemo edit.htmlumesto show.html.
+
+Iako je naš kod za obradu izgledao slično funkcionalnosti "Prikaži kontakt", šablon edit.htmlće izgledati veoma slično šablonu za funkcionalnost "Novi kontakt": imaćemo obrazac koji šalje ažurirane vrednosti kontakta na isti URL za "uređivanje" i koji prikazuje sva polja kontakta kao unose za uređivanje, zajedno sa svim porukama o greškama.
+
+Evo prvog dela formulara:
+
+```html
+<form action="/contacts/{{ contact.id }}/edit" method="post">     <1>
+  <fieldset>
+    <legend>Contact Values</legend>
+    <p>
+      <label for="email">Email</label>
+      <input name="email" id="email" type="text"
+        placeholder="Email" value="{{ contact.email }}">          <2>
+      <span class="error">{{ contact.errors['email'] }}</span>
+    </p>
+```
+
+Početak obrasca za "Uređivanje kontakta"
+
+1. Izdaj POST putanji "/contacts/{{ contact.id }}/edit".
+2. Kao i kod "new.html" stranice, unos je povezan sa imejl adresom kontakta.
+
+Ovaj HTML je skoro identičan našem new.htmlformularu, osim što će ovaj formular poslati POSTna drugu putanju, na osnovu ID-a kontakta koji želimo da ažuriramo. (Vredi napomenuti ovde da POSTbismo, umesto, radije koristili PUTili PATCH, ali oni nisu dostupni u običnom HTML-u.)
+
+Nakon ovoga imamo ostatak našeg obrasca, opet veoma sličan šablonu new.html, i naše dugme za slanje obrasca.
+
+```html
+    <p>
+      <label for="first_name">First Name</label>
+      <input name="first_name" id="first_name" type="text"
+        placeholder="First Name" value="{{ contact.first }}">
+      <span class="error">{{ contact.errors['first'] }}</span>
+    </p>
+    <p>
+      <label for="last_name">Last Name</label>
+      <input name="last_name" id="last_name" type="text"
+        placeholder="Last Name" value="{{ contact.last }}">
+      <span class="error">{{ contact.errors['last'] }}</span>
+    </p>
+    <p>
+      <label for="phone">Phone</label>
+        <input name="phone" id="phone" type="text"
+          placeholder="Phone" value="{{ contact.phone }}">
+        <span class="error">{{ contact.errors['phone'] }}</span>
+    </p>
+    
+    <button>Save</button>
+  
+  </fieldset>
+</form>
+```
+
+Telo obrasca za "Uređivanje kontakta"
+
+U poslednjem delu našeg šablona imamo malu razliku između "new.html" i "edit.html". Ispod glavne forme za uređivanje, uključujemo drugu formu koja vam omogućava da obrišete kontakt. To se radi izdavanjem POST putanje "/contacts/<contact_id>/delete". Baš kao što bismo radije koristili PUT za ažuriranje kontakta, mnogo bismo radije koristili HTTP DELETE zahtev za brisanje. Nažalost, ni to nije moguće u običnom HTML-u.
+
+Da biste završili stranicu, postoji jednostavna hiperveza koja vodi nazad do liste kontakata.
+
+```html
+<form action="/contacts/{{ contact.id }}/delete" method="post">
+  <button>Delete Contact</button>
+</form>
+
+<p>
+  <a href="/contacts/">Back</a>
+</p>
+```
+
+Podnožje obrasca za "Uređivanje kontakta"
+
+S obzirom na sve sličnosti između šablona "new.html" i "edit.html", možda se pitate zašto ne refaktorišemo ova dva šablona kako bismo delili logiku između njih. To je dobro zapažanje i, u produkcijskom sistemu, verovatno bismo upravo to uradili.
+
+Međutim, za naše potrebe, pošto je naša aplikacija mala i jednostavna, šablone ćemo ostaviti odvojeno.
+
+#### Obrada objave na "/contacts/<contact_id>/edit"
+
+Zatim treba da obradimo HTTP POST zahtev koji obrazac u našem edit.htmlšablonu šalje. Deklarisaćemo drugu rutu koja obrađuje istu putanju kao GETgore navedena.
+
+Evo novog koda za rukovanje:
+
+```py
+@app.route("/contacts/<contact_id>/edit", methods=["POST"])   <1>
+def contacts_edit_post(contact_id=0):
+  c = Contact.find(contact_id)                                <2>
+  c.update(
+    request.form['first_name'],
+    request.form['last_name'],
+    request.form['phone'],
+    request.form['email'])                                    <3>
+
+  if c.save():                                                <4>
+    flash("Updated Contact!")
+    return redirect("/contacts/" + str(contact_id))           <5>
+  else:
+    return render_template("edit.html", contact=c)            <6>
+```
+
+1. Rukovati od POSTdo "/contacts/<contact_id>/edit".
+2. Potražite kontakt po ID-u.
+3. Ažurirajte kontakt novim informacijama iz obrasca.
+4. Pokušajte da ga sačuvate.
+5. U slučaju uspeha, prikaži poruku o uspehu i preusmeri na stranicu sa detaljima.
+6. U slučaju neuspeha, ponovo prikažite šablon za uređivanje, prikazujući sve greške.
+
+Logika u ovom rukovaocu je veoma slična logici u rukovaocu za dodavanje novog kontakta. Jedina prava razlika je u tome što, umesto kreiranja novog kontakta, mi tražimo kontakt po ID-u, a zatim pozivamo metodu update()na njemu sa vrednostima koje su unete u obrazac.
+
+Još jednom, ova konzistentnost između naših CRUD operacija je jedan od lepih i pojednostavljujućih aspekata tradicionalnih CRUD veb aplikacija.
+
+#### Brisanje kontakta
+
+Ugradili smo funkcionalnost brisanja kontakata u isti šablon koji se koristi za uređivanje kontakta. Ovaj drugi obrazac će izdati HTTP zahtev POSTza /contacts/<contact_id>/delete, a moraćemo da kreiramo i obrađivač za tu putanju.
+
+Evo kako izgleda kontroler:
+
+```py
+@app.route("/contacts/<contact_id>/delete", methods=["POST"]) <1>
+def contacts_delete(contact_id=0):
+  contact = Contact.find(contact_id)
+  contact.delete()                                            <2>
+  flash("Deleted Contact!")
+
+  return redirect("/contacts")                                <3>
+```
+
+Kod kontrolera za "brisanje kontakta"
+
+1. Rukuje POST putanjom "/contacts/<contact_id>/delete".
+2. Potražite, a zatim pozovite "delete()" metodu na kontaktu.
+3. Prikaži poruku o uspehu i preusmeri na glavnu listu kontakata.
+
+Kod za rukovanje je veoma jednostavan jer nam nije potrebna nikakva validacija ili uslovna logika: jednostavno pretražujemo kontakt na isti način kao što smo to radili u našim drugim rukovaocima i pozivamo metodu "delete()" na njega, a zatim preusmeravamo nazad na listu kontakata sa porukom o uspehu.
+
+U ovom slučaju nije potreban šablon, kontakt je nestao.
+
+Kontakt.aplikacija Implementirano!
+
+I, pa... verujte ili ne, to je cela naša aplikacija za kontakt!
+
+Ako ste do sada imali problema sa delovima koda, ne brinite: ne očekujemo da budete stručnjak za Pajton ili Flask (nismo!). Potrebno vam je samo osnovno razumevanje kako funkcionišu da biste imali koristi od ostatka knjige.
+
+Ovo je mala i jednostavna aplikacija, ali demonstrira mnoge aspekte tradicionalnih, web 1.0 aplikacija: CRUD, šablon Post/Redirect/Get, rad sa logikom domena u kontroleru, organizovanje naših URL-ova na koherentan, resursno orijentisan način.
+
+Štaviše, ovo je veb aplikacija duboko zasnovana na hipermediji. Bez mnogo razmišljanja, koristili smo REST, HATEOAS i sve ostale hipermedijske koncepte o kojima smo ranije govorili. Kladili bismo se da je ova naša jednostavna mala aplikacija za kontakte REST-fulnija od 99% svih JSON API-ja ikada napravljenih!
+
+Samo zahvaljujući korišćenju hipermedije, HTML-a, prirodno spadamo u RESTful mrežnu arhitekturu.
+
+Pa to je odlično. Ali šta nije u redu sa ovom malom veb aplikacijom? Zašto ne završiti ovde i preći na razvoj aplikacija u stilu veb 1.0?
+
+Pa, na nekom nivou, ništa nije pogrešno u tome. Posebno za aplikaciju jednostavnu kao što je ova, stariji način izrade veb aplikacija bi mogao biti sasvim prihvatljiv pristup.
+
+Međutim, naša aplikacija pati od te "nespretnosti" koju smo ranije pomenuli kada smo govorili o veb 1.0 aplikacijama:
+
+- Svaki zahtev zamenjuje ceo ekran, što uvodi primetno treperenje prilikom navigacije između stranica.
+- Gubimo stanje skrolovanja.
+- Moramo da klikćete malo više nego što bismo to činili u sofisticiranijim veb aplikacijama.
+
+Contact.app, u ovom trenutku, jednostavno ne deluje kao "moderna" veb aplikacija.
+
+Da li je vreme da posegnemo za JavaScript frejmvorkom i JSON API-jima kako bismo našu aplikaciju za kontakt učinili interaktivnijom?
+
+Ne. Nije.
+
+Ispostavlja se da možemo poboljšati korisničko iskustvo ove aplikacije, a da pritom zadržimo njenu osnovnu hipermedijsku arhitekturu.
+
+U narednih nekoliko poglavlja ćemo pogledati `htmx`, biblioteku orijentisanu na hipermediju koja će nam omogućiti da poboljšamo našu aplikaciju za kontakte, a da pritom zadržimo pristup zasnovan na hipermediji koji smo do sada koristili.
+
+---
+
+**HTML napomene: Framework Soup**  
+Komponente obuhvataju deo stranice zajedno sa njegovim dinamičkim ponašanjem. Iako je obuhvatanje ponašanja dobar način za organizovanje koda, ono takođe može odvojiti elemente od njihovog okolnog konteksta, što može dovesti do pogrešnih ili neadekvatnih odnosa između elemenata. Rezultat je ono što bi se moglo nazvati "supa komponenti", gde su informacije skrivene u stanju komponente, umesto da budu prisutne u HTML-u, što je sada nerazumljivo zbog nedostatka konteksta.
+
+Pre nego što posegnete za komponentama za ponovnu upotrebu, razmotrite svoje mogućnosti. Mehanizmi nižeg nivoa često (vam omogućavaju) da proizvedete bolji HTML. U nekim slučajevima, komponente zapravo mogu poboljšati jasnoću vašeg HTML-a.
+
+> [!Note]
+> Činjenica da je HTML dokument nešto čega se jedva pridržavate, jer će sve što vam je potrebno
+> biti ubrizgano putem JavaScript-a, stavlja dokument i strukturu stranice van fokusa.
+>
+> — Manuel Matuzović, Zašto nisam najveći fan aplikacija sa jednom stranicom
+
+Da biste izbegli `<div>` "supu" (ili "supu sa markdaunima", ili "supu sa komponentama"), morate biti svesni oznaka koje proizvodite i biti u mogućnosti da ih promenite.
+
+Neki SPA okviri i neke veb komponente otežavaju ovo stavljanjem slojeva apstrakcije između koda koji programer piše i generisanog označavanja.
+
+Iako ove apstrakcije mogu omogućiti programerima da kreiraju bogatiji korisnički interfejs ili da rade brže, njihova sveprisutnost znači da programeri mogu izgubiti iz vida stvarni HTML (i JavaScript) koji se šalje klijentima. Bez pažljivog testiranja, ovo dovodi do nepristupačnosti, lošeg SEO-a i preopterećenja.
+
+---

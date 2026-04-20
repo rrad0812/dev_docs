@@ -1,0 +1,104 @@
+# Hypermedia 001
+
+## Uvod
+
+Ovo je knjiga o izgradnji aplikacija korišćenjem hipermedijalnih sistema. Hipermedijalni sistemi mogu delovati kao čudna fraza: kako je hipermedija sistem ? Zar hipermedija nije samo način
+povezivanja dokumenata?
+
+Kao sa HTML-om, na World Wide Web-u?
+
+Šta podrazumevate pod hipermedijalnim sistemima ?
+
+Pa, da, HTML je hipermedija. Ali način na koji veb funkcioniše nije samo HTML: HTTP, protokol za prenos hiperteksta, je ono što prenosi HTML sa servera na klijente, i postoji mnogo detalja i funkcija povezanih sa tim: keširanje, različiti zaglavci, kodovi odgovora i tako dalje.
+
+A onda, naravno, tu su i hipermedijalni serveri, koji klijentima preko mreže predstavljaju hipermedijalne API-je (da, API-je ).
+
+I, konačno, tu je i najvažniji hipermedijalni klijent: softverski klijent koji razume kako da prikaže hipermedijalni odgovor razumljivo čoveku, tako da čovek može da interaguje sa udaljenim sistemom. Najpoznatiji i najkorišćeniji hipermedijalni klijenti su, naravno, veb pregledači.
+
+Veb pregledači su verovatno najsofisticiraniji softveri koje koristimo. Oni ne samo da razumeju HTML, CSS i mnoge druge formate datoteka, već pružaju i okruženje za izvršavanje i programiranje JavaScript-a koje je toliko moćno da veb programeri mogu da kreiraju cele aplikacije u njemu koje su gotovo jednako sofisticirane kao i debeli klijenti, odnosno nativne aplikacije.
+
+Ovo Javaskript okruženje je toliko moćno da danas mnogi programeri ignorišu hipermedijalne funkcije pregledača, u korist izgradnje svojih veb aplikacija u potpunosti u Javaskriptu. Aplikacije napravljene na ovaj način nazvane su aplikacije sa jednom stranicom (SPA). Umesto navigacije između stranica, ove veb aplikacije koriste Javaskript za direktno ažuriranje korisničkog interfejsa. Kada komuniciraju sa serverom, ove aplikacije obično koriste JSON API pozive putem AJAKS-a. I često ažuriraju korisnički interfejs koristeći "reaktivnu" stilsku frontend Javaskript biblioteku.
+
+U ovim aplikacijama HTML postaje (pomalo nespretni) jezik za opis grafičkog interfejsa koji se koristi zato što se, iz istorijskih razloga, upravo to nalazi tamo, u pregledaču.
+
+Aplikacije izgrađene u ovom stilu nisu vođene hipermedijom: one ne koriste prednosti osnovnog hipermedijskog sistema veba.
+
+Da bismo objasnili kako izgleda aplikacija vođena hipermedijom i uporedili je sa današnjim popularnim SPA pristupom, prvo moramo istražiti ceo hipermedijski sistem veba, pored puke diskusije o HTML-u. Moramo pogledati mrežnu arhitekturu veba, uključujući kako veb server isporučuje hipermedijski API i kako efikasno koristiti hipermedijske funkcije dostupne u hipermedijskom klijentu (npr. pregledaču).
+
+Svaki od ovih aspekata je važan za izgradnju efikasne aplikacije vođene hipermedijom, i upravo je ceo hipermedijalni sistem taj koji se udružuje kako bi hipermediju učinio tako moćnom arhitekturom.
+
+## Šta je hypermedia sistem
+
+Da bismo razumeli šta je hipermedijalni sistem, prvo ćemo detaljno pogledati kanonički hipermedijalni sistem: World Wide Web. Roj Filding, inženjer koji je pomogao u kreiranju specifikacija i izgradnji implementacija mnogih ranih delova veba, dao nam je termin REpresentational State Transfer ili REST. U svojoj doktorskoj disertaciji opisao je REST kao mrežnu arhitekturu i uporedio je sa ranijim pristupima izgradnji distribuiranog softvera.
+
+Hipermedijalni sistem definišemo kao sistem koji se pridržava RESTful mrežne arhitekture u Fildingovom originalnom smislu ovog termina.
+
+Nažalost, danas verovatno povezujete termin "REST" sa JSON API-jima, jer se taj termin obično koristi u industriji. Ovo je pogrešna upotreba termina REST jer JSON nije prirodni hipermedijal zbog odsustva hipermedijskih kontrola. Razmena hipermedijalnih podataka je eksplicitni zahtev da bi se sistem smatrao "RESTful". Duga je priča kako smo došli dovde, koristeći termin REST tako pogrešno, i detalje ćemo razmotriti kasnije u ovoj knjizi. Ali, za sada, ako mislite da REST implicira JSON, pokušajte da ostavite to razumevanje po strani dok čitate ovu knjigu i da se konceptu obratite svežim očima.
+
+Važno je razumeti da je Filding u svojoj disertaciji opisao Svetsku mrežu (World Wide Web) kakva je postojala krajem 1990-ih. Veb je, u tom trenutku, bio jednostavno veb pregledači koji razmenjuju hipermediju. Taj sistem, sa svojim jednostavnim linkovima i oblicima, bio je ono što je Filding nazivao RESTful-om.
+
+JSON API-ji su bili udaljeni deceniju od toga da postanu uobičajeni alat u veb razvoju: REST se odnosio na hipermediju i 1.0 verziju veba.
+
+## Hypermediom vođene aplikacije
+
+U ovoj knjizi ćemo pogledati hipermediju kao sistemsku arhitekturu, a zatim istražiti neke praktične, moderne pristupe izgradnji veb aplikacija koristeći je. Aplikacije izgrađene u ovom stilu nazvaćemo hipermedijski vođenim aplikacijama (HDA) i uporedićemo ih sa popularnim stilom koji se danas koristi, jednostraničnom aplikacijom (Single Page Application).
+
+Hipermedijska aplikacija je aplikacija izgrađena na hipermedijskom sistemu koja poštuje i koristi hipermedijsku funkcionalnost tog osnovnog sistema.
+
+## Ciljevi knjige
+
+Cilj ove knjige je da vam pruži jasan uvid u to kako se RESTful, hipermedijalna sistemska arhitektura razlikuje od drugih klijent-server sistema i koje su prednosti (i slabosti) hipermedijalnog pristupa. Dalje, nadamo se da ćemo vas ubediti da je hipermedijalna arhitektura relevantna za programere koji grade moderne veb aplikacije.
+
+Cilj nam je da vam pružimo alate za procenu zahteva za prijavu i odgovorimo na pitanje:
+
+"Mogu li ovo da napravim kao aplikaciju vođenu hipermedijom?"
+
+Nadamo se da će za mnoge aplikacije odgovor na to pitanje biti "Da!"
+
+## Izgled knjige
+
+Knjiga je podeljena na tri dela:
+
+- Uvod (ili ponovni uvod) u hipermediju, sa posebnim fokusom na HTML i HTTP. Ovaj pregled osnovnih hipermedijskih koncepata završićemo kreiranjem jednostavne aplikacije u stilu "Web 1.0", Contact.app, za pravljanje kontaktima.
+- Zatim ćemo pogledati kako možemo koristiti htmx, hipermedijsku JavaScript biblioteku koju su kreirali autori ove knjige, da bismo poboljšali Contact.app. Korišćenjem htmx-a, moći ćemo da postignemo nivo interaktivnosti u našoj aplikaciji za koji bi mnogi programeri očekivali da zahteva veliku, sofisticiranu front-end biblioteku, kao što je React. Zahvaljujući htmx-u, moći ćemo to da uradimo koristeći hipermediju kao arhitekturu našeg sistema.
+- Konačno, pogledaćemo potpuno drugačiji hipermedijalni sistem, Hyperview. Hyperview je mobilni hipermedijalni sistem, povezan sa vebom, ali različit od njega, a kreirao ga je jedan od autora ove knjige – Adam Stepinski. Podržava mobilne specifičnosti pružajući ne samo mobilnu hipermedijalnu platformu, već i mobilnog hipermedijalnog klijenta. Ove nove komponente, u kombinaciji sa bilo kojim HTTP serverom, omogućavaju izgradnju mobilnih aplikacija vođenih hipermedijom.
+
+Imajte na umu da je svaki odeljak donekle nezavisan od ostalih. Ako već detaljno poznajete hipermediju i kako funkcionišu osnovne Web 1.0 aplikacije, možda ćete želeti da pređete na drugi odeljak o htmx-u i kako da napravite moderne veb aplikacije koristeći hipermediju. Slično tome, ako ste dobro upoznati sa htmx-om i želite da se upustite u novu mobilnu hipermediju, možete preći na odeljak Hiperprikaz.
+
+Uz to rečeno, knjiga je osmišljena da se čita redom i oba odeljka, htmx i Hyperview, nadovezuju se na Web 1.0 aplikaciju opisanu na kraju prvog odeljka. Štaviše, čak i ako ste dobro upoznati sa svim konceptima hipermedije i detaljima HTML-a i HTTP-a, verovatno se isplati barem prelistati prvih nekoliko poglavlja radi podsećanja.
+
+## Hypermedia - nova generacija
+
+Hipermedija nije česta tema razgovora ovih dana. Čak ni mnogi stariji programeri koji su odrasli sa vebom krajem 1990-ih i početkom 2000-ih nisu mnogo razmišljali o ovim idejama godinama. Mnogi mlađi veb programeri su odrasli ne znajući ništa osim jednostraničnih aplikacija i okvira koji se koriste za njihovu izradu.
+
+Posebno, mnogi mladi veb programeri su započeli svoje karijere izgradnjom React.js aplikacija koje interaguju sa Node serverom koristeći JSON API; možda nikada nisu ni učili o hipermediji kao sistemu.
+
+Ovo je tragedija i, iskreno, neuspeh vodećih misaonika u zajednici veb razvoja da pravilno komuniciraju i zastupaju hipermedijalni pristup.
+
+Hipermedija je bila odlična ideja! I dalje jeste!
+
+Do kraja ove knjige, imaćete alate i jezik da ovu sjajnu ideju primenite u sopstvenim aplikacijama. Štaviše, moći ćete da ideje i koncepte hipermedijalnih sistema prenesete široj zajednici veb programera.
+
+Hipermedija može da se takmiči, hipermedija može da pobedi, hipermedija je pobedila kao arhitektonski izbor u odnosu na pristup jednostranične aplikacije, ali samo ako pametni ljudi (kao vi) nauče o njoj, grade sa njom, a zatim ispričaju svetu o njoj.
+
+> [!Info]
+> Sećate se poruke? "Budućnost nije određena. Nema sudbine osim one koju sami sebi stvorimo."  
+> — Kajl Ris, Terminator 2: Sudnji dan
+---
+>
+> [!Note]
+> **HTML napomene: Hipermedija u praksi**
+>
+> Jasno je da HTML igra centralnu ulogu u priči koju ovde pričamo. Na kraju svakog poglavlja podelićemo ono što smo naučili o pisanju HTML-a za veb aplikacije vođene hipermedijom.
+>
+> Za početak, zapamtite da naše veb aplikacije nisu ostrva. Pišemo HTML ne samo za određenu aplikaciju, već i da bismo se igrali sa drugim članovima veba. Kada pišemo imajući u vidu hipermedijalni sistem, bolje > smo u mogućnosti da iskoristimo niz mogućnosti koje su dostupne vebu.
+>
+> HTML je prilagođen hipermediji kada je napisan za sve komponente hipermedijalnog sistema.
+>
+> On prenosi stanje aplikacije ljudima koji pregledaju naše sajtove pomoću pregledača, kao i ljudima koji slušaju čitače ekrana koji naglas čitaju sajtove. On prenosi ciljeve naših sajtova pretraživačima koji
+> programski pretražuju sajtove. Takođe, što jasnije prenosi svoje ponašanje drugim programerima.
+>
+> Ne, ne možemo rešiti svaki problem dobrim HTML-om. Mantra da je HTML "dostupan po podrazumevanim podešavanjima" je obmanjujuća. Propustili bismo važne prilike ako bismo izbegli druge tehnologije poput
+> JavaScript-a. I dalje moramo da testiramo, mnogo, svuda, kako bismo osigurali da stvari funkcionišu kako se očekuje.
+>
+> Ali dobar HTML omogućava pregledačima da urade mnogo posla za nas.

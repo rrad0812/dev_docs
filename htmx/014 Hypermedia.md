@@ -1,0 +1,1003 @@
+﻿Proširivanje Hyperview klijenta
+
+U prethodnom poglavlju, kreirali smo potpuno funkcionalnu nativnu mobilnu verziju naše
+aplikacije Kontakti. Osim prilagođavanja URL-a ulazne tačke, nismo morali da menjamo nijedan
+kod koji se pokreće na mobilnom uređaju. Definisali smo korisnički interfejs i logiku naše mobilne
+aplikacije u potpunosti u bekend kodu, koristeći Flask i HXML šablone. Ovo je moguće zato što
+standardni Hyperview klijent podržava sve osnovne funkcije mobilnih aplikacija.
+
+Ali standardni Hyperview klijent ne može da uradi sve odmah. Kao programeri aplikacija, želimo
+da aplikacije imaju jedinstvene detalje poput prilagođenih korisničkih interfejsa ili duboke
+integracije sa mogućnostima platforme. Da bi se podržale ove potrebe, Hyperview klijent je
+dizajniran da se proširi prilagođenim ponašanjem, akcijama i elementima korisničkog interfejsa. U
+ovom odeljku ćemo poboljšati našu mobilnu aplikaciju primerima oba.
+
+Pre nego što se upustimo u detalje, hajde da ukratko pogledamo tehnološki stek koji ćemo koristiti.
+Hyperview klijent je napisan u React Native-u, popularnom kros-platformskom okviru za kreiranje
+mobilnih aplikacija. Koristi isti API zasnovan na komponentama kao i React. To znači da
+programeri koji su upoznati sa JavaScript-om i React-om mogu brzo da savladaju React Native.
+React Native ima zdrav ekosistem biblioteka otvorenog koda. Koristićemo ove biblioteke za
+kreiranje naših prilagođenih proširenja za Hyperview klijent.
+
+Dodavanje telefonskih poziva i imejlova
+
+Počnimo sa najočiglednijom funkcijom koja nedostaje našoj aplikaciji Kontakti: telefonskim
+pozivima. Mobilni uređaji mogu da obavljaju telefonske pozive. Kontakti u našoj aplikaciji imaju
+brojeve telefona. Zar naša aplikacija ne bi trebalo da podržava pozivanje tih brojeva telefona? I dok
+smo već kod toga, naša aplikacija bi trebalo da podržava i slanje imejlova kontaktima.
+
+Na vebu, pozivanje telefonskih brojeva je podržano tel:URI šemom, a e-pošta je podržana
+mailto:URI šemom:
+
+<a href="tel:555-555-5555">Call</a> <1>
+<a href="mailto:joe@example.com">Email</a> <2>
+
+teli mailtošeme u HTML-u
+
+Kada se klikne, zamolite korisnika da pozove dati broj telefona
+
+Kada se klikne, otvoriće se imejl klijent sa datom adresom popunjenom u to:polju.
+
+Hipervju klijent ne podržava tel:i mailto:URI šeme. Ali možemo dodati ove mogućnosti
+klijentu pomoću prilagođenih akcija ponašanja. Zapamtite da su ponašanja interakcije definisane u
+HXML-u. Ponašanja imaju okidače ("pritisni", "osveži") i akcije ("ažuriraj", "deli"). Vrednosti
+"akcije" nisu ograničene na skup koji dolazi u Hipervju biblioteci. Zato definišimo dve nove akcije,
+
+
+
+"otvori telefon" i "otvori imejl".
+
+<view
+xmlns:comms="https://hypermedia.systems/hyperview/communications"> <1>
+
+  <text>
+    <behavior action="open-phone"
+
+comms:phone-number="555-555-5555" /> <2>
+    Call
+  </text>
+  <text>
+    <behavior action="open-email"
+
+comms:email-address="joe@example.com" /> <3>
+    Email
+  </text>
+</view>
+
+Radnje telefona i imejla
+
+Definišite alias za XML imenski prostor koji koriste naši novi atributi.
+
+Kada se pritisne, zamolite korisnika da pozove dati broj telefona.
+
+Kada se pritisne, otvoriće se imejl klijent sa datom adresom popunjenom u to:polju.
+
+Obratite pažnju da smo definisali stvarni broj telefona i adresu e-pošte koristeći odvojene atribute.
+U HTML-u, šema i podaci su smešteni u hrefatribut. HXML <behavior>elementi daju više
+opcija za predstavljanje podataka. Odabrali smo da koristimo atribute, ali smo mogli da
+predstavimo broj telefona ili adresu e-pošte koristeći podelemente. Takođe koristimo imenski
+prostor kako bismo izbegli potencijalne buduće sukobe sa drugim klijentskim ekstenzijama.
+
+Za sada je sve u redu, ali kako Hyperview klijent zna kako da interpretira open-phone`and`
+open-emaili kako da referencira ` phone-numberand` email-addressatribute? Ovde
+konačno treba da napišemo neki JavaScript kod.
+
+Prvo, dodaćemo biblioteku treće strane ( react-native-communications) našoj demo
+aplikaciji. Ova biblioteka pruža jednostavan API koji interaguje sa funkcionalnošću na nivou
+operativnog sistema za pozive i imejlove.
+
+cd hyperview/demo
+yarn add react-native-communications <1>
+yarn start <2>
+
+Dodaj zavisnost odreact-native-communications
+
+Ponovo pokrenite mobilnu aplikaciju
+
+Zatim ćemo kreirati novu datoteku, phone.js, koja će implementirati kod povezan sa open-
+
+
+
+phoneakcijom:
+
+import { phonecall } from 'react-native-communications'; <1>
+
+const namespace = "https://hypermedia.systems/hyperview/communications";
+
+export default {
+action: "open-phone", <2>
+callback: (behaviorElement) => { <3>
+
+const number = behaviorElement
+.getAttributeNS(namespace, "phone-number"); <4>
+
+if (number != null) {
+phonecall(number, false); <5>
+
+    }
+  },
+};
+
+demo/src/phone.js
+
+Uvezite funkciju koja nam je potrebna iz biblioteke treće strane.
+
+Naziv akcije.
+
+Povratni poziv koji se pokreće kada se akcija pokrene.
+
+Dobijte broj telefona iz <behavior>elementa.
+
+Prosledite broj telefona funkciji iz biblioteke treće strane.
+
+Prilagođene akcije su definisane kao JavaScript objekat sa dva ključa: actioni callback. Ovako
+Hyperview klijent povezuje prilagođenu akciju u HXML-u sa našim prilagođenim kodom.
+Vrednost povratnog poziva je funkcija koja uzima jedan parametar, behaviorElement. Ovaj
+parametar je XML DOM reprezentacija elementa <behavior>koji je pokrenuo akciju. To znači da
+možemo da pozivamo metode na njemu kao što je getAttribute, ili da pristupamo atributima
+kao što je childNodes. U ovom slučaju, koristimo getAttributeNSda čitamo broj telefona iz
+phone-numberatributa na <behavior>elementu. Ako je broj telefona definisan na elementu,
+možemo da pozovemo phonecall()funkciju koju pruža biblioteka react-native-
+communications.
+
+Još jedna stvar koju treba da uradimo pre nego što možemo da koristimo našu prilagođenu akciju:
+registrujemo akciju kod Hyperview klijenta. Hyperview klijent je predstavljen kao React Native
+komponenta pod nazivom Hyperview. Ova komponenta uzima svojstvo pod nazivom
+behaviors, što je niz objekata prilagođenih akcija poput naše akcije "otvori-telefon". Hajde da
+prosledimo našu implementaciju "otvori-telefon" komponenti Hyperviewu našoj demo aplikaciji.
+
+import React, { PureComponent } from 'react';
+
+
+
+import Hyperview from 'hyperview';
+import OpenPhone from './phone'; <1>
+
+export default class HyperviewScreen extends PureComponent {
+//... omitted for brevity
+
+  behaviors = [OpenPhone]; <2>
+
+render() {
+return (
+
+<Hyperview
+        behaviors={this.behaviors} <3>
+        entrypointUrl={this.entrypointUrl}
+
+// more props...
+/>
+
+    );
+  }
+}
+
+demo/src/HyperviewScreen.js
+
+Uvezite akciju otvaranja telefona.
+
+Napravite niz prilagođenih akcija.
+
+Prosledite prilagođene akcije komponenti Hyperview, kao prop pod nazivom behaviors.
+
+U suštini, Hyperviewkomponenta je odgovorna za pretvaranje HXML-a u elemente mobilnog
+korisničkog interfejsa. Takođe se bavi pokretanjem ponašanja na osnovu interakcija korisnika.
+
+Prenošenjem akcije "otvori telefon" u Hyperview, sada je možemo koristiti kao vrednost za
+actionatribut na <behavior>elementima. U stvari, hajde da to sada uradimo ažuriranjem
+show.xmlšablona u našoj Flask aplikaciji:
+
+{% block content %}
+<view style="details">
+  <text style="contact-name">
+    {{ contact.first }} {{ contact.last }}
+  </text>
+
+  <view style="contact-section">
+    <behavior <1>
+      xmlns:comms="https://hypermedia.systems/hyperview/communications"
+      trigger="press"
+
+
+
+      action="open-phone" <2>
+      comms:phone-number="{{contact.phone}}" <3>
+    />
+    <text style="contact-section-label">Phone</text>
+    <text style="contact-section-info">{{contact.phone}}</text>
+  </view>
+
+  <view style="contact-section">
+    <behavior <4>
+      xmlns:comms="https://hypermedia.systems/hyperview/communications"
+      trigger="press"
+      action="open-email"
+      comms:email-address="{{contact.email}}"
+    />
+    <text style="contact-section-label">Email</text>
+    <text style="contact-section-info">{{contact.email}}</text>
+  </view>
+</view>
+{% endblock %}
+
+Isečakhv/show.xml
+
+Dodajte ponašanje u odeljak za broj telefona koje se aktivira pri "pritisku".
+
+Pokrenite novu akciju "otvori telefon".
+
+Podesite atribut koji očekuje akcija "otvori telefon".
+
+Ista ideja, sa drugačijom akcijom ("otvori imejl").
+
+Preskočićemo implementaciju druge prilagođene akcije, "open-email". Kao što možete
+pretpostaviti, ova akcija će otvoriti program za kreiranje imejlova na sistemskom nivou kako bi
+korisnik mogao da pošalje imejl svom kontaktu. Implementacija "open-email" je gotovo identična
+sa "open-phone". Biblioteka react-native-communicationsotkriva funkciju pod nazivom
+email(), pa je samo umotamo i prosleđujemo joj argumente na isti način.
+
+Sada imamo kompletan primer proširenja klijenta prilagođenim akcijama ponašanja. Izabrali smo
+novo ime za naše akcije ("open-phone" i "open-email") i mapirali ta imena na funkcije. Funkcije
+prihvataju <behavior>elemente i mogu pokrenuti bilo koji proizvoljni React Native kod.
+Upakovali smo postojeću biblioteku treće strane i pročitali atribute postavljene na
+<behavior>elementu da bismo prosledili podatke biblioteci. Nakon ponovnog pokretanja naše
+demo aplikacije, naš klijent ima nove mogućnosti koje možemo odmah da koristimo pozivajući se
+na akcije iz naših HXML šablona.
+
+
+
+Dodavanje poruka
+
+Akcije telefona i e-pošte dodate u prethodnom odeljku su primeri "sistemskih akcija". Sistemske
+akcije pokreću neki korisnički interfejs ili mogućnosti koje pruža operativni sistem uređaja. Ali
+prilagođene akcije nisu ograničene na interakciju sa API-jima na nivou operativnog sistema.
+Zapamtite, povratni pozivi koji implementiraju akcije mogu pokrenuti proizvoljan kod, uključujući
+kod koji prikazuje naše sopstvene elemente korisničkog interfejsa. Sledeći primer prilagođene
+akcije će uraditi upravo to: prikazivati prilagođeni element korisničkog interfejsa sa porukom
+potvrde.
+
+Ako se sećate, naša veb aplikacija Kontakti prikazuje poruke nakon uspešnih radnji, kao što je
+brisanje ili kreiranje kontakta. Ove poruke se generišu u Flask bekendu pomoću funkcije flash(),
+koja se poziva iz prikaza. Zatim osnovni layout.htmlšablon prikazuje poruke na finalnoj veb
+stranici.
+
+{% for message in get_flashed_messages() %}
+  <div class="flash">{{ message }}</div>
+{% endfor %}
+
+Šabloni isečaka/layout.html
+
+Naša Flask aplikacija i dalje uključuje pozive na flash(), ali Hyperview aplikacija ne pristupa
+flešovanoj poruci da bi je prikazala korisniku. Hajde sada da dodamo tu podršku.
+
+Mogli bismo jednostavno da prikažemo poruke koristeći sličnu tehniku kao veb aplikacija: proći
+kroz poruke i prikazati neke <text>elemente u layout.xml. Ovaj pristup ima veliku manu:
+prikazane poruke bi bile vezane za određeni ekran. Ako bi taj ekran bio skriven akcijom navigacije,
+i poruka bi bila skrivena. Ono što zapravo želimo jeste da se naš korisnički interfejs poruka
+prikazuje "iznad" svih ekrana u steku navigacije. Na taj način, poruka bi ostala vidljiva (nestajala bi
+nakon nekoliko sekundi), čak i ako se stek ekrana promeni ispod. Da bismo prikazali neki
+korisnički interfejs izvan elemenata <screen>, moraćemo da proširimo Hyperview klijent novom
+prilagođenom akcijom, show-message. Ovo je još jedna prilika za korišćenje biblioteke otvorenog
+koda, react-native-root-toast. Dodajmo ovu biblioteku našoj demo aplikaciji.
+
+cd hyperview/demo
+yarn add react-native-root-toast <1>
+yarn start <2>
+
+Dodaj zavisnost odreact-native-root-toast
+
+Ponovo pokrenite mobilnu aplikaciju
+
+Sada možemo napisati kod za implementaciju korisničkog interfejsa poruke kao prilagođene
+akcije.
+
+import Toast from 'react-native-root-toast'; <1>
+
+
+
+const namespace = "https://hypermedia.systems/hyperview/message";
+
+export default {
+action: "show-message", <2>
+callback: (behaviorElement) => { <3>
+
+const text = behaviorElement.getAttributeNS(namespace, "text");
+if (text != null) {
+
+      Toast.show(text, { <4>
+position: Toast.positions.TOP, duration: 2000
+
+      });
+    }
+  },
+};
+
+demo/src/message.js
+
+Uvezite ToastAPI.
+
+Naziv akcije.
+
+Povratni poziv koji se pokreće kada se akcija pokrene.
+
+Prosledite poruku biblioteci tostova.
+
+Ovaj kod izgleda veoma slično implementaciji open-phone. Oba povratna poziva prate sličan
+obrazac: čitaju atribute imenskog prostora iz <behavior>elementa i prosleđuju te vrednosti
+biblioteci treće strane. Radi jednostavnosti, čvrsto kodiramo opcije za prikazivanje poruke na vrhu
+ekrana, koja se postepeno pojavljuje nakon 2 sekunde. Ali react-native-root-toastotkriva
+mnoge opcije za pozicioniranje, vreme animacija, boje i još mnogo toga. Mogli bismo da odredimo
+ove opcije koristeći dodatne atribute behaviorElementkako bismo radnju učinili
+konfigurabilnijom. Za naše potrebe, držaćemo se samo osnovne implementacije.
+
+Sada treba da registrujemo našu prilagođenu akciju sa <Hyperview>komponentom, tako što
+ćemo je proslediti behaviorspropu.
+
+import React, { PureComponent } from 'react';
+import Hyperview from 'hyperview';
+import OpenEmail from './email';
+import OpenPhone from './phone';
+import ShowMessage from './message'; <1>
+
+export default class HyperviewScreen extends PureComponent {
+//... omitted for brevity
+
+
+
+  behaviors = [OpenEmail, OpenPhone, ShowMessage]; <2>
+
+//... omitted for brevity
+}
+
+demo/src/HyperviewScreen.js
+
+Uvezite show-messageakciju.
+
+Prosledite akciju komponenti Hyperview, kao prop pod nazivom behaviors.
+
+Sve što je preostalo je da se pokrene show-messageakcija iz našeg HXML-a. Postoje tri korisničke
+akcije koje rezultiraju prikazivanjem poruke:
+
+Kreiranje novog kontakta
+
+Ažuriranje postojećeg kontakta
+
+Brisanje kontakta
+
+Prve dve akcije su implementirane u našoj aplikaciji koristeći isti HXML šablon,
+form_fields.xml. Nakon uspešnog kreiranja ili ažuriranja kontakta, ovaj šablon će ponovo
+učitati ekran i pokrenuti događaj, koristeći ponašanja koja se pokreću pri "učitavanju". Akcija
+brisanja takođe koristi ponašanja koja se pokreću pri "učitavanju", definisana u šablonu
+deleted.xml. Dakle, oba form_fields.xmli deleted.xmltreba izmeniti da bi se prikazivale i
+poruke pri učitavanju. Pošto će stvarna ponašanja biti ista u oba šablona, hajde da napravimo
+deljeni šablon za ponovnu upotrebu HXML-a.
+
+{% for message in get_flashed_messages() %}
+  <behavior <1>
+    xmlns:message="https://hypermedia.systems/hyperview/message"
+    trigger="load" <2>
+    action="show-message" <3>
+    message:text="{{ message }}" <4>
+  />
+{% endfor %}
+
+hv/templates/messages.xml
+
+Definišite ponašanje za svaku poruku koja će se prikazivati.
+
+Pokrenite ovo ponašanje čim se element učita.
+
+Pokrenite novu akciju "prikaži poruku".
+
+Akcija "prikaži poruku" će prikazati flešovanu poruku u svom korisničkom interfejsu.
+
+Kao i layout.htmlu veb aplikaciji, prolazimo kroz sve flešovane poruke i prikazujemo oznake za
+svaku poruku. Međutim, u veb aplikaciji, poruka je direktno prikazana na veb stranici. U aplikaciji
+
+
+
+Hyperview, svaka poruka se prikazuje korišćenjem ponašanja koje pokreće naš prilagođeni
+korisnički interfejs. Sada samo treba da uključimo ovaj šablon u form_fields.xml:
+
+<view xmlns="https://hyperview.org/hyperview" style="edit-group">
+  {% if saved %}
+    {% include "hv/messages.xml" %} <1>
+    <behavior trigger="load" once="true" action="dispatch-event"
+
+event-name="contact-updated" />
+    <behavior trigger="load" once="true" action="reload"
+
+href="/contacts/{{contact.id}}" />
+  {% endif %}
+
+<!-- omitted for brevity -->
+</view>
+
+Isečak datoteke hv/templates/form_fields.xml
+
+Prikaži poruke čim se ekran učita.
+
+I možemo da uradimo isto u deleted.xml:
+
+<view xmlns="https://hyperview.org/hyperview">
+  {% include "hv/messages.xml" %} <1>
+  <behavior trigger="load" action="dispatch-event"
+
+event-name="contact-updated" />
+  <behavior trigger="load" action="back" />
+</view>
+
+hv/templates/deleted.xml
+
+Prikaži poruke čim se ekran učita.
+
+U oba slučaja form_fields.xml, i u deleted.xml, višestruka ponašanja se pokreću pri
+"učitavanju". U deleted.xml, odmah se vraćamo na prethodni ekran. U form_fields.xml,
+odmah ponovo učitavamo trenutni ekran da bismo prikazali detalje kontakta. Ako bismo elemente
+korisničkog interfejsa poruke prikazali direktno na ekranu, korisnik bi ih jedva video pre nego što
+bi ekran nestao ili se ponovo učitao. Korišćenjem prilagođene akcije, korisnički interfejs poruke
+ostaje vidljiv čak i dok se ekrani ispod njih menjaju.
+
+
+
+
+
+
+Poruka koja se prikazuje tokom navigacije unazad
+
+Da bismo dodali mogućnosti komunikacije i korisnički interfejs za poruke, proširili smo klijenta
+prilagođenim akcijama ponašanja. Međutim, Hyperview klijent se takođe može proširiti
+prilagođenim korisničkim komponentama koje se prikazuju na ekranu. Prilagođene komponente
+su implementirane kao React Native komponente. To znači da sve što je moguće u React Native-u
+može se uraditi i u Hyperview-u! Prilagođene komponente otvaraju beskrajne mogućnosti za
+izgradnju bogatih mobilnih aplikacija pomoću Hypermedia arhitekture.
+
+Da bismo ilustrovali mogućnosti, proširićemo Hyperview klijent u našoj mobilnoj aplikaciji kako
+bismo dodali komponentu "red koji se može prevući". Kako to funkcioniše? Komponenta "red koji
+se može prevući" podržava horizontalni gest prevlačenja. Kada korisnik prevuče ovu komponentu
+zdesna nalevo, komponenta će se pomeriti preko nje, otkrivajući niz dugmadi za akciju. Svako
+dugme za akciju će moći da pokrene standardno ponašanje Hyperview-a kada se pritisne.
+Koristićemo ovu prilagođenu komponentu na našem ekranu Liste kontakata. Svaka stavka
+kontakta će biti "red koji se može prevući", a akcije će omogućiti brz pristup radnjama uređivanja i
+brisanja za kontakt.
+
+Stavka kontakta koja se može prevući
+
+Projektovanje komponente
+
+Umesto da implementiramo gest prevlačenja od nule, ponovo ćemo koristiti biblioteku otvorenog
+koda treće strane: react-native-swipeable.
+
+cd hyperview/demo
+yarn add react-native-swipeable <1>
+yarn start <2>
+
+Dodaj zavisnost od react-native-swipeable.
+
+Ponovo pokrenite mobilnu aplikaciju.
+
+Ova biblioteka pruža React Native komponentu pod nazivom Swipeable. Ona može da prikaže
+bilo koju React Native komponentu kao svoj glavni sadržaj (deo koji se može prevući). Takođe,
+
+
+
+koristi niz React Native komponenti kao dodatak za prikazivanje kao dugmad za akcije.
+
+Prilikom dizajniranja prilagođene komponente, volimo da definišemo HXML komponente pre
+pisanja koda. Na ovaj način možemo biti sigurni da je oznaka ekspresivna, ali sažeta i da će
+funkcionisati sa osnovnom bibliotekom.
+
+Za red koji se može prevlačiti, potreban nam je način da predstavimo celu komponentu, glavni
+sadržaj i jedno od mnogih dugmadi.
+
+<swipe:row
+xmlns:swipe="https://hypermedia.systems/hyperview/swipeable"> <1>
+
+  <swipe:main> <2>
+<!-- main content shown here -->
+
+  </swipe:main>
+
+  <swipe:button> <3>
+<!-- first button that appears when swiping -->
+
+  </swipe:button>
+
+  <swipe:button> <4>
+<!-- second button that appears when swiping -->
+
+  </swipe:button>
+</swipe:row>
+
+Roditeljski element koji obuhvata ceo red koji se može prevlačiti, sa prilagođenim imenskim
+prostorom.
+
+Glavni sadržaj reda koji se može prevlačiti može da sadrži bilo koji HXML.
+
+Prvo dugme koje se pojavljuje prilikom prevlačenja prstom može da sadrži bilo koji HXML.
+
+Drugo dugme koje se pojavljuje prilikom prevlačenja prstom može da sadrži bilo koji HXML.
+
+Ova struktura jasno odvaja glavni sadržaj od dugmadi. Takođe podržava jedno, dva ili više
+dugmadi. Dugmad se pojavljuju redosledom definicije, što olakšava promenu redosleda.
+
+Ovaj dizajn pokriva sve što nam je potrebno za implementaciju reda koji se može prevlačiti
+listanjem za našu listu kontakata. Ali je takođe dovoljno generički da se može ponovo koristiti.
+Prethodni opis ne sadrži ništa specifično za ime kontakta, uređivanje kontakta ili brisanje
+kontakta. Ako kasnije dodamo još jedan ekran liste u našu aplikaciju, možemo koristiti ovu
+komponentu da stavke na toj listi učinimo prevlačivim.
+
+Implementacija komponente
+
+Sada kada znamo HXML strukturu naše prilagođene komponente, možemo napisati kod za njenu
+implementaciju. Kako taj kod izgleda? Hipervju komponente su napisane kao React Native
+
+
+
+komponente. Ove React Native komponente su mapirane na jedinstveni XML imenski prostor i
+naziv oznake. Kada Hipervju klijent naiđe na taj imenski prostor i naziv oznake u HXML-u, on
+delegira renderovanje HXML elementa odgovarajućoj React Native komponenti. Kao deo
+delegiranja, Hipervju klijent prosleđuje nekoliko svojstava React Native komponenti:
+
+elementXML DOM element koji se mapira na React Native komponentu.
+
+stylesheetsStilovi definisani u <screen>.
+
+onUpdateFunkcija koju treba pozvati kada komponenta pokrene ponašanje.
+
+optionRazna podešavanja koja koristi Hyperview klijent.
+
+Naša komponenta reda sa mogućnošću prevlačenja je kontejner sa slotovima za prikazivanje
+proizvoljnog glavnog sadržaja i dugmadi. To znači da mora da delegira nazad Hyperview klijentu
+da bi prikazivao te delove korisničkog interfejsa. To se radi pomoću javne funkcije koju izlaže
+Hyperview klijent, Hyperview.renderChildren().
+
+Sada kada znamo kako se implementiraju prilagođene komponente Hyperview-a, hajde da
+napišemo kod za naš red koji se može prevlačiti prevlačenjem.
+
+import React, { PureComponent } from 'react';
+import Hyperview from 'hyperview';
+import Swipeable from 'react-native-swipeable';
+
+const NAMESPACE_URI = 'https://hypermedia.systems/hyperview/swipeable';
+
+export default class SwipeableRow extends PureComponent { <1>
+static namespaceURI = NAMESPACE_URI; <2>
+static localName = "row"; <3>
+
+  getElements = (tagName) => {
+return Array.from(this.props.element
+
+.getElementsByTagNameNS(NAMESPACE_URI, tagName));
+  };
+
+  getButtons = () => { <4>
+return this.getElements("button").map((buttonElement) => {
+
+return Hyperview.renderChildren(buttonElement,
+this.props.stylesheets,
+this.props.onUpdate,
+this.props.options); <5>
+
+    });
+  };
+
+
+
+render() {
+const [main] = this.getElements("main");
+if (!main) {
+
+return null;
+    }
+
+return (
+<Swipeable rightButtons={this.getButtons()}> <6>
+
+        {Hyperview.renderChildren(main,
+this.props.stylesheets,
+this.props.onUpdate,
+this.props.options)} <7>
+
+</Swipeable>
+    );
+  }
+}
+
+demo/src/swipeable.js
+
+React Native komponenta zasnovana na klasi.
+
+Mapirajte ovu komponentu na dati HXML imenski prostor.
+
+Mapirajte ovu komponentu na dato ime HXML oznake.
+
+Funkcija koja vraća niz React Native komponenti za svaki <button>element.
+
+Delegirajte Hyperview klijentu da prikaže svako dugme.
+
+Prosledite dugmad i glavni sadržaj biblioteci treće strane.
+
+Delegirajte Hyperview klijentu da prikaže glavni sadržaj.
+
+Klasa SwipeableRowimplementira React Native komponentu. Na vrhu klase postavljamo statičko
+namespaceURIsvojstvo i localNamesvojstvo. Ova svojstva mapiraju React Native komponentu
+na jedinstveni par imenskog prostora i imena oznake u HXML-u. Ovako Hyperview klijent zna da
+delegira SwipeableRowkada naiđe na prilagođene elemente u HXML-u. Na dnu klase videćete
+render()metodu render()koju React Native poziva da bi vratio renderovanu komponentu.
+Pošto je React Native izgrađen na principu kompozicije, render()obično vraća kompoziciju
+drugih React Native komponenti. U ovom slučaju, vraćamo Swipeablekomponentu (koju pruža
+biblioteka react-native-swipeable), sastavljenu od React Native komponenti za dugmad i
+glavni sadržaj. React Native komponente za dugmad i glavni sadržaj kreiraju se pomoću sličnog
+procesa:
+
+Pronađite specifične podređene elemente ( <button>ili <main>).
+
+
+
+Pretvorite te elemente u React Native komponente koristeći Hyperview.renderChildren().
+
+Postavite komponente kao decu ili rekvizite od Swipeable.
+
+    HyperView Client               SwipeableRow
+┌──────────────────────┐     ┌──────────────────────┐
+│<swipe:row>───────────┼─────▶<swipe:row>           │
+│                      │     │  <swipe:main>        │
+│    <text>Hello</text>◀─────┼────<text>Hello</text>│
+│                      │     │  </swipe:main>       │
+│                      │     │  <swipe:button>      │
+│    <text>Edit</text>◀┼─────┼────<text>Edit</text> │
+│                      │     │  </swipe:button>     │
+│</swipe:row>          │     │</swipe:row>          │
+└──────────────────────┘     └──────────────────────┘
+
+Delegiranje renderovanja između klijenta i prilagođenih komponenti
+
+Ovaj kod može biti teško pratiti ako nikada niste radili sa React ili React Native. U redu je. Važna
+stvar je: možemo napisati kod za prevođenje proizvoljnog HXML-a u React Native komponente.
+Struktura HXML-a (i atributi i elementi) može se koristiti za predstavljanje više aspekata
+korisničkog interfejsa (u ovom slučaju, dugmad i glavni sadržaj). Konačno, kod može delegirati
+renderovanje podređenih komponenti nazad Hyperview klijentu.
+
+Rezultat: ova komponenta reda sa mogućnošću prevlačenja je potpuno generička. Stvarna
+struktura, stil i interakcije glavnog sadržaja i dugmadi mogu se definisati u HXML-u. Kreiranje
+generičke komponente znači da je možemo ponovo koristiti na više ekrana u različite svrhe. Ako u
+budućnosti dodamo još prilagođenih komponenti ili novih akcija ponašanja, one će raditi sa našom
+implementacijom reda sa mogućnošću prevlačenja.
+
+Poslednja stvar koju treba uraditi je registracija ove nove komponente kod Hyperview klijenta.
+Proces je sličan registrovanju prilagođenih akcija. Prilagođene komponente se prosleđuju kao
+zasebna componentssvojstva komponenti Hyperview.
+
+import React, { PureComponent } from 'react';
+import Hyperview from 'hyperview';
+import OpenEmail from './email';
+import OpenPhone from './phone';
+import ShowMessage from './message';
+import SwipeableRow from './swipeable'; <1>
+
+export default class HyperviewScreen extends PureComponent {
+//... omitted for brevity
+
+
+
+  behaviors = [OpenEmail, OpenPhone, ShowMessage];
+  components = [SwipeableRow]; <2>
+
+render() {
+return (
+
+<Hyperview
+        behaviors={this.behaviors}
+        components={this.components} <3>
+        entrypointUrl={this.entrypointUrl}
+
+// more props...
+/>
+
+    );
+  }
+}
+
+demo/src/HyperviewScreen.js
+
+Uvezite SwipeableRowkomponentu.
+
+Napravite niz prilagođenih komponenti.
+
+Prosledite prilagođenu komponentu komponenti Hyperview, kao prop pod nazivom
+components.
+
+Sada smo spremni da ažuriramo naše HXML šablone kako bismo koristili novu komponentu reda
+koja se može prevlačiti prevlačenjem.
+
+Korišćenje komponente
+
+Trenutno, HXML za stavku kontakta na listi se sastoji od elementa ` <behavior>and` <text>:
+
+<item key="{{ contact.id }}" style="contact-item">
+  <behavior trigger="press" action="push"
+
+href="/contacts/{{ contact.id }}" />
+  <text style="contact-item-label">
+
+<!-- omitted for brevity -->
+  </text>
+</item>
+
+Isečakhv/rows.xml
+
+Sa našom komponentom reda koja se može prevlačiti prevlačenjem, ova oznaka će postati "glavni"
+korisnički interfejs. Zato hajde da počnemo dodavanjem <row>i <main>kao prethodnih
+elemenata.
+
+<item key="{{ contact.id }}">
+
+
+
+  <swipe:row <1>
+    xmlns:swipe="https://hypermedia.systems/hyperview/swipeable">
+    <swipe:main> <2>
+      <view style="contact-item"> <3>
+        <behavior trigger="press" action="push"
+
+href="/contacts/{{ contact.id }}" />
+        <text style="contact-item-label">
+
+<!-- omitted for brevity -->
+        </text>
+      </view>
+    </swipe:main>
+  </swipe:row>
+</item>
+
+Dodavanje reda koji se može prevlačitihv/rows.xml
+
+Dodat je <swipe:row>element pretka, sa alijasom imenskog prostora za swipe.
+
+Dodat je <swipe:main>element za definisanje glavnog sadržaja.
+
+Postojeći elementi <behavior>i su umotani <text>u <view>.
+
+Ranije contact-itemje stil bio podešen na <item>elementu. To je imalo smisla kada <item>je
+element bio kontejner za glavni sadržaj stavke liste. Sada kada je glavni sadržaj potomak elementa
+<swipe:main>, potrebno je da uvedemo novi element <view>gde primenjujemo stilove.
+
+Ako ponovo učitamo naš bekend i mobilnu aplikaciju, još uvek nećete videti nikakve promene na
+ekranu liste kontakata. Bez definisanih dugmadi za akcije, nema ničega što se može otkriti prilikom
+prevlačenja reda. Dodajmo dva dugmeta u red koji se može prevlačiti.
+
+<item key="{{ contact.id }}">
+  <swipe:row
+
+xmlns:swipe="https://hypermedia.systems/hyperview/swipeable">
+    <swipe:main>
+
+<!-- omitted for brevity -->
+    </swipe:main>
+
+    <swipe:button> <1>
+      <view style="swipe-button">
+        <text style="button-label">Edit</text>
+      </view>
+    </swipe:button>
+
+    <swipe:button> <2>
+
+
+
+      <view style="swipe-button">
+        <text style="button-label-delete">Delete</text>
+      </view>
+    </swipe:button>
+  </swipe:row>
+</item>
+
+Dodavanje reda koji se može prevlačitihv/rows.xml
+
+Dodato <swipe:button>za akciju uređivanja.
+
+Dodato <swipe:button>za akciju brisanja.
+
+Sada, ako koristimo našu mobilnu aplikaciju, možemo videti red koji se može prevlačiti u akciji!
+Dok prevlačite stavku kontakta, otkrivaju se dugmad "Uredi" i "Obriši". Ali ona još uvek ništa ne
+rade. Potrebno je da ovim dugmadima dodamo neka ponašanja. Dugme "Uredi" je jednostavno:
+njegovim pritiskom bi trebalo da se otvori ekran sa detaljima kontakta u režimu uređivanja.
+
+<swipe:button>
+  <view style="swipe-button">
+    <behavior trigger="press" action="push"
+
+href="/contacts/{{ contact.id }}/edit" /> <1>
+    <text style="button-label">Edit</text>
+  </view>
+</swipe:button>
+
+Isečakhv/rows.xml
+
+Kada se pritisne, otvara se novi ekran sa korisničkim interfejsom za uređivanje kontakata.
+
+Dugme "Izbriši" je malo komplikovanije. Ne postoji ekran za otvaranje za brisanje, pa šta bi trebalo
+da se desi kada korisnik pritisne ovo dugme? Možda bismo mogli da koristimo istu interakciju kao
+i dugme "Izbriši" na ekranu za uređivanje kontakta. Ta interakcija otvara sistemski dijalog, tražeći
+od korisnika da potvrdi brisanje. Ako korisnik potvrdi, Hyperview klijent upućuje zahtev POSTi /
+contacts/<contact_id>/deletedodaje odgovor na ekran. Odgovor odmah pokreće nekoliko
+ponašanja kako bi se ponovo učitala lista kontakata i prikazala poruka. Ova interakcija će
+funkcionisati i za naše dugme za akciju:
+
+<swipe:button>
+  <view style="swipe-button">
+    <behavior <1>
+      xmlns:alert="https://hyperview.org/hyperview-alert"
+      trigger="press"
+      action="alert"
+      alert:title="Confirm delete"
+
+
+
+      alert:message="Are you sure you want to delete
+        {{ contact.first }}?"
+    >
+      <alert:option alert:label="Confirm">
+        <behavior <2>
+          trigger="press"
+          action="append"
+          target="item-{{ contact.id }}"
+          href="/contacts/{{ contact.id }}/delete"
+          verb="post"
+        />
+      </alert:option>
+      <alert:option alert:label="Cancel" />
+    </behavior>
+    <text style="button-label-delete">Delete</text>
+  </view>
+</swipe:button>
+
+Isečakhv/rows.xml
+
+Kada se pritisne, otvara se sistemski dijaloški prozor u kojem se od korisnika traži da potvrdi
+radnju.
+
+Ako je potvrđeno, pošaljite POST zahtev krajnjoj tački za brisanje i dodajte odgovor u priloženu
+datoteku <item>.
+
+Sada kada pritisnemo "Obriši", dobijamo dijalog za potvrdu kako se i očekivalo. Nakon pritiska na
+potvrdi, odgovor bekenda pokreće ponašanja koja prikazuju poruku potvrde i ponovo učitavaju
+listu kontakata. Stavka za obrisani kontakt nestaje sa liste.
+
+
+
+Obriši pomoću dugmeta za prevlačenje
+
+Obratite pažnju da dugmad za akcije mogu da podrže bilo koju vrstu akcije ponašanja, od pushdo
+alert. Ako bismo želeli, mogli bismo da podesimo dugmad za akcije koja pokreću naše
+prilagođene akcije, kao što su open-phonei open-email. Prilagođene komponente i akcije mogu
+se slobodno kombinovati sa standardnim komponentama i akcijama koje standardno dolaze sa
+Hyperview okvirom. Zbog toga se proširenja Hyperview klijenta osećaju kao prvoklasne funkcije.
+
+U stvari, otkrićemo vam jednu tajnu. Unutar Hyperview klijenta, standardne komponente i akcije
+se implementiraju na isti način kao i prilagođene komponente i akcije! Kod za renderovanje se ne
+tretira <view>drugačije od <swipe:row>. Kod za ponašanje se ne tretira alertdrugačije od
+open-phone. Obe su implementirane korišćenjem istih tehnika opisanih u ovom odeljku.
+Standardne komponente i akcije su upravo one koje su univerzalno potrebne svim mobilnim
+aplikacijama. Ali one su samo početna tačka.
+
+Većina mobilnih aplikacija zahteva neka proširenja za Hyperview klijent kako bi pružila odlično
+korisničko iskustvo. Proširenja razvijaju klijenta od generičkog "Hyperview klijenta" do namenski
+napravljenog klijenta za vašu aplikaciju. I što je važno, ova evolucija čuva Hypermedia, serverski
+vođenu arhitekturu i sve njene prednosti.
+
+Ovim završavamo našu izradu mobilne aplikacije Contact.app. Odmaknite se od detalja koda i
+razmotrite širi obrazac:
+
+Osnovna logika aplikacije nalazi se na serveru.
+
+Šabloni prikazani na serveru pokreću i veb i mobilne aplikacije.
+
+Prilagođavanja platforme se vrše putem skriptovanja na vebu i prilagođavanja klijenta na
+mobilnim uređajima.
+
+Arhitektura aplikacija vođenih hipermedijom omogućila je značajnu ponovnu upotrebu koda i
+upravljiv tehnološki stek. Tekuća ažuriranja i održavanje aplikacija za veb i mobilne uređaje mogu
+se obavljati istovremeno.
+
+Da, postoji priča za aplikacije vođene hipermedijom na mobilnim uređajima.
+
+Hipermedijske beleške: Dovoljno dobro korisničko iskustvo i ostrva
+interaktivnosti
+
+Problem sa kojim se suočavaju mnogi SPA i nativni programeri mobilnih aplikacija kada pređu na
+HDA pristup jeste to što gledaju svoju trenutnu aplikaciju i zamišljaju da je implementiraju tačno
+koristeći hipermediju. Iako htmx i Hyperview značajno poboljšavaju korisničko iskustvo dostupno
+putem pristupa zasnovanog na hipermediji, i dalje postoje slučajevi kada neće biti lako postići
+određeno korisničko iskustvo.
+
+Kao što smo videli u drugom poglavlju, Roj Filding je primetio ovaj kompromis u odnosu na
+
+
+
+RESTful mrežnu arhitekturu veba, gde se "informacije prenose u standardizovanom obliku, a ne u
+onom koji je specifičan za potrebe aplikacije".
+
+Prihvatanje malo manje efikasnog i interaktivnog rešenja za određeni UX može vam uštedeti
+ogromnu količinu složenosti prilikom izrade vaših aplikacija.
+
+Ne dozvolite da savršeno bude neprijatelj dobrog. Mnoge prednosti se mogu ostvariti prihvatanjem
+malo manje sofisticiranog korisničkog iskustva u nekim slučajevima, a alati poput htmx-a i
+Hyperview-a čine taj kompromis mnogo prihvatljivijim kada se pravilno koriste.
+
+
+
+Zaključak
+
+Nadamo se da smo vas ubedili da je hipermedija, umesto da bude "nasleđena" tehnologija ili
+tehnologija pogodna samo za "dokumente" linkova, teksta i slika, zapravo moćna tehnologija za
+izgradnju aplikacija. U ovoj knjizi ste videli kako da napravite sofisticirane korisničke interfejse
+— i za veb, sa htmlx-om, i za mobilne aplikacije, koristeći Hyperview — koristeći hipermediju
+kao osnovnu tehnologiju aplikacija.
+
+Mnogi veb programeri smatraju linkove i oblike "običnog" HTML-a zastarelim alatima iz manje
+sofisticiranog doba. I, u izvesnom smislu, u pravu su: postojali su definitivni problemi sa
+upotrebljivošću originalnog veba. Međutim, sada postoje JavaScript biblioteke koje proširuju
+HTML rešavajući njegova osnovna ograničenja.
+
+Na primer, Htmx nam je omogućio da:
+
+- Omogućite bilo koji element da izda HTTP zahtev
+
+- Omogućite bilo koji događaj da pokrene HTTP događaj
+
+- Koristite sve dostupne tipove HTTP metoda
+
+- Ciljajte bilo koji element u DOM-u za zamenu
+
+Time smo bili u mogućnosti da napravimo korisničke interfejse za Contact.app za koje bi mnogi
+programeri pretpostavili da zahtevaju značajnu količinu klijentskog JavaScript-a, a mi smo to
+uradili koristeći hipermedijske koncepte.
+
+Pristup aplikaciji vođenoj hipermedijom nije pravi za svaku aplikaciju. Međutim, za mnoge
+aplikacije, povećana fleksibilnost i jednostavnost hipermedije mogu biti ogromna prednost. Čak i
+ako vaša aplikacija ne bi imala koristi od ovog pristupa, vredi razumeti pristup, njegove snage i
+slabosti, i kako se razlikuje od pristupa koji vi preduzimate. Originalni veb je rastao brže od bilo
+kog distribuiranog sistema u istoriji; veb programeri bi trebalo da znaju kako da iskoriste moć
+osnovnih tehnologija koje su omogućile taj rast.
+
+Pauziranje i razmišljanje
+Javaskript zajednica, a samim tim i zajednica veb programera, poznata je po haotičnosti, sa
+novim frejmvorcima i tehnologijama koje se pojavljuju mesečno, a ponekad čak i nedeljno.
+Može biti iscrpljujuće pratiti najnovije i najbolje tehnologije, a istovremeno i zastrašujuće što
+nećemo pratiti njihov korak i zaostajati u karijeri.
+
+Ovo nije strah bez osnova: postoji mnogo viših softverskih inženjera čije su karijere propale jer
+su izabrali tehnologiju za specijalizaciju koja, opravdano ili ne, nije napredovala. Svet veb
+razvoja je obično mlad, a mnoge kompanije favorizuju mlade programere u odnosu na starije
+programere koji "nisu pratili".
+
+Ne bi trebalo da ulepšavamo ove realnosti naše industrije. S druge strane, ne bi trebalo da
+ignorišemo ni negativne strane koje ove realnosti stvaraju. To stvara okruženje pod visokim
+pritiskom u kojem svi čekaju "novo novo", odnosno najnoviju i najbolju tehnologiju koja će sve
+promeniti. To stvara pritisak da se tvrdi da će vaša tehnologija sve promeniti. Teži da favorizuje
+sofisticiranost u odnosu na jednostavnost. LJudi se plaše da pitaju "Da li je ovo previše
+
+
+
+složeno?" jer zvuči užasno kao "Nisam dovoljno pametan da ovo razumem".
+
+Softverska industrija, posebno u veb razvoju, teži da se mnogo više oslanja na inovacije, nego na
+razumevanje postojećih tehnologija i nadogradnju na njima ili unutar njih. Skloni smo da
+tražimo nova, genijalna rešenja, umesto da tražimo već uspostavljene ideje. To je razumljivo:
+svet tehnologije je nužno industrija koja gleda u budućnost.
+
+S druge strane — kao što smo videli sa Rojevom Fildingovom formulacijom REST-a — neki rani
+arhitekti veba imali su neke sjajne ideje koje su bile previđene. Dovoljno smo stari da vidimo
+kako hipermedija dolazi i nestaje kao "nova nova" ideja. Bilo nam je pomalo šokantno videti
+moćne ideje poput REST-a koje je industrija tako nemarno odbacila. Srećom, koncepti i dalje
+stoje tu, čekajući da budu ponovo otkriveni i oživljeni. Originalna, RESTful arhitektura veba,
+kada se pogleda novim očima, može da reši mnoge probleme sa kojima se današnji veb
+programeri suočavaju.
+
+Možda je, sledeći savet Marka Tvena, vreme da zastanemo i razmislimo. Možda, na nekoliko
+tihih trenutaka, možemo da ostavimo po strani beskrajni vrtlog "novog novog", osvrnemo se na
+poreklo mreže i učimo.
+
+Možda je vreme da se hipermediji da šansa.

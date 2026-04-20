@@ -1,0 +1,592 @@
+
+# Hypermedia 003
+
+## Komponente hipermedijalnog sistema
+
+Hipermedijalni sistem se sastoji od nekoliko komponenti, uključujući:
+
+- Hipermedija, kao što je HTML.
+- Mrežni protokol, kao što je HTTP.
+- Server koji predstavlja hipermedijalni API koji odgovara na mrežne zahteve hipermedijalnim odgovorima.
+- Klijent koji pravilno tumači te odgovore.
+
+U ovom poglavlju ćemo pogledati ove komponente i njihovu implementaciju u kontekstu veba.
+
+Kada pregledamo glavne komponente veba kao hipermedijalnog sistema, pogledaćemo neke ključne ideje koje stoje iza ovog sistema — posebno one koje je razvio Roj Filding u svojoj disertaciji "Arhitektonski stilovi i dizajn mrežnih softverskih arhitektura". Videćemo odakle potiču termini Prenos reprezentativnog stanja (REST), RESTful i Hipermedija kao motor stanja aplikacije (HATEOAS) i analiziraćemo ove termine u kontekstu veba.
+
+Ovo bi trebalo da vam pruži bolje razumevanje teorijske osnove veba kao hipermedijalnog sistema, kako bi trebalo da se uklopi i zašto su aplikacije vođene hipermedijom RESTful, dok JSON API-ji — uprkos načinu na koji se termin REST trenutno koristi u industriji — nisu.
+
+### Hipermedija
+
+Osnovna tehnologija hipermedijalnog sistema je hipermedija koja omogućava klijentu i serveru da međusobno komuniciraju na dinamičan, nelinearan način. Ponovo, ono što hipermedijal čini hipermedijalnim je prisustvo hipermedijalnih kontrola: elemenata koji omogućavaju korisnicima da biraju nelinearne radnje unutar hipermedijalnog sistema. Korisnici mogu da interaguju sa medijima na način koji prevazilazi jednostavno čitanje od početka do kraja.
+
+Već smo pomenuli dve osnovne hipermedijske kontrole u HTML-u, sidra i forme, koje omogućavaju pregledaču da korisniku predstavi veze i operacije putem pregledača.
+
+U slučaju HTML-a, ovi linkovi i forme obično određuju cilj svojih operacija koristeći `Uniformne lokatore resursa` (URL-ove):
+
+#### Jedinstveni lokator resursa
+
+Uniformni lokator resursa je tekstualni string koji se odnosi na ili ukazuje na lokaciju na mreži odakle se resurs može preuzeti, kao i mehanizam pomoću kojeg se resurs može preuzeti.
+
+URL je string koji se sastoji od različitih podkomponenti:
+
+```html
+<[scheme]://[userinfo]@[host]:[port][path]?[query]#[fragment]>
+```
+
+#### Komponente URL-a
+
+Mnoge od ovih podkomponenti nisu obavezne i često se izostavljaju.
+
+Tipičan URL može izgledati ovako:
+
+<https://hypermedia.systems/book/contents/>
+
+Jednostavan URL
+
+Ovaj konkretni URL se sastoji od sledećih komponenti:
+
+- Protokol ili šema (u ovom slučaju, `https`)
+- Domen (npr. `hypermedia.systems`)
+- Put (npr. `/book/contents`)
+
+Ova URL adresa jedinstveno identifikuje dostupan resurs na internetu, kome hipermedijalni klijent koji "govori" HTTPS, kao što je veb pregledač, može izdati HTTP zahtev. Ako se ova URL adresa pronađe kao referenca hipermedijalne kontrole unutar HTML dokumenta, to implicira da postoji hipermedijalni server na drugoj strani mreže koji takođe razume HTTPS i koji može da odgovori na ovaj zahtev predstavljanjem datog resursa (ili da vas preusmeri na drugu lokaciju itd.).
+
+Imajte na umu da URL-ovi često nisu u potpunosti napisani unutar HTML-a. Veoma je uobičajeno videti oznake sidra koje izgledaju ovako, na primer:
+
+```html
+<a href="/book/contents/">Table Of Contents</a>
+```
+
+Jednostavna veza
+
+Ovde imamo relativnu hipermedijsku referencu, gde se podrazumeva da su protokol, host i port "trenutnog dokumenta", isti kao i protokol i server koji su koristili za preuzimanje trenutne HTML stranice. Dakle, ako je ova veza pronađena u HTML dokumentu preuzetom sa <https://hypermedia.systems/>, onda bi implicitna URL adresa za ovo sidro bila <https://hypermedia.systems/book/contents/>.
+
+#### Hipermedijski protokoli
+
+Gornja hipermedijska kontrola (link) govori pregledaču: "Kada korisnik klikne na ovaj tekst, izdajte zahtev za <https://hypermedia.systems/book/contents/> korišćenjem protokola za prenos hiperteksta" ili HTTP-a.
+
+HTTP je protokol koji se koristi za prenos HTML-a (hipermedija) između pregledača (hipermedija klijenata) i servera (hipermedija servera) i, kao takav, ključna je mrežna tehnologija koja povezuje distribuirani hipermedijalni sistem veba.
+
+HTTP verzija 1.1 je relativno jednostavan mrežni protokol, pa hajde da pogledamo kako bi izgledao GET zahtev koji pokreće oznaka sidra. Ovo je zahtev koji bi bio poslat serveru koji se nalazi na "hypermedia.systems", na portu 80 podrazumevano:
+
+```html
+GET /book/contents/ HTTP/1.1
+Accept: text/html,*/*
+Host: hypermedia.systems
+```
+
+Prvi red navodi da je ovo HTTP GET zahtev. Zatim navodi putanju do resursa koji se zahteva. Na kraju, sadrži HTTP verziju za ovaj zahtev.
+
+Nakon toga sledi niz HTTP zaglavlja zahteva: pojedinačni redovi parova ime/vrednost odvojeni dvotačkom. Zaglavlja zahteva pružaju metapodatke koje server može da koristi da bi tačno odredio kako da odgovori na zahtev klijenta. U ovom slučaju, pomoću `Accept` zaglavlja, pregledač kaže da bi preferirao HTML kao format odgovora, ali da će prihvatiti bilo koji odgovor servera.
+
+Zatim, ima `Host` zaglavlje koje određuje na koji server je zahtev poslat. Ovo je korisno kada se više domena hostuje na istom hostu.
+
+HTTP odgovor servera na ovaj zahtev može izgledati otprilike ovako:
+
+```html
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 870
+Server: Werkzeug/2.0.2 Python/3.8.10
+Date: Sat, 23 Apr 2022 18:27:55 GMT
+
+<html lang="en">
+<body>
+  <header>
+    <h1>HYPERMEDIA SYSTEMS</h1>
+  </header>
+ ...
+</body>
+</html>
+```
+
+U prvom redu, HTTP odgovor navodi HTTP verziju koja se koristi, nakon čega sledi kod odgovora `200`, što ukazuje da je dati resurs pronađen i da je zahtev uspešan. Nakon toga sledi string, OK koji odgovara kodu odgovora. (Stvarni string nije važan, to je kod odgovora koji obaveštava klijenta o rezultatu zahteva, kao što ćemo detaljnije objasniti u nastavku.)
+
+Nakon prvog reda odgovora, kao i kod HTTP zahteva, vidimo niz zaglavlja odgovora koja pružaju metapodatke klijentu kako bi pomogla u pravilnom prikazivanju reprezentacije resursa.
+
+Konačno, vidimo novi HTML sadržaj. Ovaj sadržaj je HTML reprezentacija traženog resursa, u ovom slučaju sadržaja knjige. Pregledač će koristiti ovaj HTML da zameni ceo sadržaj u svom prozoru, prikazujući korisniku ovu novu stranicu i ažurirajući adresnu traku kako bi odražavala novi URL.
+
+#### HTTP metode
+
+Gore navedena oznaka sidra izdala je HTTP GET, gde je GET metod zahteva. Konkretna metoda koja se koristi u HTTP zahtevu je možda najvažnija informacija o njemu, posle stvarnog resursa na koji je zahtev usmeren.
+
+U HTTP-u postoji mnogo metoda; one od najpraktičnijeg značaja za programere su sledeće:
+
+- **GET**
+  GET zahtev preuzima reprezentaciju navedenog resursa. GET zahtevi ne bi trebalo da menjaju podatke.
+- **POST**
+  POST zahtev šalje podatke navedenom resursu. Ovo će često rezultirati mutacijom stanja na serveru.
+- **PUT**
+  PUT zahtev zamenjuje podatke navedenog resursa. Ovo dovodi do mutacije stanja na serveru.
+- **PATCH**
+  PATCH zahtev zamenjuje podatke navedenog resursa. Ovo dovodi do mutacije stanja na serveru.
+- **DELETE**
+  Zahtev za brisanje, briše navedeni resurs. Ovo dovodi do promene stanja na serveru.
+
+Ove metode se otprilike poklapaju sa šablonom "Kreiraj/Čitaj/Ažuriraj/Obriši" ili CRUD šablonom koji se nalazi u mnogim aplikacijama:
+
+- POST odgovara kreiranju resursa (CREATE).
+- GET odgovara čitanju resursa (READ).
+- PUT i PATCH odgovaraju ažuriranju resursa (UPDATE).
+- DELETE odgovara brisanju resursa (DELETE).
+
+---
+> [!Info]
+> Put vs. Post
+> Dok HTTP radnje otprilike odgovaraju CRUD-u, one nisu iste. Tehničke specifikacije za ove metode nemaju takvu vezu i često su pomalo teške za čitanje. Evo, na primer, dokumentacije o razlikovanju između
+> POST-a i PUT-a iz RFC-9110.
+>
+> "Ciljni resurs u POST zahtevu je namenjen za rukovanje zatvorenom predstavom u skladu sa sopstvenom semantikom resursa, dok je zatvorena reprezentacija u PUT zahtevu definisana kao zamena stanja ciljnog
+> resursa. Dakle, namera PUT-a je idempotentna i vidljiva posrednicima, iako je tačan efekat poznat samo izvornom serveru."
+>
+> — RFC-9110, <https://www.rfc-editor.org/rfc/rfc9110#section-9.3.4>
+>
+> Uobičajeno, POST-om može da rukuje server koliko god želi, dok PUT-om treba da se rukuje kao „zamenom“ resursa, iako jezik još jednom dozvoljava serveru da radi skoro šta god želi u okviru ograničenja da je
+> idempotentan.
+---
+
+U pravilno strukturiranom hipermedijskom sistemu zasnovanom na HTML-u, koristili biste odgovarajuću HTTP metodu za operaciju koju određena hipermedijska kontrola izvršava. Na primer, ako hipermedijska kontrola, kao što je dugme, briše resurs, idealno bi bilo da izda HTTP DELETE zahtev da bi to učinila.
+
+Čudna stvar kod HTML-a je, međutim, to što izvorne hipermedijske kontrole mogu izdavati samo HTTP GET i POST zahteve.
+
+- Oznake sidra uvek izdaju GET zahtev.
+- Forme mogu izdati ili GET ili POST koristeći `method` atribut.
+
+Uprkos činjenici da je HTML — najpopularniji hipermedijalni token na svetu — dizajniran uporedo sa HTTP-om (što je, na kraju krajeva, protokol za prenos hiperteksta!): ako želite da izdate PUT, PATCH ili DELETE zahteve, trenutno morate da pribegnete JavaScript-u da biste to uradili.
+
+Pošto POST može da uradi skoro sve, na kraju se koristi za bilo kakvu mutaciju na serveru, a PUT,PATCH i DELETE se ostavljaju po strani u običnim HTML aplikacijama.
+
+Ovo je očigledan nedostatak HTML-a kao hipermedije; bilo bi divno videti ovo ispravljeno u HTML specifikaciji. Za sada, u 4. poglavlju, razmotrićemo načine da se ovo zaobiđe.
+
+#### HTTP kodovi odgovora
+
+HTTP metode zahteva omogućavaju klijentu da kaže serveru šta da uradi sa datim resursom. HTTP odgovori sadrže kodove odgovora, koji klijentu govore kakav je bio rezultat zahteva. HTTP kodovi odgovora su numeričke vrednosti koje su ugrađene u HTTP odgovor, kao što smo videli gore.
+
+Najpoznatiji kod odgovora za veb programere je verovatno `404`, što je skraćenica od "Nije pronađeno". Ovo je kod odgovora koji vraćaju veb serveri kada se od njih zahteva resurs koji ne postoji.
+
+HTTP deli kodove odgovora u različite kategorije:
+
+- 100-199
+  Informativni odgovori koji pružaju informacije o tome kako server obrađuje odgovor.
+- 200-299
+  Uspešni odgovori koji ukazuju da je zahtev uspeo.
+- 300-399
+  Odgovori o preusmeravanju koji ukazuju da zahtev treba poslati na neki drugi URL.
+- 400-499
+  Odgovori klijenta o greškama koji ukazuju da je klijent napravio neku vrstu lošeg zahteva
+  (npr., traži nešto što nije postojalo u slučaju 404grešaka).
+- 500-599
+  Odgovori servera o greškama koji ukazuju da je server naišao na internu grešku dok je pokušavao da odgovori na zahtev.
+
+Unutar svake od ovih kategorija postoji više kodova odgovora za specifične situacije.
+
+Evo nekih od najčešćih ili zanimljivijih:
+
+- 200 OK
+  HTTP zahtev je uspeo.
+- 301 Moved Permanently
+  URL adresa za traženi resurs je trajno premeštena na novu lokaciju, a nova URL adresa će biti navedena u Locationzaglavlju odgovora.
+- 302 Found
+  URL adresa za traženi resurs je privremeno premeštena na novu lokaciju, a nova URL adresa će biti navedena u Locationzaglavlju odgovora.
+- 303 See Other
+  URL adresa za traženi resurs je premeštena na novu lokaciju, a nova URL adresa će biti navedena u Locationzaglavlju odgovora. Pored toga, ovu novu URL adresu treba preuzeti sa GETzahtevom.
+- 401 Unauthorized
+  Klijent još nije autentifikovan (da, autentifikovan je, uprkos imenu) i mora biti autentifikovan da bi preuzeo dati resurs.
+- 403 Forbidden
+  Klijent nema pristup ovom resursu.
+- 404 Not Found
+  Server ne može da pronađe traženi resurs.
+- 500 Internal Server Error
+  Server je naišao na grešku pri pokušaju obrade odgovora.
+
+Postoje neke prilično suptilne razlike između HTTP kodova odgovora (i, iskreno, neke dvosmislenosti između njih). Razlika između 302 preusmeravanja i 303preusmeravanja, na primer, je u tome što će prvo izdati zahtev novom URL-u koristeći istu HTTP metodu kao i početni zahtev, dok će drugo uvek koristiti GET. Ovo je mala, ali često ključna razlika, kao što ćemo videti kasnije u knjizi.
+
+Dobro napravljena aplikacija vođena hipermedijom iskoristiće prednosti i HTTP metoda i HTTP kodova odgovora da bi kreirala razuman hipermedijski API. Na primer, ne želite da napravite aplikaciju vođenu hipermedijom koja koristi metodu POSTza sve zahteve i odgovara sa 200 OK za svaki odgovor. (Neki JSON Data API-ji izgrađeni na HTTP-u rade upravo to!)
+
+Prilikom kreiranja aplikacije vođene hipermedijom, umesto toga želite da idete "u skladu sa tokovima" veba i koristite HTTP metode i kodove odgovora onako kako su dizajnirani da se koriste.
+
+#### Keširanje HTTP odgovora
+
+Ograničenje REST-a (i, stoga, karakteristika HTTP-a) je pojam keširanja odgovora: server može da ukaže klijentu (kao i posredničkim HTTP serverima) da se dati odgovor može keširati za buduće zahteve upućene istom URL-u.
+
+Ponašanje keširanja HTTP odgovora sa servera može se označiti pomoću `Cache-Control` zaglavlja odgovora. Ovo zaglavlje može imati više različitih vrednosti koje ukazuju na keširanje datog odgovora. Ako, na primer, zaglavlje sadrži vrednost `max-age=60`, to ukazuje da klijent može keširati ovaj odgovor 60 sekundi i da ne mora da izda drugi HTTP zahtev za taj resurs dok to vremensko ograničenje ne istekne.
+
+Još jedno važno zaglavlje odgovora vezano za keširanje je `Vary`. Ovo zaglavlje odgovora može se koristiti da se tačno naznači koje zaglavlje u HTTP zahtevu formira jedinstveni identifikator za keširani rezultat. Ovo postaje važno kako bi se omogućilo pregledaču da pravilno kešira sadržaj u situacijama kada određeno zaglavlje utiče na oblik odgovora servera.
+
+Uobičajeni obrazac u aplikacijama koje koriste `htmx`, na primer, jeste korišćenje prilagođenog zaglavlja koje postavlja `htmx.HX-Request` kako bi se razlikovali "normalni" veb zahtevi i zahtevi koje podnosi htmx. Da bi se odgovor na ove zahteve pravilno keširao, `HX-Request` zaglavlje zahteva mora biti naznačeno zaglavljem `Vary` odgovora.
+
+Potpuna diskusija o keširanju HTTP odgovora prevazilazi okvire ovog poglavlja; pogledajte MDN članak o HTTP keširanju ako želite da saznate više o ovoj temi.
+
+#### Hipermedijski serveri
+
+Hipermedija serveri su bilo koji server koji može da odgovori na HTTP zahtev HTTP odgovorom. Pošto je HTTP tako jednostavan, to znači da se skoro svaki programski jezik može koristiti za izgradnju hipermedija servera. Postoji veliki broj biblioteka dostupnih za izgradnju hipermedija servera zasnovanih na HTTP-u u skoro svakom zamislivom programskom jeziku.
+
+Ispostavilo se da je ovo jedan od najboljih aspekata usvajanja hipermedije kao primarne tehnologije za izradu veb aplikacije: uklanja pritisak da se usvojite JavaScript kao bekend tehnologija. Ako koristite frontend zasnovan na jednostraničnoj aplikaciji koja koristi JavaScript i koristite JSON Data API-je, osetićete značajan pritisak da implementirate JavaScript i na bekend-u.
+
+U ovoj poslednjoj situaciji, već imate gomilu koda napisanog u JavaScriptu. Zašto održavati dve odvojene baze koda u dva različita jezika? Zašto ne kreirati logiku domena za višekratnu upotrebu na strani klijenta, kao i na strani servera? Sada kada Javaskript ima odlične tehnologije na strani servera kao što su Node i Deno, zašto jednostavno ne koristiti jedan jezik za sve?
+
+Nasuprot tome, izrada aplikacije vođene hipermedijom daje vam mnogo više slobode u izboru bekend tehnologije koju želite da koristite. Vaša odluka može biti zasnovana na domenu vaše aplikacije, jezicima i serverskom softveru sa kojima ste upoznati ili koji vas strastveno zanimaju, ili jednostavno na onome što želite da isprobate.
+
+Sigurno ne pišeš svoju serversku logiku u HTML-u! I svaki veći programski jezik ima barem jedan dobar veb frejmvork i biblioteku šablona koja se može koristiti za čistu obradu HTTP zahteva.
+
+Ako radite nešto sa velikim podacima, možda biste želeli da koristite Pajton, koji ima ogromnu podršku za tu oblast.
+
+Ako se bavite veštačkom inteligencijom, možda biste želeli da koristite Lisp, oslanjajući se na jezik sa dugom istorijom u toj oblasti istraživanja.
+
+Možda ste entuzijasta za funkcionalno programiranje i želite da koristite OCaml ili Haskell. Možda vam se jednostavno sviđaju Julia ili Nim.
+
+Sve su to sasvim valjani razlozi za izbor određene serverske tehnologije!
+
+Korišćenjem hipermedije kao sistemske arhitekture, slobodni ste da usvojite bilo koji od ovih izbora. Jednostavno ne postoji velika baza JavaScript koda na frontendu koja bi vas pritiskala da usvojite JavaScript na bekendu.
+
+#### Hipermedijalni klijenti
+
+Sada dolazimo do poslednje glavne komponente u hipermedijskom sistemu: hipermedijskog klijenta. Hipermedijski klijenti su softveri koji razumeju kako da pravilno interpretiraju određeni hipermedijski sadržaj i hipermedijske kontrole unutar njega. Kanonski primer je, naravno, veb pregledač, koji razume HTML i može ga predstaviti korisniku za interakciju. Veb pregledači su neverovatno sofisticirani softverski proizvodi. (Toliko sofisticirani, u stvari, da se često prenamenjuju od hipermedijskog klijenta do vrste virtuelne mašine za pokretanje jednostraničnih aplikacija.)
+
+Međutim, pregledači nisu jedini hipermedijski klijenti. U poslednjem odeljku ove knjige pogledaćemo Hyperview, hipermedijski program orijentisan na mobilne uređaje. Jedna od izuzetnih karakteristika Hyperview-a je to što on ne pruža samo hipermedijski program, HXML, već i funkcionalni hipermedijski klijent za taj hipermedijski program. Ovo čini izuzetno lakim izgradnju odgovarajuće hipermedijske aplikacije pomoću Hyperview-a.
+
+Ključna karakteristika hipermedijalnog sistema je ono što je poznato kao uniformni interfejs. Ovaj koncept ćemo detaljno razmotriti u sledećem odeljku o REST-u. Ono što se često ignoriše u diskusijama o hipermedijalnom sistemu jeste koliko je hipermedijalni klijent važan u korišćenju ovog uniformnog interfejsa. Hipermedijalni klijent mora znati kako da pravilno interpretira i predstavi hipermedijalne kontrole koje se nalaze u hipermedijalnom odgovoru sa hipermedijalnog servera kako bi ceo hipermedijalni sistem funkcionisao zajedno. Bez sofisticiranog klijenta koji to može da uradi, hipermedijalne kontrole i hipermedijalni API su mnogo manje korisni.
+
+To je jedan od razloga zašto su JSON API-ji retko uspešno usvajali hipermedijske kontrole: JSON API-je obično koristi kod koji očekuje fiksni format i koji nije dizajniran da bude hipermedijski klijent. Ovo je potpuno razumljivo: izgradnja dobrog hipermedijskog klijenta je teška! Za JSON API klijente poput ovog, moć hipermedijskih kontrola ugrađenih u API odgovor je nebitna i često jednostavno dosadna:
+
+> [!Info]
+> Kratak odgovor na ovo pitanje je da HATEOAS nije dobar izbor za većinu modernih slučajeva upotrebe API-ja. Zato, nakon skoro 20 godina, HATEOAS još uvek nije stekao široku primenu među programerima. GraphQL,
+> s druge strane, širi se kao požar jer rešava probleme iz stvarnog sveta.
+>
+> — Fredi Karlbom, <https://techblog.commercetools.com/graphql-and-rest-level-3-hateoas-70904ff1f9cf>
+
+HATEOAS će biti detaljnije opisan u nastavku, ali poenta je da je dobar hipermedijalni klijent neophodna komponenta unutar većeg hipermedijalnog sistema.
+
+## REST
+
+Sada kada smo pregledali glavne komponente hipermedijalnog sistema, vreme je da detaljnije razmotrimo koncept REST-a. Termin "REST" potiče iz doktorske disertacije Roja Fildinga o arhitekturi veba. Filding je napisao svoju disertaciju na Univerzitetu Kalifornije u Irvinu, nakon što je pomogao u izgradnji većeg dela infrastrukture ranog veba, uključujući i Apache veb server. Roj je pokušavao da formalizuje i opiše novi distribuirani računarski sistem u čijoj je izgradnji pomogao.
+
+Fokusiraćemo se na ono što smatramo najvažnijim delom Fildingovog pisanja, iz perspektive veb razvoja: Odeljak 5.1. Ovaj odeljak sadrži osnovne koncepte ( Filding ih naziva ograničenjima ) prenosa reprezentativnog stanja ili REST-a.
+
+Pre nego što se upustimo u suštinu, važno je razumeti da Filding razmatra REST kao mrežnu arhitekturu, odnosno kao potpuno drugačiji način projektovanja distribuiranog sistema. I, dalje, kao novu mrežnu arhitekturu koju treba uporediti sa ranijim pristupima distribuiranim sistemima.
+
+Takođe je važno naglasiti da, u vreme kada je Filding pisao svoju disertaciju, JSON API-ji i AJAX nisu postojali. On je opisao rani veb, gde je HTML prenošen preko HTTP-a od strane ranih pregledača, kao hipermedijalni sistem.
+
+Danas se, čudnim spletom okolnosti, termin "REST" uglavnom povezuje sa JSON Data API-jima, a ne sa HTML-om i hipermedijom. Ovo je izuzetno smešno kada shvatite da velika većina JSON Data API-ja nije RESTful, u originalnom smislu, i, zapravo, ne može biti RESTful, jer ne koristi prirodni hipermedijski format.
+
+Da ponovo naglasimo: REST, kako ga je skovao Filding, opisuje veb pre API-ja, i napuštanje trenutne, uobičajene upotrebe termina REST da jednostavno znači "JSON API" je neophodno da bi se razvilo pravilno razumevanje ideje.
+
+### Ograničenja REST-a
+
+U svojoj disertaciji, Filding definiše različita "ograničenja" kako bi opisao kako se RESTful sistem mora ponašati. Ovaj pristup može delovati pomalo zaobilazno i teško za praćenje mnogim ljudima, ali je prikladan pristup za akademski dokument. Uz malo razmišljanja o ograničenjima koja on navodi i nekim konkretnim primerima tih ograničenja, biće lako proceniti da li dati sistem zapravo zadovoljava arhitektonske zahteve REST-a ili ne.
+
+Evo ograničenja REST Fielding nacrta:
+
+- To je klijent-server arhitektura (odeljak 5.1.2).
+- Mora biti bez stanja; (odeljak 5.1.3) to jest, svaki zahtev sadrži sve informacije potrebne za odgovor na taj zahtev.
+- Mora da omogućava keširanje (odeljak 5.1.4).
+- Mora imati jedinstveni interfejs (odeljak 5.1.5).
+- To je slojevit sistem (odeljak 5.1.6).
+- Opciono, može omogućiti pisanje koda na zahtev (odeljak 5.1.7), odnosno skriptovanje.
+
+Hajde da prođemo kroz svako od ovih ograničenja redom i detaljno ih razmotrimo, posmatrajući kako (i u kojoj meri) veb zadovoljava svako od njih.
+
+#### Ograničenje klijent-server
+
+Vidite odeljak 5.1.2 za ograničenje klijent-server.
+
+REST model koji je Filding opisivao uključivao je i klijente (pregledače, u slučaju veba) i servere (kao što je Apache veb server na kojem je radio) koji komuniciraju putem mrežne veze. To je bio kontekst njegovog rada: opisivao je mrežnu arhitekturu World Wide Web-a i upoređivao je sa ranijim arhitekturama, posebno modelima umrežavanja sa debelim klijentima kao što je Common Object Request Broker Architecture (CORBA).
+
+Trebalo bi da bude očigledno da će svaka veb aplikacija, bez obzira na to kako je dizajnirana, zadovoljiti ovaj zahtev.
+
+#### Ograničenje apatridije
+
+Vidite odeljak 5.1.3 za ograničenje "bez stanja".
+
+Kao što je Filding opisao, RESTful sistem je bez stanja: svaki zahtev treba da sadrži sve informacije potrebne za odgovor na taj zahtev, bez sporednog stanja ili konteksta sačuvanog ni na klijentu ni na serveru.
+
+U praksi, za mnoge veb aplikacije danas, mi zapravo kršimo ovo ograničenje: uobičajeno je da se uspostavi kolačić sesije koji služi kao jedinstveni identifikator za datog korisnika i koji se šalje zajedno sa svakim zahtevom. Iako ovaj kolačić sesije, sam po sebi, nije statutivan (šalje se sa svakim zahtevom), obično se koristi kao ključ za pretragu informacija sačuvanih na serveru, u onome što se obično naziva "sesija".
+
+Ove informacije o sesiji se obično čuvaju u nekoj vrsti deljenog skladišta na više veb servera, sadržeći stvari poput imejl adrese ili ID-a trenutnog korisnika, njihovih uloga, delimično kreiranih objekata domena, keš memorije i tako dalje.
+
+Ovo kršenje arhitektonskog ograničenja REST-a bez stanja pokazalo se korisnim za izradu veb aplikacija i izgleda da nije imalo veliki uticaj na ukupnu fleksibilnost veba. Ali vredi imati na umu da čak i Web 1.0 aplikacije često krše čistotu REST-a u interesu pragmatičnih kompromisa.
+
+I mora se reći da sesije zaista izazivaju dodatne glavobolje u pogledu operativne složenosti prilikom raspoređivanja hipermedijalnih servera; njima može biti potreban deljeni pristup informacijama o stanju sesije koje se čuvaju u celom klasteru. Dakle, Filding je bio u pravu kada je istakao da bi idealan RESTful sistem, onaj koji ne krši ovo ograničenje, bio jednostavniji i stoga robusniji.
+
+#### Ograničenje keširanja
+
+Vidite odeljak 5.1.4 za ograničenje keširanja.
+
+Ovo ograničenje navodi da RESTful sistem treba da podržava koncept keširanja, sa eksplicitnim informacijama o mogućnosti keširanja odgovora za buduće zahteve istog resursa. Ovo omogućava i klijentima, kao i posredničkim serverima između datog klijenta i konačnog servera da keširaju rezultate datog zahteva.
+
+Kao što smo ranije pomenuli, HTTP ima sofisticirani mehanizam keširanja putem zaglavlja odgovora koji se često zanemaruje ili nedovoljno koristi prilikom izrade hipermedijalnih aplikacija. Međutim, s obzirom na postojanje ove funkcionalnosti, lako je videti kako veb zadovoljava ovo ograničenje.
+
+#### Ograničenje Uniformnog interfejsa
+
+Sada dolazimo do najzanimljivijeg i, po našem mišljenju, najinovativnijeg ograničenja u REST-u: ograničenja jedinstvenog interfejsa.
+
+Ovo ograničenje je izvor velikog dela fleksibilnosti i jednostavnosti hipermedijalnog sistema, tako da ćemo mu posvetiti neko vreme.
+
+Vidite odeljak 5.1.5 za ograničenje Uniformnog interfejsa.
+
+U ovom odeljku, Filding kaže:
+
+> [!Info]
+> Centralna karakteristika koja razlikuje REST arhitektonski stil od drugih stilova zasnovanih na
+> mrežama je njegov naglasak na jedinstvenom interfejsu između komponenti. Da bi se dobio
+> jedinstveni interfejs, potrebna su višestruka arhitektonska ograničenja koja bi vodila ponašanje > komponenti. REST je definisan sa četiri ograničenja interfejsa:
+>
+> - identifikacija resursa;
+> - manipulacija resursima putem reprezentacija;
+> - samoopisne poruke;
+> - hipermedije kao mehanizam stanja aplikacije.
+>
+> — Roj Filding, Arhitektonski stilovi i dizajn mrežnih softverskih arhitektura
+
+Dakle, imamo četiri podograničenja koja, zajedno, čine ograničenje Uniformnog interfejsa.
+
+##### Identifikacija resursa
+
+U RESTful sistemu, resursi treba da imaju jedinstveni identifikator. Danas je koncept univerzalnih lokatora resursa (URL-ova) uobičajen, ali u vreme Fildingovog pisanja oni su još uvek bili relativno novi i neobični.
+
+Ono što bi danas moglo biti zanimljivije jeste pojam resursa, koji se na taj način identifikuje: u RESTful sistemu, bilo koja vrsta podataka na koju se može referencirati, odnosno cilj hipermedijske reference, smatra se resursom. URL-ovi, iako danas dovoljno česti, na kraju rešavaju veoma složen problem jedinstvenog identifikovanja bilo kog resursa na internetu.
+
+##### Manipulacija resursima putem reprezentacija
+
+U RESTful sistemu, reprezentacije resursa se prenose između klijenata i servera. Ove reprezentacije mogu da sadrže i podatke i metapodatke o zahtevu (kao što su "kontrolni podaci" poput HTTP metode ili koda odgovora). Određeni format podataka ili tip medija može se koristiti za predstavljanje datog resursa klijentu, a taj tip medija može se dogovoriti između klijenta i servera.
+
+Ovaj poslednji aspekt jedinstvenog interfejsa videli smo u `Accept` zaglavlju u gornjim zahtevima.
+
+##### Samoopisne poruke
+
+Ograničenje samoopisnih poruka, u kombinaciji sa sledećim, HATEOAS, čini ono što smatramo jezgrom Uniformnog interfejsa, REST-a i razloga zašto hipermedija pruža tako moćnu sistemsku arhitekturu.
+
+Ograničenje samoopisivih poruka zahteva da, u RESTful sistemu, poruke moraju biti samoopisive.
+
+To znači da sve informacije neophodne za prikazivanje i rad sa podacima koji se predstavljaju moraju biti prisutne u odgovoru. U pravilno RESTful sistemu, ne mogu postojati dodatne "sporedne" informacije potrebne klijentu da transformiše odgovor sa servera u koristan korisnički interfejs. Sve mora "biti u" samoj poruci, u obliku hipermedijalnih kontrola.
+
+Ovo može zvučati pomalo apstraktno, pa hajde da pogledamo konkretan primer.
+
+Razmotrite dva različita potencijalna odgovora HTTP servera za URL adresu "https://
+example.com/contacts/42."
+
+Oba odgovora će vratiti informacije o kontaktu, ali svaki odgovor će imati veoma različite oblike.
+
+Prva implementacija vraća HTML reprezentaciju:
+
+```html
+<html lang="en">
+<body>
+<h1>Joe Smith</h1>
+<div>
+
+<div>Email: joe@example.bar</div>
+<div>Status: Active</div>
+
+</div>
+<p>
+
+<a href="/contacts/42/archive">Archive</a>
+</p>
+</body>
+</html>
+```
+
+Druga implementacija vraća JSON reprezentaciju:
+
+```json
+{
+"name": "Joe Smith",
+"email": "joe@example.org",
+"status": "Active"
+}
+```
+
+Šta možemo reći o razlikama između ova dva odgovora?
+
+Jedna stvar koja vam u početku može upasti u oči jeste da je JSON reprezentacija manja od HTML reprezentacije. Filding primećuje upravo ovaj kompromis kada se koristi RESTful arhitektura:
+
+> [!Info]
+> Međutim, kompromis je u tome što jedinstveni interfejs smanjuje efikasnost, jer se informacije prenose u standardizovanom obliku, a ne u onom koji je specifičan za potrebe aplikacije.
+>
+> — Roj Filding, Arhitektonski stilovi i dizajn mrežnih softverskih arhitektura
+
+Dakle, REST žrtvuje reprezentativnu efikasnost za druge ciljeve.
+
+Da biste razumeli ove druge ciljeve, prvo primetite da HTML reprezentacija ima hiperlink za navigaciju do stranice za arhiviranje kontakta. JSON reprezentacija, nasuprot tome, nema ovaj link.
+
+Koje su posledice ove činjenice za klijenta JSON API-ja?
+
+To znači da JSON API klijent mora unapred tačno znati koje su druge URL adrese (i metode zahteva) dostupne za rad sa kontakt informacijama. Ako JSON klijent može da ažurira ovaj kontakt na neki način, mora znati kako da to uradi iz nekog izvora informacija izvan JSON poruke. Ako kontakt ima drugačiji status, recimo "Arhivirano", da li to menja dozvoljene radnje? Ako jeste, koje su nove dozvoljene radnje?
+
+Izvor svih ovih informacija može biti API dokumentacija, usmena preporuka ili, ako programer kontroliše i server i klijenta, interno znanje. Ali ove informacije su implicitne i van odgovora.
+
+Uporedite ovo sa hipermedijskim (HTML) odgovorom. U ovom slučaju, hipermedijski klijent (to jest, pregledač) treba samo da zna kako da prikaže dati HTML. Ne mora da razume koje su akcije dostupne za ovaj kontakt: one su jednostavno kodirane unutar samog HTML odgovora kao hipermedijske kontrole. Ne mora da razume šta znači polje statusa. U stvari, klijent čak ni ne zna šta je kontakt!
+
+Pretraživač, naš hipermedijalni klijent, jednostavno prikazuje HTML i omogućava korisniku, koji pretpostavljam da razume koncept kontakta, da donese odluku o tome koju akciju da preduzme od akcija dostupnih u reprezentaciji.
+
+Ova razlika između dva odgovora pokazuje suštinu REST-a i hipermedije, ono što ih čini tako moćnim i fleksibilnim: klijenti (ponovo, veb pregledači) ne moraju ništa da razumeju o osnovnim resursima koji se predstavljaju.
+
+Samo pregledači (samo! Kao da je to lako!) treba da razumeju kako da interpretiraju i prikazuju hipermediju, u ovom slučaju HTML. Ovo daje sistemima zasnovanim na hipermedijima neviđenu fleksibilnost u rukovanju sa promenama i u pozadinskim reprezentacijama i u samom sistemu.
+
+##### Hipermedija kao motor stanja aplikacije (HATEOAS)
+
+Poslednje podograničenje Uniformnog interfejsa je da, u RESTful sistemu, hipermedija treba da bude "motor stanja aplikacije". Ovo se ponekad skraćuje kao "HATEOAS", iako Filding preferira da koristi terminologiju "hipermedijalno ograničenje" kada o tome govori.
+
+Ovo ograničenje je usko povezano sa prethodnim ograničenjem samoopisujuće poruke.
+
+Razmotrimo ponovo dve različite implementacije krajnje tačke "/contacts/42", jednu koja vraća HTML, a drugu koja vraća JSON. Ažurirajmo situaciju tako da je kontakt identifikovan ovim URL-om sada arhiviran.
+
+Kako izgledaju naši odgovori?
+
+Prva implementacija vraća sledeći HTML:
+
+```html
+<html lang="en">
+<body>
+<h1>Joe Smith</h1>
+<div>
+
+<div>Email: joe@example.bar</div>
+<div>Status: Archived</div>
+
+</div>
+<p>
+
+<a href="/contacts/42/unarchive">Unarchive</a>
+</p>
+</body>
+</html>
+```
+
+Druga implementacija vraća sledeću JSON reprezentaciju:
+
+```json
+{
+"name": "Joe Smith",
+"email": "joe@example.org",
+"status": "Archived"
+}
+```
+
+Važno je napomenuti da, budući da je samoopisujuća poruka, HTML odgovor sada pokazuje da operacija "Arhiviranje" više nije dostupna i da je postala dostupna nova operacija "Poništavanje arhiviranja". HTML reprezentacija kontakta kodira stanje aplikacije; ona kodira tačno šta se može, a šta ne može uraditi sa ovom konkretnom reprezentacijom, na način na koji JSON reprezentacija to ne čini.
+
+Klijent koji interpretira JSON odgovor mora, ponovo, razumeti ne samo opšti koncept kontakta, već i šta konkretno znači polje "status" sa vrednošću "Arhivirano". Mora tačno znati koje su operacije dostupne za "Arhivirani" kontakt, kako bi ih na odgovarajući način prikazao krajnjem korisniku. Stanje aplikacije nije kodirano u odgovoru, već se prenosi kroz kombinaciju sirovih podataka i informacija sa sporednih kanala, kao što je API dokumentacija.
+
+Štaviše, u većini današnjih front-end SPA okvira, ovi kontakt podaci bi se nalazili u memoriji u JavaScript objektu koji predstavlja model kontakta, dok bi se podaci stranice čuvali u Document Object Model (DOM) pregledača. DOM bi se ažurirao na osnovu promena ovog modela, odnosno DOM bi "reagovao" na promene ovog pratećeg JavaScript modela.
+
+Ovaj pristup svakako ne koristi hipermediju kao mehanizam stanja aplikacije: već koristi JavaScript model kao mehanizam stanja aplikacije i sinhronizuje taj model sa serverom i pregledačem.
+
+Sa HTML pristupom, hipermedija je zaista mašina stanja aplikacije: ne postoji dodatni model na strani klijenta, a celokupno stanje se izražava direktno u hipermedijalnom kodu, u ovom slučaju HTML-u. Kako se stanje menja na serveru, to se odražava u reprezentaciji (tj. HTML-u) koja se šalje nazad klijentu. Hipermedijalni klijent (pregledač) ne zna ništa o kontaktima, šta je koncept "arhiviranja" ili bilo šta drugo o određenom modelu domena za ovaj odgovor: on jednostavno zna kako da prikaže HTML.
+
+Pošto hipermedijalni klijent ne mora da zna ništa o modelu servera osim kako da prikaže hipermedijalni sadržaj klijentu, on je neverovatno fleksibilan u pogledu reprezentacija koje prima i prikazuje korisnicima.
+
+##### HATEOAS i API odliv
+
+Ova poslednja tačka je ključna za razumevanje fleksibilnosti hipermedije, pa hajde da pogledamo praktičan primer njenog delovanja. Razmotrimo situaciju u kojoj je nova funkcija dodata veb aplikaciji sa ove dve krajnje tačke. Ova funkcija vam omogućava da pošaljete poruku datom kontaktu.
+
+Kako bi ovo promenilo svaki od dva odgovora — HTML i JSON — sa servera?
+
+HTML reprezentacija bi sada mogla izgledati ovako:
+
+```html
+<html lang="en">
+<body>
+<h1>Joe Smith</h1>
+<div>
+
+<div>Email: joe@example.bar</div>
+<div>Status: Active</div>
+
+</div>
+<p>
+
+<a href="/contacts/42/archive">Archive</a>
+<a href="/contacts/42/message">Message</a>
+
+</p>
+</body>
+</html>
+```
+
+S druge strane, JSON reprezentacija može izgledati ovako:
+
+```json
+{
+"name": "Joe Smith",
+"email": "joe@example.org",
+"status": "Active"
+}
+```
+
+Imajte na umu da je, još jednom, JSON reprezentacija nepromenjena. Nema naznaka ove nove funkcionalnosti. Umesto toga, klijent mora biti upoznat sa ovom promenom, verovatno putem neke zajedničke dokumentacije između klijenta i servera.
+
+Uporedite ovo sa HTML odgovorom. Zbog jedinstvenog interfejsa RESTful modela i, posebno, zato što koristimo Hypermedia As The Engine of Application State, takva razmena dokumentacije nije potrebna! Umesto toga, klijent (pregledač) jednostavno prikazuje novi HTML sa ovom operacijom u njemu, čineći ovu operaciju dostupnom krajnjem korisniku bez ikakvih dodatnih promena koda.
+
+Prilično dobar trik!
+
+Sada, u ovom slučaju, ako JSON klijent nije pravilno ažuriran, stanje greške je relativno benigno: novi deo funkcionalnosti jednostavno nije dostupan korisnicima. Ali razmotrite ozbiljniju promenu API-ja: šta ako je funkcionalnost arhiviranja uklonjena? Ili šta ako su se URL-ovi ili HTTP metode za ove operacije na neki način promenili?
+
+U ovom slučaju, JSON klijent može biti oštećen na mnogo ozbiljniji način.
+
+Međutim, HTML odgovor bi jednostavno bio ažuriran da bi se isključile uklonjene opcije ili da bi se ažurirali URL-ovi koji se za njih koriste. Klijenti bi videli novi HTML, pravilno ga prikazali i omogućili korisnicima da izaberu šta god da je novi skup operacija. Još jednom, jedinstveni REST interfejs se pokazao izuzetno fleksibilnim: uprkos potencijalno radikalno novom rasporedu za naš hipermedijalni API, klijenti nastavljaju da rade.
+
+Iz ovoga proizilazi važna činjenica: zbog ove fleksibilnosti, hipermedijalni API-ji nemaju probleme sa verzijama koje imaju JSON Data API-ji.
+
+Kada se aplikacija vođena hipermedijom "uđe u" (tj. učita preko neke URL adrese ulazne tačke), sve funkcionalnosti i resursi se prikazuju putem samoopisujućih poruka. Stoga, nema potrebe za razmenom dokumentacije sa klijentom: klijent jednostavno prikazuje hipermediju (u ovom slučaju HTML) i sve funkcioniše kako treba. Kada dođe do promene, nema potrebe za kreiranjem nove verzije API-ja: klijenti jednostavno preuzimaju ažuriranu hipermediju, koja kodira nove operacije i resurse u njoj, i prikazuju je korisnicima za rad.
+
+##### Slojeviti sistem
+
+Poslednje "potrebno" ograničenje na RESTful sistemu koje ćemo razmotriti je ograničenje slojevitog sistema. Ovo ograničenje se može naći u odeljku 5.1.6 Fildingove disertacije.
+
+Iskreno, nakon uzbuđenja zbog ograničenja jedinstvenog interfejsa, ograničenje "slojevitog sistema" je pomalo razočaravajuće. Ali ipak vredi razumeti ga i veb ga zapravo efikasno koristi. Ograničenje zahteva da RESTful arhitektura bude "slojevita", omogućavajući višestrukim serverima da deluju kao posrednici između klijenta i eventualnog servera "izvora istine".
+
+Ovi posrednički serveri mogu delovati kao proksiji, transformisati posredničke zahteve i odgovore i tako dalje.
+
+Uobičajeni savremeni primer ove slojevite karakteristike REST-a je upotreba mreža za isporuku sadržaja (CDN) za bržu isporuku nepromenljivih statičkih sredstava klijentima, čuvanjem odgovora sa izvornog servera na posredničkim serverima koji su bliže klijentu koji podnosi zahtev.
+
+Ovo omogućava bržu isporuku sadržaja krajnjem korisniku i smanjuje opterećenje izvornog servera.
+
+Nije toliko uzbudljivo za programere veb aplikacija kao jedinstveni interfejs, barem po našem mišljenju, ali je ipak korisno.
+
+##### Opciono ograničenje: Kod na zahtev
+
+Ograničenje slojevitog sistema nazvali smo poslednjim "obaveznim" ograničenjem jer Filding  ominje još jedno ograničenje na RESTful sistemu. Ovo ograničenje koda na zahtev je pomalo nespretno opisano kao "opciono" (odeljak 5.1.7).
+
+U ovom odeljku, Filding kaže:
+
+> [!Info]
+> REST omogućava proširenje funkcionalnosti klijenta preuzimanjem i izvršavanjem koda u obliku apleta ili skripti. Ovo pojednostavljuje klijente smanjenjem broja funkcija koje je potrebno prethodno
+> implementirati. Omogućavanje preuzimanja funkcija nakon implementacije poboljšava proširivost sistema. Međutim, to takođe smanjuje vidljivost i stoga je samo opciono ograničenje unutar REST-a.
+>
+> — Roj Filding, Arhitektonski stilovi i dizajn mrežnih softverskih arhitektura
+
+Dakle, skriptovanje je bilo i jeste izvorni aspekt originalnog RESTful modela veba i stoga bi naravno trebalo da bude dozvoljeno u aplikaciji vođenoj hipermedijom.
+
+Međutim, u aplikaciji vođenoj hipermedijom, prisustvo skriptovanja ne bi trebalo da promeni osnovni model umrežavanja: hipermedija bi trebalo da nastavi da bude motor stanja aplikacije, komunikacija sa serverom bi i dalje trebalo da se sastoji od hipermedijske razmene, a ne, na primer, razmene JSON podataka, i tako dalje. (JSON Data API-ji svakako imaju svoje mesto; u poglavlju 10 ćemo razmotriti kada i kako ih koristiti).
+
+Danas se, nažalost, sloj skriptovanja veba, Javaskript, prilično često koristi da zameni, umesto da proširi hipermedijalni model. U kasnijem poglavlju ćemo detaljnije objasniti kako izgleda skriptovanje koje ne zamenjuje osnovni hipermedijalni sistem veba.
+
+### Zaključak o REST
+
+Nakon ovog dubinskog uvida u komponente i koncepte koji stoje iza hipermedijalnih sistema — uključujući i uvide Roja Fildinga u njihov rad — nadamo se da ćete mnogo bolje razumeti REST, a posebno jedinstveni interfejs i HATEOAS. Nadamo se da možete shvatiti zašto ove karakteristike čine hipermedijalne sisteme tako fleksibilnim.
+
+Ako do sada niste bili svesni punog značaja REST-a i HATEOAS-a, nemojte se loše osećati: nekima od nas je trebalo više od decenije rada u veb razvoju i izgradnji biblioteke orijentisane na hipermediju, da bismo razumeli posebnu prirodu HTML-a, hipermedije i veba!
+
+---
+
+**HTML napomene: HTML5 supa**  
+
+> [!Info]
+> Početak mudrosti je nazvati stvari pravim imenom.  
+> — Konfučije
+
+Elementi poput `<section>`,`<article>`, `<nav>`, `<header>`, `<footer>`, `<figure>` postali su neka vrsta skraćenice za HTML.
+
+Korišćenjem ovih elemenata, stranica može dati lažna obećanja, poput toga `<article>` da su elementi samostalni, ponovo upotrebljivi entiteti, klijentima poput pregledača, pretraživača i skrepera koji ne mogu da znaju bolje. Da biste to izbegli:
+
+- Uverite se da element koji koristite odgovara vašem slučaju upotrebe. Proverite HTML specifikaciju.
+- Ne pokušavajte da budete precizni kada ne možete ili ne morate. Ponekad je `<div>` u redu.
+
+Najmerodavniji izvor za učenje o HTML-u je HTML specifikacija. Trenutna specifikacija se nalazi na <https://html.spec.whatwg.org/multipage>[*]. Nema potrebe da se oslanjate na glasine da biste pratili razvoj HTML-a.
+
+Odeljak 4 specifikacije sadrži listu svih dostupnih elemenata, uključujući šta predstavljaju, gde se mogu pojaviti i šta smeju da sadrže. Čak vam govori i kada je dozvoljeno da izostavite završne
+oznake!
+
+[*]: Jednostranična verzija se previše sporo učitava i prikazuje na većini računara. Postoji i "izdanje za programere" na /dev, ali standardna verzija ima lepši stil.

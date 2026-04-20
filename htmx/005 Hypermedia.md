@@ -1,0 +1,672 @@
+
+# Hypermedia 005
+
+## Proširivanje HTML-a kao hipermedije
+
+U prethodnom poglavlju predstavili smo jednostavnu hipermedijsku aplikaciju u Web 1.0 stilu za upravljanje kontaktima. Naša aplikacija je podržavala uobičajene CRUD operacije za kontakte, kao i jednostavan mehanizam za pretragu kontakata. Naša aplikacija je napravljena koristeći samo forme i oznake sidra, tradicionalne hipermedijske kontrole koje se koriste za interakciju sa serverima. Aplikacija razmenjuje hipermediju (HTML) sa serverom preko HTTP-a, izdajući GETHTTP POSTzahteve i primajući nazad kompletne HTML dokumente kao odgovor.
+
+To je osnovna veb aplikacija, ali je takođe definitivno i aplikacija vođena hipermedijom. Robusna je, koristi izvorne veb tehnologije i jednostavna je za razumevanje.
+
+Pa šta se ne sviđa kod aplikacije?
+
+Nažalost, naša aplikacija ima nekoliko problema uobičajenih za aplikacije u stilu web 1.0:
+
+- Sa stanovišta korisničkog iskustva: primetno je osvežavanje kada se krećete između stranica aplikacije ili kada kreirate, ažurirate ili brišete kontakt. To je zato što svaka korisnička interakcija (klik na link ili slanje obrasca) zahteva potpuno osvežavanje stranice, sa potpuno novim HTML dokumentom koji se obrađuje nakon svake radnje.
+
+- Sa tehničke perspektive, sva ažuriranja se vrše POST HTTP metodom. Ovo, uprkos činjenici da postoje logičnije akcije i tipovi HTTP zahteva, kao što su PUT i DELETE i da bi imali više smisla za neke od operacija koje smo implementirali. Na kraju krajeva, ako želimo da obrišemo resurs, zar ne bi imalo više smisla da koristimo HTTP DELETE zahtev za to? Pomalo ironično, pošto smo koristili čisti HTML, nismo u mogućnosti da pristupimo punoj izražajnoj moći HTTP-a, koji je posebno dizajniran za HTML.
+
+Prva tačka je posebno primetna kod aplikacija u Web 1.0 stilu poput naše i upravo je to ono što im daje reputaciju "nezgrapnih" u poređenju sa njihovim  sofisticiranijim rođacima, jednostraničnim aplikacijama zasnovanim na JavaScript-u.
+
+Ovaj problem bismo mogli da rešimo usvajanjem okvira za jednostranične aplikacije (Single Page Application) i ažuriranjem naše serverske strane kako bismo pružali odgovore zasnovane na JSON-u. Jednostranične aplikacije eliminišu nespretnost web 1.0 aplikacija ažuriranjem veb stranice bez njenog osvežavanja: one mogu da promene delove Document Object Model (DOM) postojeće stranice bez potrebe za zamenom (i ponovnim prikazivanjem) cele stranice.
+
+### DOM
+
+DOM je interni model koji pregledač gradi kada obrađuje HTML, formirajući drvo "čvorova" za oznake i drugi sadržaj u HTML-u. DOM pruža programski JavaScript API koji vam omogućava da direktno ažurirate čvorove na stranici, bez upotrebe hipermedije. Koristeći ovaj API, JavaScript kod može da ubaci novi sadržaj ili da ukloni ili ažurira postojeći sadržaj, potpuno van uobičajenog mehanizma zahteva pregledača.
+
+Postoji nekoliko različitih stilova SPA, ali, kao što smo razgovarali u 1. poglavlju, najčešći pristup danas je povezivanje DOM-a sa JavaScript modelom, a zatim dozvoljavanje SPA okviru poput React-a ili Vue-a da reaktivno ažurira DOM kada se JavaScript model ažurira: pravite promenu na JavaScript objektu koji je lokalno sačuvan u memoriji u pregledaču, a veb stranica "magično" ažurira svoje stanje kako bi odražavala promenu u modelu.
+
+U ovom stilu aplikacije, komunikacija sa serverom se obično obavlja putem JSON Data API-ja, pri čemu aplikacija žrtvuje prednosti hipermedije kako bi pružila bolje i glađe korisničko iskustvo.
+
+Mnogi veb programeri danas ne bi ni razmatrali hipermedijalni pristup zbog percipiranog osećaja "nasleđa" ovih aplikacija u stilu veb 1.0.
+
+Sada, drugi, tehničkiji problem koji smo pomenuli može vam se učiniti pomalo pedantničkim, i mi smo prvi koji priznaju da razgovori o REST-u i koja je HTTP akcija ispravna za datu operaciju mogu postati veoma zamorni. Ali ipak, čudno je da je, kada se koristi običan HTML, nemoguće koristiti svu funkcionalnost HTTP-a!
+
+Samo deluje pogrešno, zar ne?
+
+### Pažljiv pogled na hiperlink
+
+Ispostavilo se da možemo poboljšati interaktivnost naše aplikacije i rešiti oba ova problema bez pribegavanja SPA pristupu. To možemo učiniti korišćenjem JavaScript biblioteke orijentisane na hipermediju, `htmx`. Autori ove knjige su napravili `htmx` posebno da bi proširili HTML kao hipermediju i rešili probleme sa starijim HTML aplikacijama koje smo gore pomenuli (kao i nekoliko drugih).
+
+Pre nego što se pozabavimo kako nam htmx omogućava da poboljšamo UX naše Web 1.0 aplikacije, ponovo se osvrnemo na oznaku hiperlinka/sidra iz 1. poglavlja. Podsetimo se, hiperlink je ono što je poznato kao hipermedijska kontrola, mehanizam koji opisuje neku vrstu interakcije sa serverom tako što direktno i potpuno kodira informacije o toj interakciji unutar same kontrole.
+
+Razmotrite ponovo ovu jednostavnu oznaku sidra koja, kada je pregledač interpretira, kreira hipervezu ka veb-sajtu ove knjige:
+
+```html
+<a href="https://hypermedia.systems/">
+    Hypermedia Systems
+</a>
+```
+
+Jednostavni hiperlink
+
+Hajde da detaljno objasnimo šta se tačno dešava sa ovim linkom:
+
+- Pretraživač će prikazati tekst "Hypermedia systems" na ekranu, verovatno sa ukrasom koji ukazuje da se na njega može kliknuti.
+- Zatim, kada korisnik klikne na tekst
+- Pregledač će izdati HTTP poruku GET za <https://hypermedia.systems>
+- Pregledač će učitati HTML telo HTTP odgovora u prozor pregledača, zamenjujući trenutni dokument.
+
+Dakle, imamo četiri aspekta jednostavnog hipermedijskog linka poput ovog, pri čemu poslednja tri aspekta pružaju mehanizam koji razlikuje hiperlink od "normalnog" teksta i, samim tim, čini ga hipermedijskom kontrolom.
+
+Sada, hajde da odvojimo trenutak i razmislimo o tome kako možemo generalizovati ova poslednja tri aspekta hiperlinka.
+
+Zašto samo sidra i forme?
+
+Razmislite: šta čini oznake (i forme) sidra tako posebnim?
+
+Zašto i drugi elementi ne mogu da izdaju HTTP zahteve?
+
+Na primer, zašto `button` elementi ne bi trebalo da mogu da izdaju HTTP zahteve? Čini se proizvoljnim da se oko dugmeta mora omotati oznaka forme samo da bi brisanje kontakata funkcionisalo u našoj aplikaciji, na primer.
+
+Možda: i drugi elementi bi trebalo da budu u mogućnosti da izdaju HTTP zahteve. Možda bi drugi elementi trebalo da budu u stanju da sami po sebi deluju kao hipermedijske kontrole.
+
+Ovo je naša prva prilika da generalizujemo HTML kao hipermediju.
+
+**Prilika 1**:  
+HTML bi se mogao proširiti tako da omogući bilo kom elementu da izda zahtev serveru i deluje kao hipermedijska kontrola.
+
+### Zašto samo događaje tipa "Klikni i pošalji"?
+
+Zatim, razmotrimo događaj koji pokreće zahtev serveru na našem linku: događaj klika.
+
+Pa, šta je toliko posebno u vezi sa klikom (u slučaju sidra) ili slanjem (u slučaju obrazaca) stvari? To su samo dva od mnogih, mnogih događaja koje pokreće DOM, na kraju krajeva. Događaji poput pritiska miša na dole, pritiska tastera nagore ili zamućenja su sve događaji koje biste možda želeli da koristite za izdavanje HTTP zahteva.
+
+Zašto i ovi drugi događaji ne bi mogli da pokreću zahteve?
+
+Ovo nam daje drugu priliku da proširimo izražajnost HTML-a:
+
+**Prilika 2**:
+HTML kod bi mogao biti proširen tako da omogući bilo kom događaju — ne samo klik, kao u slučaju hiperlinkova — da pokrene HTTP zahteve.
+
+### Zašto samo PREUZMI I OBJAVI?
+
+Malo više tehničkog razmišljanja dovodi nas do problema koji smo ranije napomenuli: običan HTML nam daje pristup samo funkcijama GET i POST radnjama HTTP-a.
+
+HTTP je skraćenica od Hypertext Transfer Protocol (Protokol za prenos hiperteksta), a ipak format za koji je eksplicitno dizajniran, HTML, podržava samo dva od pet tipova zahteva okrenutih programerima. Morate da koristite JavaScript i izdate AJAX zahtev da biste dobili ostala tri: DELETE, PUTi PATCH.
+
+Podsetimo se šta ovi različiti tipovi HTTP zahteva treba da predstavljaju:
+
+- GET odgovara "dobijanju" reprezentacije resursa iz URL-a: to je čisto čitanje, bez mutacije resursa.
+- POST dostavlja entitet (ili podatak) datom resursu, često kreirajući ili mutirajući resurs i uzrokujući promenu stanja.
+- PUT šalje entitet (ili podatak) datom resursu na ažuriranje ili zamenu, što verovatno ponovo uzrokuje promenu stanja.
+- PATCH, slično PUT ali podrazumeva delimično ažuriranje i promenu stanja, a ne potpunu zamenu entiteta.
+- DELETE briše dati resurs.
+
+Ove operacije se u velikoj meri podudaraju sa CRUD operacijama koje smo razmatrali u 2. poglavlju. Dajući nam pristup samo dvema od pet, HTML nam otežava da u potpunosti iskoristimo HTTP.
+
+Ovo nam daje treću priliku da proširimo izražajnost HTML-a:
+
+**Prilika 3**:
+HTML kod bi mogao biti proširen tako da omogući pristup trima nedostajućim HTTP metodama PUT, PATCH i DELETE.
+
+### Zašto samo zameniti ceo ekran
+
+Kao poslednje zapažanje, razmotrite poslednji aspekt hiperlinka: on zamenjuje ceo ekran kada korisnik klikne na njega.
+
+Ispostavlja se da je ovaj tehnički detalj glavni krivac za loše korisničko iskustvo u Web 1.0 aplikacijama. Potpuno osvežavanje stranice može izazvati bljesak nestilizovanog sadržaja, gde sadržaj "skače" na ekranu dok prelazi iz svog početnog u svoj stilizovani konačni oblik. Takođe uništava stanje skrolovanja korisnika skrolovanjem do vrha stranice, uklanja fokus sa fokusiranog elementa i tako dalje.
+
+Ali, ako razmislite o tome, ne postoji pravilo koje kaže da hipermedijske razmene moraju zameniti ceo dokument.
+
+Ovo nam daje četvrtu, poslednju i možda najvažniju priliku da generalizujemo HTML:
+
+**Prilika 4**:
+HTML kod bi mogao biti proširen tako da omogući odgovorima na zahteve za zamenu elemenata unutar trenutnog dokumenta, umesto da zahtevaju zamenu celog dokumenta.
+
+Ovo je zapravo veoma stari koncept u hipermediji. Ted Nelson je u svojoj knjizi "Književne mašine" iz 1980. godine skovao termin transkluzija da bi obuhvatio ovu ideju: uključivanje sadržaja u postojeći dokument putem hipermedijske reference. Ako bi HTML podržavao ovaj stil "dinamičke transkluzije", onda bi aplikacije vođene hipermedijom mogle da funkcionišu mnogo više kao aplikacije sa jednom stranicom, gde se samo deo DOM-a ažurira datom interakcijom korisnika ili mrežnim zahtevom.
+
+Ove četiri mogućnosti nam pružaju način da proširimo HTML daleko iznad njegovih trenutnih mogućnosti, ali na način koji je u potpunosti u okviru hipermedijalnog modela veba. Osnove HTML-a, HTTP-a, pregledača i tako dalje, neće se dramatično promeniti. Umesto toga, ove generalizacije postojeće funkcionalnosti koje se već nalaze u HTML-u bi nam jednostavno omogućile da postignemo više koristeći HTML.
+
+`Htmx` je JavaScript biblioteka koja proširuje HTML na upravo ovaj način i biće u fokusu narednih nekoliko poglavlja ove knjige. Ponovo, `htmx` nije jedina JavaScript biblioteka koja koristi ovaj pristup orijentisan na hipermediju (drugi odlični primeri su "Unpoly" i "Hotwire"), ali htmx je najčistija u svojoj težnji ka proširenju HTML-a kao hipermedije.
+
+## Instaliranje i korišćenje Htmx-a
+
+### Instaliranje sa CDN-a
+
+Iz praktične perspektive "prvog korišćenja", htmx je jednostavna, samostalna JavaScript biblioteka bez zavisnosti koja se može dodati veb aplikaciji jednostavnim uključivanjem putem scriptoznake u vašem `head` elementu.
+
+Zbog ovog jednostavnog modela instalacije, možete koristiti alate poput javnih CDN-ova za instaliranje biblioteke.
+
+Ispod je primer korišćenja popularne mreže za isporuku sadržaja (CDN) "unpkg" za instaliranje verzije 1.9.2biblioteke. Koristimo heš integriteta kako bismo osigurali da isporučeni JavaScript sadržaj odgovara onome što očekujemo. Ovaj SHA se može naći na veb lokaciji htmx.
+
+Takođe označimo skriptu kao crossorigin="anonymous" da se CDN-u neće slati akreditivi.
+
+```html
+<head>
+<script src="https://unpkg.com/htmx.org@1.9.2"
+  integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/
+    bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h"
+  crossorigin="anonymous"></script>
+</head>
+```
+
+Instaliranje htmlx-a sa CDN-a
+
+Ako ste navikli na moderni JavaScript razvoj, sa složenim sistemima za izgradnju i velikim brojem zavisnosti, možda ćete biti prijatno iznenađeni kada otkrijete da je to sve što je potrebno za instaliranje htmx-a.
+
+Ovo je u duhu ranog veba, kada ste jednostavno mogli da uključite oznaku skripte i stvari bi "jednostavno radile".
+
+### Instaliranje sa lokalne kopije
+
+Ako ne želite da koristite CDN, možete preuzeti htmx na svoj lokalni sistem i podesiti oznaku skripte da pokazuje gde god da čuvate svoje statičke resurse. Ili, možda imate sistem za izgradnju koji automatski instalira zavisnosti. U ovom slučaju možete koristiti naziv Node Package Manager (npm) za biblioteku: htmx.org i instalirati je na uobičajeni način koji vaš sistem za izgradnju podržava.
+
+Kada je htmx instaliran, možete odmah početi da ga koristite.
+
+### Nije potreban JavaScript
+
+I ovde dolazimo do zanimljivog dela htmx-a: htmx ne zahteva od vas, korisnika htmx-a, da zapravo napišete bilo koji JavaScript kod.
+
+Umesto toga, koristićete atribute postavljene direktno na elemente u vašem HTML-u da biste pokrenuli dinamičnije ponašanje. Htmx proširuje HTML kao hipermediju i dizajniran je tako da to proširenje deluje što prirodnije i konzistentnije sa postojećim HTML konceptima. Baš kao što oznaka sidra koristi atribut `href` da bi odredila URL adresu koju treba preuzeti, a forme koriste `action` atribut da bi odredili URL adresu kojoj treba poslati obrazac, htmx koristi HTML atribute da bi odredio URL adresu kojoj treba izdati HTTP zahtev.
+
+## Pokretanje HTTP zahteva
+
+Pogledajmo prvu karakteristiku htmx-a: mogućnost da bilo koji element na veb stranici izda HTTP zahteve. Ovo je osnovna funkcionalnost koju pruža htmx i sastoji se od pet atributa koji se mogu koristiti za izdavanje pet različitih tipova HTTP zahteva namenjenih programerima:
+
+- **hx-get**    - izdaje HTTP GET zahtev.
+- **hx-post**   - izdaje HTTP POST zahtev.
+- **hx-put**    - izdaje HTTP PUT zahtev.
+- **hx-patch**  - izdaje HTTP PATCH zahtev.
+- **hx-delete** - izdaje HTTP DELETE zahtev.
+
+Svaki od ovih atributa, kada se postavi na element, govori htmx biblioteci: "Kada korisnik klikne na (ili bilo šta drugo) ovaj element, izdaj HTTP zahtev navedenog tipa."
+
+Vrednosti ovih atributa su slične vrednostima `href` na sidrima i `action` na formama: navodite URL adresu kojoj želite da izdate dati tip HTTP zahteva. Obično se to radi preko putanje relativne u odnosu na server.
+
+Na primer, ako želimo dugme kome ćemo poslati GET zahtev na "/contacts" napisali bismo sledeći HTML kod:
+
+```html
+<button hx-get="/contacts">   <1>
+    Get The Contacts
+</button>
+```
+
+Jednostavno dugme zasnovano na htmx-u
+
+1. Jednostavno dugme koje izdaje HTTP poruku GET ka /contacts.
+
+Biblioteka `htmx` će videti `hx-get` atribut na ovom dugmetu i povezati neku JavaScript logiku da bi izdala HTTP GET AJAX zahtev putanji /contacts kada korisnik klikne na nju.
+
+Veoma lako za razumevanje i veoma je konzistentno sa ostatkom HTML-a.
+
+### Sve je samo HTML
+
+Sa zahtevom koji izdaje dugme iznad, dolazimo do možda najvažnije stvari koju treba razumeti o `htmx`-u: očekuje da odgovor na ovaj AJAX zahtev bude HTML. Htmx je proširenje HTML-a. Nativna hipermedijska kontrola, poput oznake sidra, obično će dobiti HTML odgovor na HTTP zahtev koji kreira. Slično tome, `htmx` očekuje da server odgovori na zahteve koje napravi pomoću HTML-a.
+
+Ovo može iznenaditi veb programere koji su navikli da odgovaraju na AJAX zahteve pomoću JSON-a, što je daleko najčešći format odgovora za takve zahteve. Ali AJAX zahtevi su samo HTTP zahtevi i ne postoji pravilo koje kaže da moraju da koriste JSON. Podsetimo se ponovo da AJAX označava Asynchronous JavaScript & XML, tako da je JSON već korak dalje od formata koji je prvobitno zamišljen za ovaj API: XML.
+
+`Htmx` jednostavno ide u drugom smeru i očekuje HTML.
+
+### Htmx naspram "običnih" HTML odgovora
+
+Postoji važna razlika između HTTP odgovora na "normalne" HTTP zahteve vođene sidrom ili formularom i na zahteve pokretane htmx-om: u slučaju htmx zahteva, odgovori mogu biti delimični delovi HTML-a.
+
+U interakcijama zasnovanim na htmx-u, kao što ćete videti, često ne zamenjujemo ceo dokument. Umesto toga, koristimo "transkluziju" da bismo uključili sadržaj u postojeći dokument. Zbog toga često nije potrebno niti poželjno prenositi ceo HTML dokument sa servera na pregledač.
+
+Ova činjenica se može iskoristiti za uštedu propusnog opsega kao i vremena učitavanja resursa.
+
+Manje ukupnog sadržaja se prenosi sa servera na klijenta i nije potrebno ponovo obrađivati `head` oznaku pomoću stilskih listova, oznaka skripti i tako dalje.
+
+Kada se klikne na dugme "Preuzmi kontakte", delimični HTML odgovor može izgledati otprilike ovako:
+
+```html
+<ul>
+<li><a href="mailto:joe@example.com">Joe</a></li>
+<li><a href="mailto:sarah@example.com">Sarah</a></li>
+<li><a href="mailto:fred@example.com">Fred</a></li>
+</ul>
+```
+
+Delimični HTML odgovor na htmlx zahtev
+
+Ovo je samo neuređena lista kontakata sa nekim elementima na koje se može kliknuti. Imajte na umu da nema početne `html` oznake, `head` oznake i tako dalje: to je sirova HTML lista, bez ikakvih dekoracija oko nje. Odgovor u stvarnoj aplikaciji može da sadrži sofisticiraniji HTML od ove jednostavne liste, ali čak i da je komplikovaniji, ne bi morao da bude cela HTML stranica: to bi mogao biti samo "unutrašnji" sadržaj HTML reprezentacije za ovaj resurs.
+
+Sada, ova jednostavna lista odgovora je savršena za `htmx`. `Htmx` će jednostavno uzeti vraćeni sadržaj, a zatim ga zameniti u DOM umesto nekog elementa na stranici. (Više o tome gde će tačno biti postavljen u DOM-u za trenutak.) Zamena HTML sadržaja na ovaj način je brza i efikasna jer koristi postojeći izvorni HTML parser u pregledaču, umesto da zahteva značajnu količinu klijentskog JavaScript-a za izvršavanje.
+
+Ovaj mali HTML odgovor pokazuje kako `htmx` ostaje u okviru hipermedijske paradigme: baš kao i "normalna" hipermedijska kontrola u "normalnoj" veb aplikaciji, vidimo da se hipermedija prenosi klijentu na bez stalan i uniforman način.
+
+Ovo dugme nam samo daje malo sofisticiraniji mehanizam za izgradnju veb aplikacije korišćenjem hipermedije.
+
+### Ciljanje drugih elemenata
+
+Sada, s obzirom na to da je `htmx` izdao zahtev i dobio nazad neki HTML kao odgovor, i da ćemo zameniti ovaj sadržaj na postojećoj stranici (umesto da zamenimo celu stranicu), pitanje je: gde treba postaviti ovaj novi sadržaj?
+
+Ispostavlja se da je podrazumevano ponašanje htmx-a jednostavno stavljanje vraćenog sadržaja unutar elementa koji je pokrenuo zahtev. To nije dobra stvar u slučaju našeg dugmeta: završićemo sa listom kontakata nespretno ugrađenih unutar elementa dugmeta. To će izgledati prilično glupo i očigledno nije ono što želimo.
+
+Srećom, `htmx` pruža još jedan atribut `hx-target` koji se može koristiti za određivanje tačnog mesta u DOM-u gde treba postaviti novi sadržaj. Vrednost atributa je selektor `hx-target` Cascading Style Sheet (CSS) koji vam omogućava da odredite element u koji treba postaviti novi hipermedijalni sadržaj.
+
+Dodajmo `div` oznaku koja obuhvata dugme sa identifikatorom `id=main`. Zatim ćemo to ciljati `div` odgovorom:
+
+```html
+<div id="main">                                 <1>
+  <button hx-get="/contacts" hx-target="#main"> <2>
+    Get The Contacts
+  </button>
+</div>
+```
+
+Jednostavno dugme zasnovano na htmx-u
+
+1. Element div koji obavija dugme.
+2. Atribut hx-target koji određuje cilj odgovora.
+
+Dodali smo `hx-target="#main"` našem dugmetu, gde je `#main` CSS selektor koji kaže "Stvar sa ID-om 'main'."
+
+Korišćenjem CSS selektora, `htmx` se nadovezuje na poznate i standardne HTML koncepte. Ovo svodi dodatno konceptualno opterećenje za rad sa htmx-om na minimum.
+
+S obzirom na ovu novu konfiguraciju, kako bi izgledao HTML kod na klijentu nakon što korisnik klikne na ovo dugme i odgovor bude primljen i obrađen?
+
+Izgledalo bi otprilike ovako:
+
+```html
+<div id="main">
+  <ul>
+    <li><a href="mailto:joe@example.com">Joe</a></li>
+    <li><a href="mailto:sarah@example.com">Sarah</a></li>
+    <li><a href="mailto:fred@example.com">Fred</a></li>
+  </ul>
+</div>
+```
+
+Naš HTML nakon završetka htmx zahteva
+
+HTML odgovora je zamenjen u div sa id = "main", zamenjujući dugme koje je pokrenulo zahtev. Kraj! I ovo se desilo "u pozadini" putem AJAX-a, bez nespretnog osvežavanja stranice.
+
+### Zameni stilove
+
+Sada, možda ne želimo da učitamo sadržaj iz odgovora servera u "div", kao podređene elemente. Možda, iz nekog razloga, želimo da zamenimo ceo "div" odgovorom. Da bi se ovo rešilo, `htmx` pruža još jedan atribut, `hx-swap`, koji vam omogućava da tačno odredite kako sadržaj treba da se zameni u DOM-u.
+
+Atribut hx-swap podržava sledeće vrednosti:
+
+- **innerHTML**   - Podrazumevano, zameni unutrašnji html kod ciljnog elementa.
+- **outerHTML**   - Zameni ceo ciljni element odgovorom.
+- **beforebegin** - Umetni odgovor ispred ciljnog elementa.
+- **afterbegin**  - Umetni odgovor ispred prvog deteta ciljnog elementa.
+- **beforeend**   - Umetni odgovor posle poslednjeg deteta ciljnog elementa.
+- **afterend**    - Umetnite odgovor posle ciljnog elementa.
+- **delete**      - Briši ciljni element bez obzira na odgovor.
+- **none**        - Zamena neće biti izvršena.
+
+Prve dve vrednosti, `innerHTML` i `outerHTML`, su preuzete iz standardnih DOM svojstava koja vam omogućavaju da zamenite sadržaj unutar elementa ili umesto celog elementa, respektivno.
+
+Sledeće četiri vrednosti su preuzete iz `Element.insertAdjacentHTML()` DOM API-ja, što vam omogućava da postavite element ili elemente oko datog elementa na različite načine.
+
+Poslednje dve vrednosti, `delete` i `none` su specifične za `htmx`. Prva opcija će ukloniti ciljni element iz DOM-a, dok druga opcija neće uraditi ništa (možda ćete želeti da radite samo sa zaglavljima odgovora, naprednom tehnikom koju ćemo kasnije pogledati u knjizi).
+
+Ponovo, možete videti da `htmx` ostaje što je moguće bliži postojećim veb standardima kako bi se minimiziralo konceptualno opterećenje neophodno za njegovu upotrebu.
+
+Dakle, razmotrimo slučaj gde, umesto zamene `innerHTML` sadržaja glavnog div-a iznad, želimo da zamenimo ceo div HTML odgovorom.
+
+Da bismo to uradili, potrebna bi bila samo mala promena na našem dugmetu, dodavanjem novog `hx-swap` atributa:
+
+```html
+<div id="main">
+  <button hx-get="/contacts" hx-target="#main" hx-swap="outerHTML"> <1>
+    Get The Contacts
+  </button>
+</div>
+```
+
+Zamena celog div-a
+
+1. Atribut `hx-swap` određuje kako se zamenjuje novi sadržaj.
+
+Sada, kada se primi odgovor, ceo div će biti zamenjen hipermedijalnim sadržajem:
+
+```html
+<ul>
+  <li><a href="mailto:joe@example.com">Joe</a></li>
+  <li><a href="mailto:sarah@example.com">Sarah</a></li>
+  <li><a href="mailto:fred@example.com">Fred</a></li>
+</ul>
+```
+
+Naš HTML nakon završetka htmx zahteva
+
+Možete videti da je, ovom promenom, ciljni div potpuno uklonjen iz DOM-a, a lista koja je vraćena kao odgovor ga je zamenila.
+
+Kasnije u knjizi videćemo dodatne upotrebe za `hx-swap`, na primer kada implementiramo beskonačno skrolovanje u našoj aplikaciji za upravljanje kontaktima.
+
+Imajte na umu da smo sa atributima `hx-get`, `hx-post`, `hx-put`, `hx-patch` i `hx-delete`, obradili dve od četiri mogućnosti za poboljšanje koje smo naveli u vezi sa običnim HTML-om:
+
+- **Prilika 1**: Sada možemo da izdamo HTTP zahtev sa bilo kojim elementom (u ovom slučaju koristimo dugme).
+- **Prilika 3**: Možemo izdati bilo koju vrstu HTTP zahteva koju želimo, PUT, PATCHi DELETE, posebno.
+
+I, pomoću `hx-target` i `hx-swap` smo rešili treći nedostatak: zahtev da se zameni cela stranica.
+
+- **Prilika 4**: Sada možemo zameniti bilo koji element koji želimo na našoj stranici putem transkluzije, i to možemo učiniti na bilo koji način koji želimo.
+
+Dakle, sa samo sedam relativno jednostavnih dodatnih atributa, rešili smo većinu nedostataka HTML-a kao hipermedije koje smo ranije identifikovali.
+
+Šta je sledeće? Setimo se još jedne prilike koju smo napomenuli: činjenice da samo `onclic` kdogađaj (na sidru) ili `submit` događaj (na formi) može pokrenuti HTTP zahtev. Hajde da pogledamo kako možemo da rešimo to ograničenje.
+
+### Korišćenje događaja
+
+Do sada smo koristili dugme za izdavanje zahteva sa htmx-om. Verovatno ste intuitivno razumeli da će dugme izdati svoj zahtev kada kliknete na njega, jer, pa, to je ono što radite sa dugmadima: kliknete na njih.
+
+I, da, podrazumevano, kada se na dugme postavi `hx-get` anotacija iz htmx-a koja pokreće zahtev, zahtev će biti izdat kada se klikne na dugme.
+
+Međutim, htmx generalizuje ovaj pojam događaja koji pokreće zahtev koristeći, pogodili ste, još jedan atribut: `hx-trigger`. `hx-trigger` atribut vam omogućava da navedete jedan ili više događaja koji će uzrokovati da element pokrene HTTP zahtev.
+
+Često ne morate da koristite `hx-trigger` jer će podrazumevani okidajući događaj biti ono što želite. Podrazumevani okidajući događaj zavisi od tipa elementa i trebalo bi da bude prilično intuitivan:
+
+- Zahtevi na `input`, `textarea` i `select` elementima se pokreću događajem `change`.
+- Zahtevi na form elementima se pokreću na `submit` događaj.
+- Zahtevi na svim elementima se pokreću događajem `click`.
+
+Da bismo demonstrirali kako `hx-trigger` funkcioniše, razmotrite sledeću situaciju: želimo da pokrenemo zahtev na našem dugmetu kada ga miš dodirne. Sada, ovo svakako nije dobar UX obrazac, ali budite strpljivi: ovo koristimo samo kao primer.
+
+Da bismo reagovali na pritiskanje dugmeta mišem, dodali bismo sledeće svojstvo našem dugmetu:
+
+```html
+<div id="main">
+  <button hx-get="/contacts" hx-target="#main" hx-swap="outerHTML" hx-trigger="mouseenter">    <1>
+    Get The Contacts
+  </button>
+</div>
+```
+
+(Loše dizajnirano) dugme koje se aktivira pri `mouseenter` događaju
+
+1. Izdajte zahtev u vezi sa `mouseenter` događajem.
+
+Sada, sa ovim `hx-trigger` kad god miš pritisne ovo dugme, zahtev će biti pokrenut. Glupo, ali funkcioniše.
+
+Hajde da pokušamo nešto malo realnije i potencijalno korisno: dodajmo podršku za prečicu na tastaturi za učitavanje kontakata Ctrl-L (za "Učitaj"). Da bismo to uradili, moraćemo da iskoristimo dodatnu sintaksu koju `hx-trigger` atribut podržava: filtere događaja i dodatne argumente.
+
+Filteri događaja su mehanizam za određivanje da li dati događaj treba da pokrene zahtev ili ne. Primenjuju se na događaj dodavanjem uglastih zagrada posle njega: someEvent[someFilter]. Sam filter je JavaScript izraz koji će biti procenjen kada se dati događaj desi. Ako je rezultat istinit, u JavaScript smislu, on će pokrenuti zahtev. Ako nije, zahtev neće biti pokrenut.
+
+U slučaju prečica na tastaturi, želimo da uhvatimo `keyup` događaj pored događaja `click`:
+
+```html
+<div id="main">
+  <button hx-get="/contacts" hx-target="#main" hx-swap="outerHTML" hx-trigger="click, keyup"> <1>
+      Get The Contacts
+  </button>
+</div>
+```
+
+Početak, okidač pritiskom na taster
+
+1. Okidač sa dva događaja.
+
+Imajte na umu da imamo listu događaja odvojenih zarezima koji mogu da pokrenu ovaj element, što nam omogućava da odgovorimo na više od jednog potencijalnog okidajućeg događaja. I dalje želimo da odgovorimo na click događaj i učitamo kontakte, pored rukovanja Ctrl-L prečicom na tastaturi.
+
+Nažalost, postoje dva problema sa našim `keyup` dodatkom: U sadašnjem stanju, pokrenuće zahteve za bilo koji događaj pritiska tastera. I, što je još gore, pokrenuće se samo kada se taster pritisne unutar ovog dugmeta. Korisnik bi morao da pritisne taster Tab da bi ga aktivirao, a zatim počne da kuca.
+
+Hajde da rešimo ova dva problema. Da bismo rešili prvi, koristićemo filter okidača da bismo proverili da li su tasteri Control i "L" pritisnuti zajedno:
+
+```html
+<div id="main">
+  <button hx-get="/contacts" hx-target="#main" hx-swap="outerHTML"
+    hx-trigger="click, keyup[ctrlKey && key == 'l']">       <1>
+      Get The Contacts
+</button>
+</div>
+```
+
+Poboljšanje sa filterom pri otkucavanju tastera
+
+1. keyup sada ima filter, tako da se moraju pritisnuti tasteri Control i L.
+
+Filter okidača u ovom slučaju je `ctrlKey && key == 'l'`. Ovo se može pročitati kao "Događaj pritiska tastera, gde je svojstvo `ctrlKey` jednako `true`, a svojstvo `key` jednako `l`". Imajte na umu da se svojstva `ctrlKey` i `key` razrešavaju u odnosu na događaj, a ne na globalni prostor imena, tako da možete lako filtrirati na osnovu svojstava datog događaja. Međutim, možete koristiti bilo koji izraz koji želite za filter: pozivanje globalne JavaScript funkcije, na primer, je sasvim prihvatljivo.
+
+U redu, dakle, ovaj filter ograničava događaje pritiska tastera koji će pokrenuti zahtev samo na Ctrl-L pritiske. Međutim, i dalje imamo problem da će, kako sada stvari stoje, samo keyup događaji unutar dugmeta pokrenuti zahtev.
+
+Ako niste upoznati sa modelom mehurića događaja u JavaScript-u: događaji se obično "mehuriraju" do roditeljskih elemenata. Dakle, događaj poput `keyup` će se prvo pokrenuti na fokusiranom elementu, a zatim na njegovom roditeljskom (obuhvatajućem) elementu i tako dalje, dok ne dostigne objekat najvišeg nivoa document koji je koren svih ostalih elemenata.
+
+Da bismo podržali globalnu prečicu na tastaturi koja radi bez obzira na to koji element je u fokusu, iskoristićemo prednost prikazivanja događaja u obliku mehurića i funkciju koju `hx-trigger` atribut podržava: mogućnost slušanja događaja drugih elemenata. Sintaksa za ovo je `from:modifikator`, koji se dodaje nakon imena događaja i koji vam omogućava da navedete određeni element za slušanje datog događaja pomoću CSS selektora.
+
+U ovom slučaju, želimo da slušamo `body` element, koji je roditeljski element svih vidljivih elemenata na stranici.
+
+Evo kako hx-triggerizgleda naš ažurirani atribut:
+
+```html
+<div id="main">
+  <button hx-get="/contacts" hx-target="#main" hx-swap="outerHTML"
+    hx-trigger="click, keyup[ctrlKey && key == 'l'] from:body">           <1>
+      Get The Contacts
+  </button>
+</div>
+```
+
+Još bolje, slušajte otkucaje tastature na body
+
+1. Osluškujte događaj "keyup" na body oznaci.
+
+Sada, pored klikova, dugme će osluškivati keyupdogađaje na telu stranice. Tako će izdati zahtev kada se na njega klikne, a takođe i kad god neko dodirne nešto Ctrl-Lunutar tela stranice.
+
+A sada imamo lepu prečicu na tastaturi za našu aplikaciju vođenu hipermedijom.
+
+Atribut `hx-trigger` podržava mnogo više modifikatora i složeniji je od drugih `htmx` atributa. To je zato što su događaji, generalno, komplikovani i zahtevaju mnogo detalja da bi se postigli savršeni rezultati. Međutim, podrazumevani okidač će često biti dovoljan i obično ne morate da posežete za komplikovanim `hx-trigger` funkcijama kada koristite `htmx`.
+
+Čak i sa sofisticiranijim specifikacijama okidača poput prečice na tastaturi koju smo upravo dodali, opšti osećaj `htmx`-a je deklarativan, a ne imperativan. Zbog toga aplikacije zasnovane na htmx-u "imaju osećaj" standardnih web 1.0 aplikacija na način na koji dodavanje značajnih količina JavaScript-a to ne čini.
+
+### HTMX: HTML eXtended
+
+I, pogledajte! Ovim `hx-trigger`-om smo se pozabavili poslednjom prilikom za poboljšanje HTML-a koju smo naveli na početku ovog poglavlja:
+
+- **Prilika 2**: Možemo koristiti bilo koji događaj da pokrenemo HTTP zahtev.
+
+To je ukupno osam, prebrojte ih, osam atributa koji svi potpuno spadaju u isti konceptualni model kao i normalni HTML i koji, proširujući HTML kao hipermediju, otvaraju potpuno novi svet mogućnosti interakcije sa korisnicima unutar njega.
+
+Evo tabele koja sumira te mogućnosti i koji htmx atributi ih adresiraju:
+
+- Bilo koji element treba da bude u mogućnosti da pošalje HTTP zahteve  
+  `hx-get`, `hx-post`, `hx-put`, `hx-patch`, `hx-delete`.
+
+- Bilo koji događaj treba da bude u stanju da pokrene HTTP zahtev  
+  `hx-trigger`.
+
+- Bilo koja HTTP akcija treba da bude dostupna  
+  `hx-put`, `hx-patch`, `hx-delete`.
+
+- Bilo koje mesto na stranici treba da bude zamenljivo (transkluzija)  
+  `hx-target`, `hx-swap`.
+
+### Prosleđivanje parametara zahteva
+
+Do sada smo samo razmatrali situaciju u kojoj dugme upućuje jednostavan GET zahtev. Ovo je konceptualno veoma slično onome što bi mogla da uradi oznaka sidra. Ali postoji i ta druga izvorna hipermedijska kontrola u aplikacijama zasnovanim na HTML-u: forme. Forme se koriste za prosleđivanje dodatnih informacija pored same URL adrese do servera u zahtevu.
+
+Ove informacije se beleže putem ulaznih i elemenata sličnih ulaznim elementima unutar forme putem različitih vrsta oznaka za ulaz dostupnih u HTML-u.
+
+Htmx vam omogućava da uključite ove dodatne informacije na način koji odražava sam HTML.
+
+#### Prilaganje forme
+
+Najjednostavniji način za prosleđivanje ulaznih vrednosti sa zahtevom u htmx-u je da se element koji šalje zahtev ugradi unutar oznake forme.
+
+Hajde da uzmemo naš originalni obrazac za pretragu i konvertujemo ga da koristi `htmx`:
+
+```html
+<form action="/contacts" method="get" class="tool-bar">     <1>
+  <label for="search">Search Term</label>
+  <input id="search" type="search" name="q"
+    value="{{ request.args.get('q') or '' }}"
+      placeholder="Search Contacts"/>
+  <button hx-post="/contacts" hx-target="#main">            <2>
+    Search
+  </button>
+</form>
+```
+
+Dugme za pretragu zasnovano na htmx-u
+
+1. Kada se element pokretan htmx-om nalazi unutar oznake pretka `form`, sve ulazne vrednosti unutar te forme biće poslate za ne-GET zahteve.
+2. Prešli smo sa input tipa `submit` na `button` i dodali `hx-post` atribut.
+
+Sada, kada korisnik klikne na ovo dugme, vrednost unosa sa identifikatorom search biće uključena u zahtev. To je zahvaljujući činjenici da postoji oznaka `form` koja obuhvata i dugme i unos: kada se pokrene zahtev vođen `htmx`-om, `htmx` će pretražiti DOM hijerarhiju za obuhvatajuću formu i, ako je pronađe, uključiće sve vrednosti iz te forme. Ovo se ponekad  naziva `serijalizacija` forme.
+
+Možda ste primetili da je dugme prebačeno sa GET zahteva na POST zahtev. To je zato što, podrazumevano, htmx ne uključuje najbližu priloženu formu za GET zahteve, ali uključuje formu za sve ostale vrste zahteva.
+
+Ovo može delovati malo čudno, ali izbegava "smeće" URL-ova koji se koriste unutar forme prilikom rada sa unosima iz istorije, o čemu ćemo malo kasnije razgovarati. Uvek možete uključiti vrednosti obuhvatne forme sa elementom koji koristi GET koristeći `hx-includea` tribut, o čemu ćemo kasnije razgovarati.
+
+Takođe imajte na umu da smo mogli dodati `hx-post` atribut formi, umesto dugmetu, ali bi to stvorilo pomalo nezgodno dupliranje URL-a pretrage u `action` atributima `hx-post`. Ovo se može izbeći korišćenjem `hx-boost` atributa, o čemu ćemo govoriti u sledećem poglavlju.
+
+### Uključi ulaze
+
+Iako je uklapanje svih unosa koje želite da uključite u zahtev unutar forme najčešći pristup serijalizaciji unosa za htmx zahteve, to nije uvek moguće ili poželjno: oznake forme mogu imati posledice po izgled i jednostavno se ne mogu postaviti na neka mesta u HTML dokumentima. Dobar primer ove druge situacije je kod `tr` elemenata reda tabele (tr): `form` oznaka nije validno dete ili roditelj redova tabele, tako da ne možete postaviti formu unutar ili oko reda podataka u tabeli.
+
+Da bi se rešio ovaj problem, `htmx` pruža mehanizam za uključivanje ulaznih vrednosti u zahteve: `hx-includea` tribut. `hx-include` atribut vam omogućava da izaberete ulazne vrednosti koje želite da uključite u zahtev putem CSS selektora.
+
+Evo gornjeg primera prerađenog da uključi unos, izostavljajući formu:
+
+```html
+<div id="main">
+  <label for="search">Search Contacts:</label>
+  <input id="search" name="q"  type="search"
+    value="{{ request.args.get('q') or '' }}"
+    placeholder="Search Contacts"/>
+  <button hx-post="/contacts" hx-target="#main" hx-include="#search"> <1>
+    Search
+  </button>
+</div>
+```
+
+Dugme za pretragu zasnovano na htmx-u sa `hx-include`
+
+1. `hx-include` se može koristiti za direktno uključivanje vrednosti u zahtev.
+
+Atribut `hx-include` uzima vrednost CSS selektora i omogućava vam da tačno odredite koje vrednosti treba poslati zajedno sa zahtevom. Ovo može biti korisno ako je teško kolocirati element koji izdaje zahtev sa svim željenim ulazima.
+
+Takođe je korisno kada zapravo želite da pošaljete vrednosti sa GET zahtevom i prevaziđete podrazumevano ponašanje htmx-a.
+
+### Relativni CSS selektori
+
+Atribut `hx-include`, a zapravo i većina atributa koji prihvataju CSS selektor, takođe podržavaju relativne CSS selektore. Oni vam omogućavaju da odredite CSS selektor u odnosu na element na kojem je deklarisan.
+
+Evo nekoliko primera:
+
+- `closest`
+  Pronađite najbliži roditeljski element koji odgovara datom selektoru, npr `form`.
+
+- `next`
+  Pronađite sledeći element (skeniranjem unapred) koji odgovara datom selektoru, npr `next input`.
+
+- `previous`
+  Pronađi prethodni element (skeniranjem unazad) koji odgovara datom selektoru, npr `previous input`.
+
+- `find`
+  Pronađite sledeći element unutar ovog elementa koji odgovara datom selektoru, npr `find input`.
+
+- `this`
+  Trenutni element.
+
+Korišćenje relativnih CSS selektora često vam omogućava da izbegnete generisanje identifikatora za elemente, jer umesto toga možete iskoristiti njihov lokalni strukturni raspored.
+
+### Ugrađene vrednosti
+
+Poslednji način za uključivanje vrednosti u zahteve vođene htmx-om je korišćenje `hx-vals` atributa, koji vam omogućava da uključite "statičke" vrednosti u zahtev. Ovo može biti korisno ako imate dodatne informacije koje želite da uključite u zahteve, ali ne želite da ove informacije budu ugrađene, na primer, u skrivene unose (što bi bio standardni mehanizam za uključivanje dodatnih, skrivenih informacija u HTML-u).
+
+Evo jednog primera `hx-vals`:
+
+```html
+<button hx-get="/contacts" hx-vals='{"state":"MT"}'> <1>
+  Get The Contacts In Montana
+</button>
+```
+
+Dugme koje koristi htmx tehnologiju sa `hx-vals`.
+
+1. `hx-vals`, JSON vrednost koju treba uključiti u zahtev.
+
+Parametar `state` sa vrednošću `MT` će biti uključen u GET zahtev, što će rezultirati putanjom i parametrima koji izgledaju ovako: "/contacts?state=MT". Imajte na umu da smo promenili `hx-vals` atribut tako da koristi jednostruke navodnike oko njegove vrednosti. To je zato što JSON strogo zahteva dvostruke navodnike i stoga, da bismo izbegli izbegavanje, morali smo da koristimo jednostruke navodnike za vrednost atributa.
+
+Takođe možete dodati prefiks `hx-vals` js: i proslediti vrednosti koje se procenjuju u trenutku zahteva, što može biti korisno za uključivanje stvari poput dinamički održavane promenljive ili vrednosti iz JavaScript biblioteke treće strane.
+
+Na primer, ako bise  "state" promenljiva održavala dinamički, putem nekog JavaScript-a, i ako bi postojala JavaScript funkcija, "getCurrentState()", koja vraća trenutno izabrano stanje, ona bi mogla biti dinamički uključena u htmx zahteve kao što je prikazano:
+
+```html
+<button hx-get="/contacts"
+  hx-vals='js:{"state":getCurrentState()}'>     <1>
+    Get The Contacts In The Selected State
+</button>
+```
+
+Dinamička vrednost
+
+1. Sa `js:prefiksom`, ovaj izraz će se izračunati prilikom slanja.
+
+Ova tri mehanizma,
+
+- korišćenje `form` oznaka,
+- korišćenje `hx-include` atributa, i
+- korišćenje `hx-vals` atributa,
+
+omogućavaju vam da uključite vrednosti u svoje hipermedijske zahteve sa htmx-om na način koji bi trebalo da deluje veoma poznato i u skladu sa duhom HTML-a, a istovremeno vam daje fleksibilnost da postignete ono što želite.
+
+### Podrška za istoriju
+
+Imamo još jedan deo funkcionalnosti kojim zaključujemo naš pregled htmlx-a: podrška za istoriju pregledača. Kada koristite uobičajene HTML linkove i obrasce, vaš pregledač će pratiti sve stranice koje ste posetili. Zatim možete koristiti dugme za nazad da biste se vratili na prethodnu stranicu, a kada to uradite, možete koristiti dugme za napred da biste se vratili na originalnu stranicu na kojoj ste bili.
+
+Ova ideja istorije bila je jedna od ključnih karakteristika ranog veba. Nažalost, ispostavilo se da istorija postaje komplikovana kada pređete na paradigmu aplikacije sa jednom stranicom. AJAX zahtev sam po sebi ne registruje veb stranicu u istoriji vašeg pregledača, što je dobra stvar: AJAX zahtev možda nema nikakve veze sa stanjem veb stranice (možda samo beleži neku aktivnost u pregledaču), tako da ne bi bilo prikladno kreirati novi unos u istoriji za interakciju.
+
+Međutim, verovatno će postojati mnogo AJAX interakcija u jednostraničnoj aplikaciji gde je prikladno kreirati unos istorije. Postoji JavaScript API za rad sa istorijom pregledača, ali ovaj API je izuzetno dosadan i težak za rad, pa ga JavaScript programeri često ignorišu.
+
+Ako ste ikada koristili aplikaciju sa jednom stranicom i slučajno kliknuli na dugme za nazad, ne samo da biste izgubili celokupno stanje aplikacije i morali da počnete ispočetka, videli ste ovaj problem u akciji.
+
+U htmx-u, kao i kod okvira za aplikacije sa jednom stranicom, često ćete morati eksplicitno da radite sa API-jem za istoriju. Srećom, pošto se htmx drži tako blizu izvornom modelu veba i pošto je deklarativan, dobijanje ispravne veb istorije je obično mnogo lakše uraditi u aplikaciji zasnovanoj na htmx-u.
+
+Razmotrite dugme koje smo razmatrali za učitavanje kontakata:
+
+```html
+<button hx-get="/contacts" hx-target="#main">
+  Get The Contacts
+</button>
+```
+
+Naše pouzdano dugme
+
+U sadašnjem stanju, ako kliknete na ovo dugme, preuzeće se sadržaj iz "/contacts" elementa sa id-om i učitati ga u main, ali neće se kreirati novi unos u istoriju.
+
+Ako bismo želeli da kreira unos u istoriju kada se ovaj zahtev desi, dodali bismo novi atribut dugmetu, `hx-push-url` atribut:
+
+```html
+<button hx-get="/contacts" hx-target="#main" hx-push-url="true"> <1>
+  Get The Contacts
+</button>
+```
+
+Naše pouzdano dugme, sada sa istorijom!
+
+1. `hx-push-url` kreiraće unos u istoriji kada se klikne na dugme.
+
+Sada, kada se klikne na dugme, "/contacts" putanja će biti uneta u navigacionu traku pregledača i za nju će biti kreiran unos u istoriji. Štaviše, ako korisnik klikne na dugme za nazad, originalni sadržaj stranice će biti vraćen, zajedno sa originalnom URL adresom.
+
+Sada, ime `hx-push-url` atributa može zvučati malo nejasno, ali je zasnovano na JavaScript API-ju `history.pushState()`. Ovaj pojam "guranja" proizilazi iz činjenice da su unosi istorije modelirani kao stek, i tako "gurate" nove unose na vrh steka unosa istorije.
+
+Sa ovim relativno jednostavnim, deklarativnim mehanizmom, htmx vam omogućava da se integrišete sa dugmetom za nazad na način koji oponaša "normalno" ponašanje HTML-a.
+
+Sada, postoji još jedna stvar koju moramo da rešimo da bismo dobili istoriju "baš kako treba": "/contacts" uspešno smo "uneli" putanju u traku lokacije pregledača i dugme za nazad radi. Ali šta ako neko osveži stranicu pregledača dok je na "/contacts" stranici?
+
+U ovom slučaju, moraćete da obradite "delimični" odgovor zasnovan na htmx-u, kao i odgovor "cela stranica" koji nije htmx. To možete učiniti koristeći HTTP zaglavlja, temu o kojoj ćemo detaljnije govoriti kasnije u knjizi.
+
+## Zaključak
+
+Dakle, to je naš brzi uvod u htmx. Videli smo samo desetak atributa iz biblioteke, ali možete videti koliko moćni ovi atributi mogu biti. Htmx omogućava mnogo sofisticiraniju veb aplikaciju nego što je to moguće u običnom HTML-u, uz minimalno dodatno konceptualno opterećenje u poređenju sa većinom pristupa zasnovanih na JavaScript-u.
+
+Htmx ima za cilj da postepeno poboljša HTML kao hipermediju na način koji je konceptualno koherentan sa osnovnim jezikom za označavanje. Kao i svaki tehnički izbor, ovo nije bez kompromisa: ostajući tako blizak HTML-u, htmx ne daje programerima mnogo infrastrukture za koju bi mnogi mogli smatrati da bi trebalo da bude tu "po podrazumevanim podešavanjima".
+
+Ostajući bliži izvornom modelu veba, htmx teži da pronađe ravnotežu između jednostavnosti i funkcionalnosti, prepuštajući se drugim bibliotekama za složenija frontend proširenja na postojećoj veb platformi. Dobra vest je da htmx dobro funkcioniše sa drugima, tako da kada se pojave ove potrebe, često je dovoljno lako uključiti drugu biblioteku da ih reši.
+
+---
+
+**HTML napomene: Budžetiranje za HTML**:
+
+Bliska veza između sadržaja i oznaka znači da je dobar HTML radno intenzivan. Većina sajtova ima podelu između autora, koji retko znaju HTML, i programera, kojima je potrebno da razviju generički sistem sposoban da obrađuje bilo koji sadržaj koji im se prikaže — ova podela obično poprima oblik CMS-a. Kao rezultat toga, prilagođenost oznaka sadržaju, što je često neophodno za napredni HTML, retko je izvodljiva.
+
+Štaviše, kod internacionalizovanih sajtova, ubrizgavanje sadržaja na različitim jezicima u iste elemente može smanjiti kvalitet označavanja jer se stilske konvencije razlikuju između jezika. To je trošak koji malo organizacija može da izdvoji.
+
+Stoga, ne očekujemo da svaki sajt sadrži savršeno kompatibilan HTML. Najvažnije je izbegavati pogrešan HTML — bolje je osloniti se na generičkiji element nego biti potpuno netačan.
+
+Međutim, ako imate resurse, više pažnje u vezi sa HTML-om će proizvesti uglađeniji sajt.
+
+---

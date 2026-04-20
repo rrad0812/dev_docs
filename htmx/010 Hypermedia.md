@@ -1,0 +1,1505 @@
+Skriptovanje na strani klijenta
+
+REST omogućava proširenje funkcionalnosti klijenta preuzimanjem i izvršavanjem
+koda u obliku apleta ili skripti. Ovo pojednostavljuje klijente smanjenjem broja
+funkcija koje je potrebno prethodno implementirati.
+
+— Roj Filding, Arhitektonski stilovi i dizajn mrežnih softverskih arhitektura
+
+Do sada smo (uglavnom) izbegavali pisanje bilo kakvog JavaScript-a (ili _hyperscript-a) u
+Contact.app, uglavnom zato što funkcionalnost koju smo implementirali to nije zahtevala. U
+ovom poglavlju ćemo se osvrnuti na skriptovanje i, posebno, skriptovanje prilagođeno
+hipermediji u kontekstu aplikacije vođene hipermedijom.
+
+Da li je skriptovanje dozvoljeno?
+Uobičajena kritika veba je da se zloupotrebljava. Postoji narativ da je WWW stvoren kao sistem
+za isporuku "dokumenata" i da je tek slučajno ili pod bizarnim okolnostima počeo da se koristi
+za "aplikacije".
+
+Međutim, koncept hipermedije dovodi u pitanje podelu dokumenta i aplikacije. Hipermedijalni
+sistemi poput HyperCard-a, koji je prethodio vebu, imali su bogate mogućnosti za aktivna i
+interaktivna iskustva, uključujući pisanje skripti.
+
+HTML, kako je specificiran i implementiran, zaista nema mogućnosti potrebne za izgradnju
+visoko interaktivnih aplikacija. Međutim, to ne znači da je svrha hipermedija "dokumenti" pre
+"aplikacije".
+
+Umesto toga, iako teorijska osnova postoji, implementacija je nedovoljno razvijena. Pošto je
+Javaskript jedina tačka proširenja, a kontrole hipermedija nisu dobro integrisane u Javaskript
+(zašto se ne može kliknuti na link bez zaustavljanja programa?), programeri nisu internalizovali
+hipermedijalni sistem, već su umesto toga koristili veb kao "glupu cev" za aplikacije koje
+imitiraju "nativne".
+
+Cilj ove knjige je da pokaže da je moguće napraviti sofisticirane veb aplikacije koristeći
+originalnu tehnologiju veba, hipermediju, bez potrebe da programer aplikacija poseže za
+apstrakcijama koje pružaju veliki, popularni JavaScript frejmvorci.
+
+Sam Htmx je, naravno, napisan u JavaScript-u, a jedna od njegovih prednosti je to što
+hipermedijske interakcije koje prolaze kroz htmx otkrivaju bogat interfejs JavaScript kodu sa
+konfiguracijom, događajima i sopstvenom podrškom za proširenja htmx-a.
+
+Htmx dovoljno proširuje izražajne mogućnosti HTML-a da eliminiše potrebu za skriptovanjem u
+mnogim situacijama. Ovo čini htmx privlačnim ljudima koji ne žele da pišu JavaScript, a postoji
+mnogo takvih programera, koji su oprezni zbog složenosti okvira za jednostranične aplikacije.
+
+Međutim, cilj htmx projekta nije korišćenje JavaScript-a. Cilj htmx-a nije manje JavaScript-a,
+već manje koda, čitljiviji i hipermedijski prilagođeniji kod.
+
+Skriptovanje je bio ogroman multiplikator snage za veb. Koristeći skriptovanje, programeri veb
+aplikacija ne samo da mogu da poboljšaju svoje HTML veb stranice, već i da kreiraju kompletne
+klijentske aplikacije koje često mogu da se takmiče sa izvornim, "debelim" klijentskim
+
+
+
+aplikacijama.
+
+Ovaj pristup izgradnji veb aplikacija, usmeren na Javaskript, svedoči o moći veba i posebno o
+sofisticiranosti veb pregledača. Ima svoje mesto u veb razvoju: postoje situacije u kojima
+hipermedijalni pristup jednostavno ne može da pruži nivo interakcije koji SPA može.
+
+Međutim, pored ovog stila koji je više usmeren ka JavaSkriptu, želimo da razvijemo stil
+skriptovanja koji je kompatibilniji i konzistentniji sa aplikacijama zasnovanim na hipermediji.
+
+Pozajmljujući ideju Roja Fildinga o "ograničenjima" koja definišu REST, nudimo dva
+ograničenja skriptovanja prilagođenog hipermedijima. Skriptovanje se vrši na način
+kompatibilan sa HDA ako se poštuju sledeća dva ograničenja:
+
+- Glavni format podataka koji se razmenjuju između servera i klijenta mora biti hipermedija,
+isti kao što bi bio bez skriptovanja.
+
+- Stanje na strani klijenta, izvan samog DOM-a, svedeno je na minimum.
+
+Cilj ovih ograničenja je da se skriptovanje ograniči na mesto gde najbolje blista i gde se ništa
+drugo ne može približiti: dizajn interakcije. Poslovna logika i logika prezentacije su odgovornost
+servera, gde možemo da biramo jezike ili alate koji su odgovarajući za našu poslovnu oblast.
+
+Zadovoljavanje ova dva ograničenja ponekad zahteva da odstupimo od onoga što se obično
+smatra najboljom praksom za JavaScript. Imajte na umu da je kulturna mudrost JavaScript-a
+uglavnom razvijena u SPA aplikacijama usmerenim na JavaScript.
+
+Aplikacije vođene hipermedijom ne mogu se tako udobno osloniti na ovu tradiciju. Ovo poglavlje
+je naš doprinos razvoju novog stila i najboljih praksi za ono što nazivamo aplikacijama vođenim
+hipermedijom.
+
+Nažalost, samo nabrajanje "najboljih praksi" retko je ubedljivo ili poučno. Iskreno, dosadno je.
+
+Umesto toga, demonstriraćemo ove najbolje prakse implementacijom funkcija na strani klijenta
+u Contact.app. Da bismo pokrili različite aspekte skriptovanja prilagođenog hipermediji,
+implementiraćemo tri različite funkcije:
+
+- Dodatni meni za radnje "Izmeni", "Pregled" i "Obriši", radi sređivanja vizuelne gužve na
+našoj listi kontakata.
+
+- Poboljšani interfejs za grupno brisanje.
+
+- Prečica na tastaturi za fokusiranje polja za pretragu.
+
+Važna stvar u implementaciji svake od ovih funkcija je da, iako su u potpunosti implementirane
+na strani klijenta korišćenjem skriptovanja, one ne razmenjuju informacije sa serverom putem
+formata koji nije hipermedijalni, kao što je JSON, i da ne čuvaju značajnu količinu stanja van
+samog DOM-a.
+
+Alati za skriptovanje za veb
+Primarni skriptni jezik za veb je, naravno, Javaskript, koji je danas sveprisutan u veb razvoju.
+
+Međutim, malo zanimljiva internetska legenda je da Javaskript nije uvek bio jedina ugrađena
+opcija. Kao što citat Roja Fildinga na početku ovog poglavlja sugeriše, "apleti" napisani na
+drugim jezicima kao što je Java smatrani su delom skriptne infrastrukture veba. Pored toga,
+
+
+
+postojao je period kada je Internet Eksplorer podržavao VBScript, skriptni jezik zasnovan na
+Vizuel Bejsiku.
+
+Danas imamo razne transkompajlere (često skraćeno transpileri ) koji konvertuju mnoge jezike
+u JavaScript, kao što su TypeScript, Dart, Kotlin, ClojureScript, F# i drugi. Postoji i format
+bajtkoda WebAssembly (WASM), koji je podržan kao cilj kompajliranja za C, Rust i
+AssemblyScript, jezik koji je prvi u WASM-u.
+
+Međutim, većina ovih opcija nije usmerena ka stilu skriptovanja koji je pogodan za hipermediju.
+Jezici za kompajliranje u JS se često uparuju sa SPA-orijentisanim bibliotekama (Dart i
+AngularDart, ClojureScript i Reagent, F# i Elm), a WASM je trenutno uglavnom usmeren ka
+povezivanju sa C/C++ bibliotekama iz JavaScript-a.
+
+Umesto toga, fokusiraćemo se na tri tehnologije skriptovanja na strani klijenta koje su
+prilagođene hipermediji:
+
+- VanillaJS, odnosno korišćenje JavaScript-a bez zavisnosti od bilo kog frejmvorka.
+
+- Alpine.js, JavaScript biblioteka za dodavanje ponašanja direktno u HTML.
+
+- _hyperscript, skriptni jezik koji nije Javaskript, a kreiran je uporedo sa htmx-om. Kao i
+AlpineJS, _hyperscript je obično ugrađen u HTML.
+
+Hajde da ukratko pogledamo svaku od ovih opcija skriptovanja, kako bismo znali sa čime imamo
+posla.
+
+Imajte na umu da ćemo vam, kao i kod CSS-a, pokazati dovoljno svake od ovih opcija da biste
+stekli utisak o tome kako funkcionišu i, nadamo se, probuditi vaše interesovanje da ih detaljnije
+istražite.
+
+Vanilni Javaskript
+Nijedan kod nije brži od nikakvog koda.
+
+— Merb (Ruby veb frejmvork), moto
+
+Vanila Javaskript jednostavno koristi običan Javaskript u vašoj aplikaciji, bez ikakvih
+međuslojeva. Termin "Vanila" je ušao u žargon veb programera za frontend jer se pretpostavilo
+da će svaka dovoljno "napredna" veb aplikacija koristiti neku biblioteku čije se ime završava na
+".js". Međutim, kako je Javaskript sazreo kao skriptni jezik, standardizovan u svim pregledačima
+i pružao sve više i više funkcionalnosti, ovi okviri i biblioteke su postali manje važni.
+
+Pomalo ironično, međutim, kako je Javaskript postajao moćniji i uklanjao potrebu za prvom
+generacijom Javaskript biblioteka kao što je jQuery, on je takođe omogućio ljudima da naprave
+složene SPA biblioteke. Ove SPA biblioteke su često čak i složenije od originalne prve generacije
+Javaskript biblioteka.
+
+Citat sa veb stranice http://vanilla-js.com, koju vredi posetiti iako je malo zastarela, dobro
+opisuje situaciju:
+
+VanillaJS je frejmvork sa najnižim troškovima i najsveobuhvatnijim frejmvorkom
+koji sam ikada koristio.
+
+— http://vanilla-js.com
+
+
+
+Pošto je Javaskript sazreo kao skriptni jezik, ovo je svakako slučaj za mnoge aplikacije. Posebno
+je tačno u slučaju HDA-ova, jer korišćenjem hipermedije vašoj aplikaciji neće biti potrebne
+mnoge funkcije koje obično pružaju složeniji Javaskript okviri za jednostranične aplikacije:
+
+- Rutiranje na strani klijenta
+
+- Apstrakcija nad DOM manipulacijom (tj. šabloni koji se automatski ažuriraju kada se
+promene referencirane promenljive)
+
+- Renderovanje na strani servera 1
+
+- Pridavanje dinamičkog ponašanja oznakama koje server prikazuje pri učitavanju (tj.
+"hidratacija")
+
+- Zahtevi mreže
+
+Bez obrade sve ove složenosti u JavaSkriptu, vaše potrebe za frejmvorkom su dramatično
+smanjene.
+
+Jedna od najboljih stvari kod VanillaJS-a je način na koji ga instalirate: ne morate!
+
+Možete jednostavno da počnete da pišete Javaskript u svojoj veb aplikaciji i on će jednostavno
+raditi.
+
+To je dobra vest. Loša vest je da, uprkos poboljšanjima tokom poslednje decenije, Javaskript ima
+neka značajna ograničenja kao skriptni jezik koja ga mogu učiniti manje nego idealnim kao
+samostalnu tehnologiju skriptovanja za aplikacije vođene hipermedijom:
+
+- Budući da je toliko uspostavljen koliko jeste, nakupio je mnogo karakteristika i mana.
+
+- Ima komplikovan i zbunjujući skup funkcija za rad sa asinhronim kodom.
+
+- Rad sa događajima je iznenađujuće težak.
+
+- DOM API-ji (od kojih je veliki deo prvobitno dizajniran za Javu, da, Javu ) su opširni i
+nemaju naviku da uobičajene funkcionalnosti učine jednostavnim za korišćenje.
+
+Naravno, nijedno od ovih ograničenja nije presudno. Mnoga od njih se postepeno ispravljaju i
+mnogi ljudi više vole "praktičnu" (zbog nedostatka boljeg izraza) prirodu običnog Javaskripta u
+odnosu na složenije pristupe skriptovanju na strani klijenta.
+
+Jednostavan brojač
+
+Da bismo se upustili u jednostavan JavaSkript kao opciju za frontend skriptovanje, hajde da
+napravimo jednostavan vidžet za brojač.
+
+Vidžeti brojača su uobičajen primer "Zdravo svete" za JavaSkript frejmvorke, tako da će biti
+poučno pogledati kako se to može uraditi u običnom JavaSkriptu (kao i druge opcije koje ćemo
+pogledati).
+
+Naš vidžet za brojač će biti veoma jednostavan: imaće broj, prikazan kao tekst, i dugme koje
+povećava broj.
+
+Jedan problem sa rešavanjem ovog problema u običnom JavaSkriptu je taj što mu nedostaje
+jedna stvar koju većina JavaSkript okvira pruža: podrazumevani kod i arhitektonski stil.
+
+
+
+Sa običnim JavaSkriptom, nema pravila!
+
+Ovo nije sve loše. Pruža odličnu priliku za kratko putovanje kroz različite stilove koje su ljudi
+razvili za pisanje svog JavaScript-a.
+
+Ugrađena implementacija
+
+Za početak, počnimo sa najjednostavnijom stvari koju možemo zamisliti: sav naš JavaScript kod
+biće napisan direktno u HTML-u. Kada se klikne na dugme, potražićemo element outputkoji
+sadrži broj i povećati broj sadržan u njemu.
+
+<section class="counter">
+<output id="my-output">0</output> <1>
+<button
+
+    onclick=" <2>
+      document.querySelector('#my-output') <3>
+       .textContent++ <4>
+    "
+>Increment</button>
+
+</section>
+
+Brojač u običnom JavaScript-u, inlajn verzija
+
+1. Naš izlazni element ima ID koji nam pomaže da ga pronađemo.
+
+2. Koristimo onclickatribut da dodamo slušaoca događaja.
+
+3. Pronađite izlaz putem poziva funkcije querySelector().
+
+4. Javaskript nam dozvoljava da koristimo ++operator na stringovima.
+
+Nije baš loše.
+
+Nije najlepši kod i može biti iritantan, posebno ako niste navikli na DOM API-je.
+
+Malo je dosadno što smo morali da dodamo idelementu output`.
+document.querySelector()Funkcija je malo opširnija u poređenju, recimo, sa $funkcijom koju
+pruža jQuery.
+
+Ali funkcioniše. Takođe je dovoljno lako razumeti, i što je ključno, ne zahteva nikakve druge
+JavaScript biblioteke.
+
+Dakle, to je jednostavan, inline pristup sa VanillaJS-om.
+
+Odvajanje našeg pisanja skripti
+
+Iako je implementacija u liniji jednostavna u izvesnom smislu, standardniji način da se ovo
+napiše bio bi premeštanje koda u posebnu JavaScript datoteku. Ova JavaScript datoteka bi zatim
+bila ili povezana preko <script src>oznake ili bi bila smeštena u oznaku u liniji <script>od strane
+procesa izgradnje.
+
+Ovde vidimo HTML i JavaScript odvojene jedan od drugog, u različitim datotekama. HTML je
+sada "čistiji" jer u njemu nema JavaScript-a.
+
+Javaskript je malo složeniji nego u našoj inlajn verziji: potrebno je da potražimo dugme koristeći
+selektor upita i dodamo slušač događaja koji će obraditi događaj klika i povećati brojač.
+
+
+
+<section class="counter">
+<output id="my-output">0</output>
+<button class="increment-btn">Increment</button>
+
+</section>
+
+HTML brojača
+
+const counterOutput = document.querySelector("#my-output"), <1>
+  incrementBtn = document.querySelector(".counter.increment-btn") <2>
+
+incrementBtn.addEventListener("click", e => { <3>
+  counterOutput.innerHTML++ <4>
+})
+
+Brojač JavaScript
+
+1. Pronađite izlazni element.
+
+2. Pronađi dugme.
+
+3. Koristimo addEventListener, što je poželjnije onclickiz više razloga.
+
+4. Logika ostaje ista, menja se samo struktura oko nje.
+
+Premeštanjem Javaskripta u drugu datoteku, pratimo princip dizajna softvera poznat kao
+Razdvajanje briga (SoC).
+
+Razdvajanje briga (ili aspekata) softverskog projekta pretpostavlja da različite "brige" (ili
+aspekte) softverskog projekta treba podeliti u više datoteka, kako se međusobno ne bi
+"zagađivale". JavaScript nije oznaka, tako da ne bi trebalo da bude u vašem HTML-u, već negde
+drugde. Informacije o stilizaciji, slično, nisu oznaka, pa takođe pripadaju posebnoj datoteci (na
+primer, CSS datoteci).
+
+Dugo vremena, ovo razdvajanje briga smatralo se "ortodoksnim" načinom za izgradnju veb
+aplikacija.
+
+Deklarisani cilj razdvajanja briga je da bismo trebali biti u mogućnosti da modifikujemo i
+razvijamo svaku brigu nezavisno, sa poverenjem da nećemo pokvariti nijednu drugu brigu.
+
+Međutim, hajde da pogledamo kako je tačno ovaj princip funkcionisao u našem jednostavnom
+primeru brojača. Ako pažljivo pogledate novi HTML, ispostaviće se da smo morali da dodamo
+klasu dugmetu. Dodali smo ovu klasu kako bismo mogli da potražimo dugme u JavaScript-u i
+dodali smo obrađivač događaja za događaj "klik".
+
+Sada, i u HTML-u i u JavaScript-u, ovo ime klase je samo string i ne postoji nikakav proces za
+proveru da li dugme ima ispravne klase na sebi ili svojim pretcima kako bi se osiguralo da je
+obrađivač događaja zaista dodat ispravnom elementu.
+
+Nažalost, ispostavilo se da nepažljiva upotreba CSS selektora u JavaScript-u može prouzrokovati
+ono što je poznato kao jQuery soup. jQuery soup je situacija u kojoj:
+
+- Javaskript koji pridaje dato ponašanje datom elementu je teško pronaći.
+
+- Ponovna upotreba koda je teška.
+
+- Kod na kraju ispada divlje neorganizovan i "ravn", sa mnoštvom nepovezanih obrađivača
+događaja pomešanih zajedno.
+
+
+
+Naziv "jQuery čorba" potiče od činjenice da je većina aplikacija koje koriste mnogo JavaScript-a
+ranije bila građena u jQuery-ju (mnoge se i dalje prave), što je, možda nenamerno, težilo da
+podstakne ovaj stil JavaScript-a.
+
+Dakle, možete videti da pojam razdvajanja briga ne funkcioniše uvek onako dobro kako je
+obećano: naše brige se na kraju isprepletuju ili prilično duboko povezane, čak i kada ih
+razdvojimo u različite datoteke.
+
+ EXPECTATION              REALITY
+
+ HTML   CSS    JS         HTML   CSS    JS  
+┌────┐ ┌────┐ ┌────┐     ┌────┐ ┌────┐ ┌────┐
+│    │ │    │ │    │     │    │ │    │ │    │
+│ C  │ │ C  │ │ c  │     │ CO │ │ NC │ │ern │
+│ O  │ │ o  │ │ o  │     │    │ │    │ │    │
+│ N  │ │ n  │ │ n  │     │ Co │ │ nc │ │ERN │
+│ C  │ │ c  │ │ c  │     │    │ │    │ │    │
+│ E  │ │ e  │ │ e  │     │ co │ │ NC │ │ERN │
+│ R  │ │ r  │ │ r  │     │    │ │    │ │    │
+│ N  │ │ n  │ │ n  │     │ CO │ │ Nc │ │ern │
+│    │ │    │ │    │     │    │ │    │ │    │
+└────┘ └────┘ └────┘     └────┘ └────┘ └────┘
+
+Koje brige?
+
+Da bismo pokazali da vas ne može samo imenovanje između briga dovesti u nevolju, razmotrite
+još jednu malu promenu u našem HTML-u koja demonstrira probleme sa našim razdvajanjem
+briga: zamislite da odlučimo da promenimo polje broja iz oznake <output>u <input
+type="number">.
+
+Ova mala promena u našem HTML-u će pokvariti naš JavaScript, uprkos činjenici da smo
+"razdvojili" naše brige.
+
+Rešenje za ovaj problem je dovoljno jednostavno (morali bismo da promenimo
+.textContentsvojstvo u.valuesvojstvo), ali pokazuje teret sinhronizacije promena oznaka i
+promena koda u više datoteka. Održavanje sinhronizacije svega može postati sve teže kako se
+veličina vaše aplikacije povećava.
+
+Činjenica da male izmene u našem HTML-u mogu da poremete naše skriptovanje ukazuje na to
+da su ta dva koda čvrsto povezana, uprkos tome što su podeljena u više datoteka. Ova čvrsta
+veza sugeriše da je razdvajanje između HTML-a i JavaScript-a (i CSS-a) često iluzorno
+razdvajanje briga: brige su dovoljno povezane jedna sa drugom da ih nije lako razdvojiti.
+
+U Contact.app-u se ne bavimo " strukturom", "stilizovanjem" ili "ponašanjem"; bavimo se
+prikupljanjem kontakt informacija i njihovim predstavljanjem korisnicima. SoC, onako kako je
+formulisan u ortodoksiji veb razvoja, zapravo nije nepokršiva arhitektonska smernica, već stilski
+izbor koji, kao što vidimo, može postati čak i prepreka.
+
+Lokalitet ponašanja
+
+Ispostavlja se da postoji sve veća reakcija protiv principa dizajna razdvajanja briga. Razmotrite
+sledeće veb tehnologije i tehnike:
+
+- JSX
+
+- LitHTML
+
+- CSS-in-JS
+
+
+
+- Komponente sa jednom datotekom
+
+- Rutiranje zasnovano na fajl sistemu
+
+Svaka od ovih tehnologija kolocira kod na različitim jezicima koji se bave jednom funkcijom
+(obično korisničkim interfejsom).
+
+Svi oni kombinuju brige o implementaciji kako bi krajnjem korisniku predstavili jedinstvenu
+apstrakciju. Razdvajanje briga o tehničkim detaljima jednostavno nije tolika, hm, briga.
+
+Lokalnost ponašanja (LoB) je alternativni princip dizajna softvera koji smo skovali, kao
+suprotnost principu razdvajanja briga. On opisuje sledeću karakteristiku softvera:
+
+Ponašanje jedinice koda treba da bude što očiglednije posmatrajući samo tu jedinicu
+koda.
+
+— https://htmx.org/essays/locality-of-behaviour/
+
+Jednostavno rečeno: trebalo bi da budete u stanju da utvrdite šta dugme radi jednostavnim
+pogledom na kod ili oznake koje kreiraju to dugme. To ne znači da morate da ugradite celu
+implementaciju, već da ne bi trebalo da morate da ga tražite ili da vam je potrebno prethodno
+poznavanje kodne baze da biste ga pronašli.
+
+Lokalnost ponašanja ćemo demonstrirati u svim našim primerima, kako u demonstracijama
+brojača, tako i u funkcijama koje dodajemo u Contact.app. Lokalnost ponašanja je eksplicitni cilj
+dizajna i za _hyperscript i za Alpine.js (o čemu ćemo kasnije govoriti), kao i za htmx.
+
+Svi ovi alati postižu Lokalnost ponašanja tako što vam omogućavaju da ugrađujete atribute
+direktno u vaš HTML, umesto da kod traži elemente u dokumentu putem CSS selektora kako bi
+im dodao slušače događaja.
+
+U aplikaciji vođenoj hipermedijom, smatramo da je princip dizajna lokalnosti ponašanja često
+važniji od tradicionalnijeg principa dizajna razdvajanja briga.
+
+Šta da radimo sa našim brojačem?
+
+Dakle, da li bi trebalo da se vratimo na onclicknačin rada sa atributima? Taj pristup svakako
+pobeđuje u Lokalitetu ponašanja i ima dodatnu prednost što je ugrađen u HTML.
+
+Nažalost, međutim, on*JavaScript atributi takođe imaju neke nedostatke:
+
+- Ne podržavaju prilagođene događaje.
+
+- Ne postoji dobar mehanizam za povezivanje dugotrajnih promenljivih sa elementom — sve
+promenljive se odbacuju kada slušač događaja završi izvršavanje.
+
+- Ako imate više instanci elementa, moraćete da ponovite kod slušaoca na svakoj ili da
+koristite nešto pametnije poput delegiranja događaja.
+
+- Javaskript kod koji direktno manipuliše DOM-om postaje preopšran i zatrpava oznake.
+
+- Element ne može da osluškuje događaje na drugom elementu.
+
+Razmotrite ovu uobičajenu situaciju: imate iskačući prozor i želite da se on odbaci kada korisnik
+klikne van njega. U ovoj situaciji, slušalac će morati da bude na elementu "body", daleko od
+
+
+
+stvarne oznake iskačućeg prozora. To znači da bi element "body" morao da ima priključene
+slušaoce koji se bave mnogim nepovezanim komponentama. Neke od ovih komponenti možda
+čak nisu ni na stranici kada je prvi put prikazana, ako se dodaju dinamički nakon što se prikaže
+početna HTML stranica.
+
+Dakle, čini se da se obični JavaSkript i Lokalitet ponašanja ne uklapaju baš tako dobro kako
+bismo želeli.
+
+Međutim, situacija nije beznadežna: važno je razumeti da LoB ne zahteva da se ponašanje
+implementira na mestu korišćenja, već da se tamo samo pozove. To jest, ne moramo da pišemo
+sav naš kod na datom elementu, samo treba da jasno stavimo do znanja da dati element poziva
+neki kod, koji se može nalaziti negde drugde.
+
+Imajući ovo u vidu, moguće je poboljšati LoB dok se JavaScript piše u posebnoj datoteci, pod
+uslovom da imamo razuman sistem za strukturiranje našeg JavaScript-a.
+
+RSJS
+
+("Razumni sistem za strukturu JavaSkripta", https://ricostacruz.com/rsjs/ ) je skup smernica za
+arhitekturu JavaSkripta usmerenih na "tipičnu veb stranicu koja nije SPA". RSJS pruža rešenje
+za nedostatak standardnog stila koda za obični JavaSkript koji smo ranije pomenuli.
+
+Evo RSJS smernica koje su najrelevantnije za naš vidžet za brojanje:
+
+- "Korišćenje data-atributa" u HTML-u: pozivanje ponašanja dodavanjem atributa podataka
+jasno pokazuje da se dešava JavaScript, za razliku od korišćenja nasumičnih klasa ili ID-
+ova koji se mogu greškom ukloniti ili promeniti.
+
+- "Jedna komponenta po datoteci": naziv datoteke treba da se podudara sa atributom
+podataka kako bi se lako mogla pronaći, što je prednost za LoB.
+
+Da bismo pratili RSJS smernice, restrukturirajmo naše trenutne HTML i JavaScript datoteke.
+Prvo, koristićemo atribute podataka, odnosno HTML atribute koji počinju sa data-, standardnu
+karakteristiku HTML-a, da bismo naznačili da je naš HTML komponenta brojača. Zatim ćemo
+ažurirati naš JavaScript da koristi selektor atributa koji traži atribut data-counterkao korenski
+element u našoj komponenti brojača i povezaćemo odgovarajuće obrađivače događaja i logiku.
+Pored toga, preradićemo kod da bi koristio querySelectorAll()i dodao funkcionalnost brojača
+svim komponentama brojača koje se nalaze na stranici. (Nikad ne znate koliko brojača vam
+može poželeti!)
+
+Evo kako naš kod sada izgleda:
+
+<section class="counter" data-counter> <1>
+<output id="my-output" data-counter-output>0</output> <2>
+<button class="increment-btn" data-counter-increment>Increment</button>
+
+</section>
+
+Brojač u običnom JavaScript-u, sa RSJS-om
+
+1. Pozovite JavaScript ponašanje sa atributom podataka.
+
+2. Označite relevantne potomstvene elemente.
+
+// counter.js <1>
+document.querySelectorAll("[data-counter]") <2>
+.forEach(el => {
+const
+
+
+
+    output = el.querySelector("[data-counter-output]"),
+    increment = el.querySelector("[data-counter-increment]"); <3>
+
+    increment.addEventListener("click", e => output.textContent++); <4>
+  });
+
+1. Datoteka treba da ima isto ime kao i atribut podataka, kako bismo je mogli lako pronaći.
+
+2. Prikupi sve elemente koji pozivaju na ovo ponašanje.
+
+3. Nabavite sve potrebne podređene elemente.
+
+4. Registrujte obrađivače događaja.
+
+Korišćenje RSJS-a rešava, ili barem ublažava, mnoge probleme koje smo ukazali u našem
+prvom, nestrukturiranom primeru razdvajanja VanillaJS-a u posebnu datoteku:
+
+- JS koji pridaje ponašanje datom elementu je jasan (mada samo kroz konvencije
+imenovanja).
+
+- Ponovna upotreba je jednostavna — možete kreirati još jednu komponentu brojača na
+stranici i ona će jednostavno raditi.
+
+- Kod je dobro organizovan — jedno ponašanje po datoteci.
+
+Sve u svemu, RSJS je dobar način da strukturirate svoj osnovni JavaScript u aplikaciji vođenoj
+hipermedijom. Sve dok JavaScript ne komunicira sa serverom putem običnog JSON API-ja za
+podatke ili ne čuva gomilu internog stanja van DOM-a, ovo je savršeno kompatibilno sa HDA
+pristupom.
+
+Hajde da implementiramo funkciju u Contact.app koristeći RSJS/vanilla JavaScript pristup.
+
+Naša početna stranica ima linkove "Izmeni", "Pregled" i "Obriši" za svaki kontakt u našoj tabeli.
+Ovo zauzima puno prostora i stvara vizuelnu gužvu. Hajde da to popravimo tako što ćemo ove
+radnje postaviti unutar padajućeg menija sa dugmetom za njegovo otvaranje.
+
+Ako ste manje upoznati sa Javaskriptom i kod ovde počinje da vam deluje previše komplikovano,
+ne brinite; primeri Alpine.js i _hyperscript — koje ćemo pogledati u nastavku — lakše se prate.
+
+Počnimo skiciranjem oznaka koje želimo za naš padajući meni. Prvo, potreban nam je element,
+koristićemo <div>, da obuhvatimo ceo vidžet i označimo ga kao komponentu menija. Unutar
+ovog div-a, imaćemo standard <button>koji će funkcionisati kao mehanizam koji prikazuje i
+skriva stavke našeg menija. Konačno, imaćemo još jedan <div>koji sadrži stavke menija koje
+ćemo prikazivati.
+
+Ove stavke menija će biti jednostavne oznake sidra, kao što su u trenutnoj tabeli kontakata.
+
+Evo kako izgleda naš ažurirani HTML kod strukturiran RSJS-om:
+
+<div data-overflow-menu> <1>
+<button type="button" aria-haspopup="menu"
+
+        aria-controls="contact-menu-{{ contact.id }}"
+>Options</button> <2>
+
+<div role="menu" hidden id="contact-menu-{{ contact.id }}"> <3>
+<a role="menuitem"
+
+          href="/contacts/{{ contact.id }}/edit">Edit</a> <4>
+<a role="menuitem" href="/contacts/{{ contact.id }}">View</a>
+<!--... -->
+
+</div>
+
+
+
+</div>
+
+1. Označite korenski element komponente menija
+
+2. Ovo dugme će otvoriti i zatvoriti naš meni
+
+3. Kontejner za stavke našeg menija
+
+4. Stavke menija
+
+Uloge i ARIA atributi su zasnovani na obrascima menija i dugmeta menija iz ARIA vodiča za
+prakse autorstva.
+
+Na JS strani naše implementacije, počećemo sa RSJS šablonom: upitajmo sve elemente sa
+nekim atributom podataka, iteriramo kroz njih, dobijemo sve relevantne potomke.
+
+Imajte na umu da smo, u nastavku, malo izmenili RSJS šablon kako bismo ga integrisali sa
+htmx-om; dodatni meni se učitava kada htmx učita novi sadržaj.
+
+function overflowMenu(tree = document) {
+  tree.querySelectorAll("[data-overflow-menu]").forEach(menuRoot => { <1>
+
+const
+    button = menuRoot.querySelector("[aria-haspopup]"), <2>
+    menu = menuRoot.querySelector("[role=menu]"), <3>
+    items = [...menu.querySelectorAll("[role=menuitem]")];
+  });
+}
+
+addEventListener("htmx:load", e => overflowMenu(e.target)); <4>
+
+1. document.querySelectorAll(…).forEachSa RSJS-om, mnogo ćete pisati.
+
+2. Da bismo HTML održali čistim, ovde koristimo ARIA atribute umesto prilagođenih
+atributa podataka.
+
+3. Koristite operator širenja da biste konvertovali a NodeListu normalan Array.
+
+4. Inicijalizujte sve dodatne menije kada se stranica učita ili kada se sadržaj ubaci pomoću
+htmlx-a.
+
+Konvencionalno, pratili bismo da li je meni otvoren koristeći JavaScript promenljivu ili svojstvo
+u JavaScript objektu stanja. Ovaj pristup je uobičajen u velikim veb aplikacijama koje koriste
+JavaScript.
+
+Međutim, ovaj pristup ima neke nedostatke:
+
+- Morali bismo da sinhronizujemo DOM sa stanjem (teže bez okvira).
+
+- Izgubili bismo mogućnost serijalizacije HTML-a (jer se ovo otvoreno stanje ne čuva u
+DOM-u, već u JavaScript-u).
+
+Umesto ovog pristupa, koristićemo DOM za čuvanje našeg stanja. Oslanjaćemo se na
+hiddenatribut na elementu menija da nam kaže da je zatvoren. Ako je HTML stranice snimljen i
+vraćen, meni se takođe može vratiti jednostavnim ponovnim pokretanjem JS-a.
+
+items = [...menu.querySelectorAll("[role=menuitem]")]; <1>
+
+const isOpen = () => !menu.hidden; <2>
+
+
+
+1. Na početku dobijamo listu stavki menija. Ova implementacija neće podržavati dinamičko
+dodavanje ili uklanjanje stavki menija.
+
+2. Atribut hiddense korisno odražava kao hidden svojstvo, tako da ga ne moramo koristiti
+getAttribute.
+
+Takođe ćemo učiniti stavke menija tako da ne budu dostupne za tabove, kako bismo mogli sami
+da upravljamo njihovim fokusom.
+
+items.forEach(item => item.setAttribute("tabindex", "-1"));
+
+Sada hajde da implementiramo prebacivanje menija u JavaSkriptu:
+
+function toggleMenu(open = !isOpen()) { <1>
+if (open) {
+
+    menu.hidden = false;
+    button.setAttribute("aria-expanded", "true");
+    items[0].focus(); <2>
+  } else {
+    menu.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+  }
+}
+
+toggleMenu(isOpen()); <3>
+button.addEventListener("click", () => toggleMenu()); <4>
+menuRoot.addEventListener("blur", e => toggleMenu(false)); <5>
+
+1. Opcioni parametar za određivanje željenog stanja. Ovo nam omogućava da koristimo jednu
+funkciju za otvaranje, zatvaranje ili prebacivanje menija.
+
+2. Fokusiraj prvu stavku menija kada se otvori.
+
+3. Pozovite toggleMenusa trenutnim stanjem, da biste inicijalizovali atribute elementa.
+
+4. Uključi/isključi meni kada se klikne na dugme.
+
+5. Zatvori meni kada se fokus pomeri.
+
+Hajde da takođe podesimo meni tako da se zatvara kada kliknemo van njega, što je lepo
+ponašanje koje oponaša način na koji funkcionišu izvorni padajući meniji. Ovo će zahtevati
+slušač događaja na celom prozoru.
+
+Imajte na umu da moramo biti oprezni sa ovom vrstom slušača: možete primetiti da se slušači
+akumuliraju kako komponente dodaju slušače i ne uspevaju da ih uklone kada se komponenta
+ukloni iz DOM-a. Ovo, nažalost, dovodi do teškog praćenja curenja memorije.
+
+Ne postoji jednostavan način u Javaskriptu za izvršavanje logike kada se element ukloni.
+Najbolja opcija je ono što je poznato kao MutationObserverAPI. MutationObserverAPI je veoma
+koristan, ali je prilično težak i pomalo nejasan, tako da ga nećemo koristiti za naš primer.
+
+Umesto toga, koristićemo jednostavan obrazac kako bismo izbegli curenje slušača događaja:
+kada se naš slušač događaja pokrene, proverićemo da li je priključena komponenta još uvek u
+DOM-u i, ako element više nije u DOM-u, uklonićemo slušač i izaći.
+
+Ovo je donekle hakovan, ručni oblik sakupljanja smeća. Kao što je (obično) slučaj sa drugim
+algoritmima za sakupljanje smeća, naša strategija uklanja slušaoce u neodređenom vremenskom
+periodu nakon što više nisu potrebni. Srećom po nas, sa čestim događajem poput "korisnik
+klikne bilo gde na stranici" koji pokreće sakupljanje, trebalo bi da funkcioniše dovoljno dobro za
+
+
+
+naš sistem.
+
+window.addEventListener("click", function clickAway(event) {
+if (!menuRoot.isConnected)
+window.removeEventListener("click", clickAway); <1>
+
+if (!menuRoot.contains(event.target)) toggleMenu(false); <2>
+});
+
+1. Ova linija je sakupljanje smeća.
+
+2. Ako je klik van menija, zatvorite meni.
+
+Sada, pređimo na interakcije tastature za naš padajući meni. Rukovaoci tastature su prilično
+slični jedni drugima i nisu posebno zamršeni, pa hajde da ih sve obradimo odjednom:
+
+const currentIndex = () => { <1>
+const idx = items.indexOf(document.activeElement);
+if (idx === -1) return 0;
+return idx;
+
+}
+
+menu.addEventListener("keydown", e => {
+if (e.key === "ArrowUp") {
+
+    items[currentIndex() - 1]?.focus(); <2>
+
+  } else if (e.key === "ArrowDown") {
+    items[currentIndex() + 1]?.focus(); <3>
+
+  } else if (e.key === "Space") {
+    items[currentIndex()].click(); <4>
+
+  } else if (e.key === "Home") {
+    items[0].focus(); <5>
+
+  } else if (e.key === "End") {
+    items[items.length - 1].focus(); <6>
+
+  } else if (e.key === "Escape") {
+toggleMenu(false); <7>
+
+    button.focus(); <8>
+  }
+});
+
+1. Pomoćnik: Dobija indeks u nizu items trenutno fokusirane stavke menija (0 ako nema).
+
+2. Pomera fokus na prethodnu stavku menija kada se pritisne taster sa strelicom nagore.
+
+3. Pomera fokus na sledeću stavku menija kada se pritisne taster sa strelicom nadole.
+
+4. Aktiviraj trenutno fokusirani element kada se pritisne taster za razmak.
+
+5. Pomera fokus na prvu stavku menija kada se pritisne taster Home.
+
+6. Pomera fokus na poslednju stavku menija kada se pritisne End.
+
+7. Zatvori meni kada se pritisne taster Escape.
+
+8. Vrati fokus na dugme menija pri zatvaranju menija.
+
+To bi trebalo da pokrije sve naše osnove, i priznaćemo da je to puno koda. Ali, da budemo
+iskreni, to je kod koji kodira mnogo ponašanja.
+
+Sada, naš padajući meni nije savršen i ne obrađuje mnogo stvari. Na primer, ne podržavamo
+
+
+
+podmenije ili stavke menija koje se dinamički dodaju ili uklanjaju u meni. Ako bi nam bilo
+potrebno više funkcija menija poput ove, možda bi imalo više smisla da koristimo neku gotovu
+biblioteku, kao što je GitHub-ova details-menu-element.
+
+Ali, za naš relativno jednostavan slučaj upotrebe, obični JavaSkript radi odličan posao, a mi smo
+imali priliku da istražimo ARIA i RSJS dok smo ga implementirali.
+
+Alpine.js
+U redu, to je bio detaljan pregled načina strukturiranja običnog JavaScript koda u stilu
+VanillaJS-a. Hajde da usmerimo pažnju na stvarni JavaScript frejmvork koji omogućava
+drugačiji pristup dodavanju dinamičkog ponašanja vašoj aplikaciji, Alpine.js.
+
+Alpine je relativno nova JavaScript biblioteka koja omogućava programerima da ugrađuju
+JavaScript kod direktno u HTML, slično on*atributima dostupnim u običnom HTML-u i
+JavaScript-u. Međutim, Alpine ovaj koncept ugrađenog skriptovanja ide mnogo dalje od
+on*atributa.
+
+Alpine se predstavlja kao moderna zamena za jQuery, široko korišćenu, stariju JavaScript
+biblioteku. Kao što ćete videti, definitivno ispunjava ovo obećanje.
+
+Instaliranje Alpine-a je veoma jednostavno: radi se o jednoj datoteci i ne zahteva zavisnost, tako
+da ga možete jednostavno uključiti preko CDN-a:
+
+<script src="https://unpkg.com/alpinejs"></script>
+
+Instaliranje Alpine-a
+
+Takođe ga možete instalirati putem menadžera paketa kao što je NPM ili ga nabaviti sa
+sopstvenog servera.
+
+Alpine pruža skup HTML atributa, od kojih svi počinju prefiksom x-, a glavni je x-data. Sadržaj
+x-dataje JavaScript izraz koji se evaluira u objekat. Svojstvima ovog objekta se zatim može
+pristupiti unutar elementa u kome x-datase atribut nalazi.
+
+Da bismo stekli utisak o AlpineJS-u, pogledajmo kako da implementiramo naš kontra primer
+koristeći ga.
+
+Za brojač, jedino stanje koje treba da pratimo je trenutni broj, pa hajde da deklarišemo
+JavaScript objekat sa jednim svojstvom, count, u x-dataatributu na div-u za naš brojač:
+
+<div class="counter" x-data="{ count: 0 }">
+
+Šalter kod Alpine, linija 1
+
+Ovo definiše naše stanje, odnosno podatke koje ćemo koristiti za pokretanje dinamičkih
+ažuriranja DOM-a. Sa stanjem deklarisanim na ovaj način, sada ga možemo koristiti unutar div
+elementa na kojem je deklarisano. Dodajmo outputelement sa x-textatributom.
+
+Zatim, povezaćemo atribut sa x-textatributom countkoji smo deklarisali u x-dataatributu na
+roditeljskom divelementu. Ovo će imati efekat podešavanja teksta elementa outputna vrednost
+count: ako countse ažurira, ažuriraće se i tekst output. Ovo je "reaktivno" programiranje, po tome
+što će DOM "reagovati" na promene u podacima podloge.
+
+<div x-data="{ count: 0 }">
+<output x-text="count"></output> <1>
+
+
+
+Šalter kod Alpine, linije 1-2
+
+1. Atribut x-text.
+
+Zatim, treba da ažuriramo brojač, koristeći dugme. Alpine vam omogućava da dodajete slušače
+događaja sa x-onatributom.
+
+Da biste odredili događaj koji treba slušati, dodajete dvotačku, a zatim naziv događaja posle x-
+onimena atributa. Zatim, vrednost atributa je JavaScript koji želite da izvršite. Ovo je slično
+običnim on*atributima o kojima smo ranije govorili, ali se ispostavlja da je mnogo fleksibilnije.
+
+Želimo da osluškujemo clickdogađaj i želimo da inkrementiramo countkada se dogodi klik, pa
+evo kako će izgledati Alpine kod:
+
+<div x-data="{ count: 0 }">
+<output x-text="count"></output>
+
+<button x-on:click="count++">Increment</button> <1>
+</div>
+
+Brojač sa Alpinom, cela stvar
+
+1. Sa x-on, određujemo događaj u nazivu atributa.
+
+I to je sve što je potrebno. Jednostavna komponenta poput brojača trebalo bi da bude
+jednostavna za kodiranje, a Alpine to i ispunjava.
+
+"x-on:click" u odnosu na "onclick"
+
+Kao što smo rekli, x-on:clickatribut Alpine (ili njegova skraćenica, @clickatribut) je sličan
+ugrađenom onclickatributu. Međutim, ima dodatne karakteristike koje ga čine znatno
+korisnijim:
+
+- Možete slušati događaje iz drugih elemenata. Na primer,.outsidemodifikator vam
+omogućava da slušate bilo koji događaj klika koji nije unutar elementa.
+
+- Možete koristiti druge modifikatore za:
+
+◦ slušači događaja za usporavanje ili odskok
+
+◦ ignorišite događaje koji se pojavljuju iz potomstvenih elemenata
+
+◦ priključite pasivne slušaoce
+
+- Možete da slušate prilagođene događaje. Na primer, ako želite da slušate događaj,
+htmx:after-requestmožete da napišete x-on:htmx:after-request="doSomething()".
+
+Reaktivnost i šabloniranje
+
+Nadamo se da ćete se složiti da je AlpineJS verzija vidžeta za brojač generalno bolja od VanillaJS
+implementacije, koja je bila ili donekle hakovana ili raširena na više datoteka.
+
+Veliki deo snage AlpineJS-a je u tome što podržava koncept "reaktivnih" promenljivih, što vam
+omogućava da povežete broj elemenata divsa promenljivom na koju i outputi buttonmogu da
+referenciraju, i pravilno ažurirate sve zavisnosti kada dođe do mutacije. Alpine omogućava
+mnogo složenije povezivanje podataka nego što smo ovde pokazali i odlična je klijentska
+
+
+
+biblioteka za skriptovanje opšte namene.
+
+Alpine.js u akciji: Traka sa alatkama za grupne akcije
+
+Hajde da implementiramo funkciju u Contact.app sa Alpine-om. Trenutno, Contact.app ima
+dugme "Obriši izabrane kontakte" na samom dnu stranice. Ovo dugme ima dugačko ime, nije ga
+lako pronaći i zauzima puno prostora. Ako bismo želeli da dodamo dodatne "grupne" akcije, ovo
+se ne bi dobro skaliralo vizuelno.
+
+U ovom odeljku, zamenićemo ovo jedno dugme trakom sa alatkama. Štaviše, traka sa alatkama
+će se pojaviti samo kada korisnik počne da bira kontakte. Konačno, prikazaće koliko je kontakata
+izabrano i omogućiće vam da izaberete sve kontakte odjednom.
+
+Prvo što ćemo morati da dodamo je x-dataatribut, koji će čuvati stanje koje ćemo koristiti da
+utvrdimo da li je traka sa alatkama vidljiva ili ne. Moraćemo da ga postavimo na element pretka i
+trake sa alatkama koju ćemo dodati, kao i polja za potvrdu, koja će ažurirati stanje kada su
+označena i neoznačena. Najbolja opcija s obzirom na naš trenutni HTML je da postavimo atribut
+na formelement koji okružuje tabelu kontakata. Deklarisaćemo svojstvo, selected, koje će biti niz
+koji sadrži izabrane ID-ove kontakata, na osnovu označenih polja za potvrdu.
+
+Evo kako će izgledati naša oznaka forme:
+
+<form x-data="{ selected: [] }"> <1>
+
+1. Ovaj obrazac se obmotava oko tabele kontakata.
+
+Zatim, na vrhu tabele kontakata, dodaćemo templateoznaku. Oznaku šablona pregledač nex-if
+prikazuje podrazumevano, tako da biste mogli biti iznenađeni što je koristimo. Međutim,
+dodavanjem atributa Alpine, možemo reći Alpine-u: ako je uslov tačan, prikaži HTML unutar
+ovog šablona.
+
+Podsetimo se da želimo da prikažemo traku sa alatkama ako i samo ako je izabran jedan ili više
+kontakata. Ali znamo da ćemo imati ID-ove izabranih kontakata u selectedsvojstvu. Stoga,
+možemo prilično lako proveriti dužinu tog niza da bismo videli da li postoje izabrani kontakti:
+
+<template x-if="selected.length > 0"> <1>
+<div class="box info tool-bar">
+<slot x-text="selected.length"></slot>
+
+    contacts selected
+
+<button type="button" class="bad bg color border">Delete</button> <2>
+<hr aria-orientation="vertical">
+<button type="button">Cancel</button> <2>
+
+</div>
+</template>
+
+1. Prikaži ovaj HTML ako je izabrano 1 ili više kontakata.
+
+2. Implementiraćemo ova dugmad za samo trenutak.
+
+Sledeći korak je osigurati da uključivanje/isključivanje polja za potvrdu za dati kontakt dodaje
+(ili uklanja) ID datog kontakta iz selectedsvojstva. Da bismo to uradili, moraćemo da koristimo
+novi Alpine atribut, x-model. x-modelAtribut vam omogućava da povežete dati element sa nekim
+osnovnim podacima ili njegovim "modelom".
+
+U ovom slučaju, želimo da povežemo vrednost unosa polja za potvrdu sa selectedsvojstvom. Evo
+kako to radimo:
+
+
+
+<td>
+<input type="checkbox" name="selected_contact_ids"
+
+    value="{{ contact.id }}" x-model="selected"> <1>
+</td>
+
+1. Atribut x-modelpovezuje valueovaj unos sa selectedsvojstvom
+
+Sada, kada je polje za potvrdu označeno ili neoznačeno, selectedniz će biti ažuriran ID-om
+kontakta datog reda. Štaviše, mutacije koje napravimo u selectednizu će se slično odraziti u
+stanju polja za potvrdu. Ovo je poznato kao dvosmerno povezivanje.
+
+Sa ovim napisanim kodom, možemo naterati traku sa alatkama da se pojavljuje i nestaje, na
+osnovu toga da li su označene kućice za kontakt.
+
+Veoma glatko.
+
+Pre nego što nastavimo, možda ste primetili da naš kod ovde sadrži neke reference "class=". One
+su za css stilizovanje i nisu deo Alpine.js-a. Uključili smo ih samo kao podsetnik da će traka
+menija koju pravimo zahtevati css da bi dobro funkcionisala. Klase u gornjem kodu se odnose na
+minimalnu css biblioteku pod nazivom Missing.css. Ako koristite druge css biblioteke, kao što su
+Bootstrap, Tailwind, Bulma, Pico.css itd., vaš kod za stilizovanje će biti drugačiji.
+
+Sprovođenje akcija
+
+Sada kada imamo mehaniku prikazivanja i skrivanja trake sa alatkama, pogledajmo kako da
+implementiramo dugmad unutar trake sa alatkama.
+
+Prvo ćemo implementirati dugme "Obriši", jer je prilično jednostavno. Sve što treba da uradimo
+je da, kada se klikne na dugme, obrišemo niz selected. Zbog dvosmernog povezivanja koje Alpine
+pruža, ovo će ukloniti oznaku sa svih izabranih kontakata (a zatim sakriti traku sa alatkama)!
+
+Za dugme Otkaži, naš zadatak je jednostavan:
+
+<button type="button" @click="selected = []">Cancel</button> <1>
+
+1. Resetujte selectedniz.
+
+Još jednom, AlpineJS ovo čini veoma lakim.
+
+Međutim, dugme "Izbriši" biće malo komplikovanije. Moraće da uradi dve stvari: prvo će
+potvrditi da li korisnik zaista namerava da izbriše izabrane kontakte. Zatim, ako korisnik potvrdi
+akciju, koristiće htmx JavaScript API da bi izdalo zahtev DELETE.
+
+<button type="button" class="bad bg color border"
+@click="
+
+    confirm(`Delete ${selected.length} contacts?`) && <1>
+    htmx.ajax('DELETE', '/contacts',
+      { source: $root, target: document.body }) <2>
+  ">
+  Delete
+</button>
+
+1. Potvrdite da korisnik želi da obriše izabrani broj kontakata.
+
+2. Izdajte DELETEpomoću htmx JavaScript API-ja.
+
+Imajte na umu da koristimo ponašanje operatora kratkog spoja &&u JavaSkriptu kako bismo
+izbegli poziv htmx.ajax()ako confirm()poziv vrati vrednost "false".
+
+
+
+Funkcija htmx.ajax()je samo način pristupa normalnoj, HTML-vođenoj hipermedijskoj razmeni
+koju vam HTML atributi htmx-a daju direktno iz JavaScript-a.
+
+Posmatrajući kako pozivamo htmx.ajax, prvo prosleđujemo da želimo da izdamo oznaku DELETE. /
+contactsZatim prosleđujemo dva dodatna podatka: sourcei target. sourceSvojstvo je element iz
+kojeg će htmx prikupljati podatke koje će uključiti u zahtev. Postavljamo ovo na $root, što je
+poseban simbol u Alpine-u koji će biti element sa x-datadeklarisanim atributom. U ovom
+slučaju, to će biti obrazac koji sadrži sve naše kontakte. target, ili mesto gde će biti smešten
+HTML odgovor, je samo telo celog dokumenta, pošto DELETErukovalac vraća celu stranicu kada se
+završi.
+
+Imajte na umu da ovde koristimo Alpine na način kompatibilan sa Hypermedia-Driven
+aplikacijama. Mogli smo da izdamo AJAX zahtev direktno od Alpine-a i možda ažuriramo x-
+datasvojstvo u zavisnosti od rezultata tog zahteva. Ali, umesto toga, delegirali smo to JavaScript
+API-ju htmx-a, koji je izvršio hipermedijsku razmenu sa serverom.
+
+Ovo je ključ za pisanje skripti na način prilagođen hipermedijima unutar aplikacije vođene
+hipermedijom.
+
+Dakle, sa svim ovim na mestu, sada imamo znatno poboljšano iskustvo za izvršavanje grupnih
+radnji nad kontaktima: manje vizuelne gužve, a traka sa alatkama se može proširiti sa više opcija
+bez stvaranja nadutosti u glavnom interfejsu naše aplikacije.
+
+_hiperskript
+Konačna tehnologija skriptovanja koju ćemo pogledati je malo dalje: _hyperscript. Autori ove
+knjige su prvobitno kreirali _hyperscript kao projekat srodni htmx-u. Smatrali smo da
+JavaScript nije dovoljno orijentisan na događaje, što je dodavanje malih poboljšanja
+skriptovanja u htmx aplikacije činilo glomaznim.
+
+Dok su prethodna dva primera orijentisana na Javaskript, _hyperscript ima potpuno drugačiju
+sintaksu od Javaskripta, zasnovanu na starijem jeziku pod nazivom HyperTalk. HyperTalk je bio
+skriptni jezik za tehnologiju pod nazivom HyperCard, stari hipermedijalni sistem dostupan na
+ranim Macintosh računarima.
+
+Najuočljivija stvar kod _hyperscript-a je to što više podseća na englesku prozu nego na druge
+programske jezike.
+
+Kao i Alpine, _hyperscript je moderna zamena za jQuery. Takođe, kao i Alpine, _hyperscript
+vam omogućava da pišete svoje skripte direktno, u HTML-u.
+
+Međutim, za razliku od Alpine-a, _hyperscript nije reaktivan. Umesto toga, fokusira se na to da
+DOM manipulacije kao odgovor na događaje budu jednostavne za pisanje i lake za čitanje. Ima
+ugrađene jezičke konstrukcije za mnoge DOM operacije, što vas sprečava da morate da se
+krećete kroz ponekad opširne JavaScript DOM API-je.
+
+Daćemo vam mali uvid u to kako izgleda skriptovanje u _hyperscript jeziku, tako da kasnije
+možete detaljnije da se pozabavite jezikom ako vam bude zanimljiv.
+
+Kao i htmx i AlpineJS, _hyperscript se može instalirati preko CDN-a ili iz npm-a (naziv paketa
+hyperscript.org):
+
+<script src="//unpkg.com/hyperscript.org"></script>
+
+
+
+Instaliranje _hyperscript-a preko CDN-a
+
+_hyperscript koristi _atribut (dowerscore) za stavljanje skripti na DOM elemente. Takođe
+možete koristiti scriptatribute data-script, u zavisnosti od vaših potreba za HTML validacijom.
+
+Hajde da pogledamo kako da implementiramo jednostavnu komponentu brojača koju smo
+razmatrali koristeći _hyperscript. Postavićemo outputelement i buttonunutar div. Da bismo
+implementirali brojač, moraćemo da dodamo mali deo _hyperscript dugmetu. Klikom na dugme
+bi trebalo da se poveća tekst prethodne outputoznake.
+
+Kao što ćete videti, ta poslednja rečenica je bliska stvarnom _hyperscript kodu:
+
+<div class="counter">
+<output>0</output>
+<button _="on click
+
+    increment the textContent of the previous <output/>"> <1>
+    Increment
+</button>
+
+</div>
+
+1. Kod _hyperscript je dodat u tekst dugmeta.
+
+Hajde da prođemo kroz svaku komponentu ovog skripta:
+
+- on clickje slušač događaja, koji govori dugmetu da sluša događaj click, a zatim izvršava
+preostali kod.
+
+- incrementje "komanda" u _hyperscript-u koja "inkrementira" stvari, slično ++operatoru u
+JavaScript-u.
+
+- thenema nikakvo semantičko značenje u _hyperscript, ali se može koristiti da skripte budu
+čitljivije.
+
+- textContent ofje jedan oblik pristupa svojstvima u _hyperscript. Verovatno ste upoznati sa
+JavaScript sintaksom a.b, što znači "Preuzmi svojstvo bobjekta a." _hyperscript podržava
+ovu sintaksu, ali takođe podržava oblike b of ai a’s b. Koji ćete koristiti zavisi od toga koji
+je najčitljiviji.
+
+- previousje izraz u _hyperscript-u koji pronalazi prethodni element u DOM-u koji ispunjava
+neki uslov.
+
+- <output />je literal upita, koji je CSS selektor obuhvaćen <i />.
+
+U ovom kodu, previousključna reč (i prateća nextključna reč) je primer kako _hyperscript
+olakšava DOM operacije: ne postoji takva izvorna funkcionalnost koja se može naći u
+standardnom DOM API-ju, a implementacija ovoga u VanillaJS-u je teža nego što mislite!
+
+Dakle, vidite da je _hyperscript veoma ekspresivan, posebno kada je u pitanju DOM
+manipulacija. Ovo olakšava direktno ugrađivanje skripti u HTML: pošto je skriptni jezik moćniji,
+skripte napisane u njemu su obično kraće i lakše za čitanje.
+
+_hiperskript u akciji: Prečica na tastaturi
+
+Iako je demonstracija brojača dobar način za upoređivanje različitih pristupa skriptovanju,
+praktično se susrećemo kada pokušate da zapravo implementirate korisnu funkciju pomoću
+nekog pristupa. Za _hyperscript, dodajmo prečicu na tastaturi u Contact.app: kada korisnik
+pritisne Alt+S u našoj aplikaciji, fokusiraćemo polje za pretragu.
+
+
+
+Pošto naša prečica na tastaturi fokusira unos za pretragu, hajde da stavimo kod za nju na taj
+unos za pretragu, zadovoljavajući lokalnost.
+
+Evo originalnog HTML-a za unos pretrage:
+
+<input id="search" name="q" type="search" placeholder="Search Contacts">
+
+Dodaćemo slušač događaja koristeći on keydownsintaksu, koji će se aktivirati svaki put kada se
+pritisne taster. Dalje, možemo koristiti sintaksu filtera događaja u _hyperscript koristeći
+uglaste zagrade posle događaja. U uglastim zagradama možemo postaviti izraz filtera koji će
+filtrirati keydowndogađaje koji nas ne zanimaju. U našem slučaju, želimo da razmotrimo samo
+događaje gde se drži pritisnut taster Alt i gde se pritiska taster "S". Možemo kreirati bulov izraz
+koji proverava svojstvo altKey(da vidimo da li je true) i codesvojstvo (da vidimo da li je "KeyS")
+događaja da bismo to postigli.
+
+Za sada naš _hiperskript izgleda ovako:
+
+on keydown[altKey and code is 'KeyS']...
+
+Početak naše prečice na tastaturi
+
+Sada će, podrazumevano, _hyperscript osluškivati dati događaj na elementu gde je deklarisan.
+Dakle, sa skriptom koju imamo, dobijali bismo keydowndogađaje samo ako je polje za pretragu
+već fokusirano. To nije ono što želimo! Želimo da ovaj ključ radi globalno, bez obzira na to koji
+element ima fokus.
+
+Nema problema! Možemo da slušamo događaj keyDowni na drugom mestu korišćenjem
+fromklauzule u našem obrađivaču događaja. U ovom slučaju želimo da slušamo događaj keyDowniz
+prozora, i naš kod na kraju, prirodno, izgleda ovako:
+
+on keydown[altKey and code is 'KeyS'] from window...
+
+Slušanje globalno
+
+Koristeći fromklauzulu, možemo da prikačimo slušača na prozor, a istovremeno da zadržimo kod
+na elementu na koji je logički povezan.
+
+Sada kada smo izabrali događaj koji želimo da koristimo za fokusiranje polja za pretragu, hajde
+da implementiramo stvarno fokusiranje pozivanjem standardne.focus()metode.
+
+Evo celog skripta, ugrađenog u HTML:
+
+<input id="search" name="q" type="search" placeholder="Search Contacts"
+  _="on keydown[altKey and code is 'KeyS'] from the window
+    focus() me"> <1>
+
+Naš konačni scenario
+
+1. "Ja" se odnosi na element na kojem je napisan scenario.
+
+S obzirom na svu funkcionalnost, ovo je iznenađujuće sažeto i, kao programski jezik sličan
+engleskom, prilično lako za čitanje.
+
+Zašto novi programski jezik?
+
+Sve je ovo lepo i krasno, ali možda mislite: "Potpuno novi skriptni jezik? To deluje preterano." I,
+u izvesnoj meri, u pravu ste: Javaskript je pristojan skriptni jezik, veoma je dobro optimizovan i
+
+
+
+široko se razume u veb razvoju. S druge strane, kreiranjem potpuno novog front-end skriptnog
+jezika, imali smo slobodu da se pozabavimo nekim problemima za koje smo videli da generišu
+ružan i opširan kod u Javaskriptu:
+
+Asinhrona transparentnost
+
+U _hyperscript-u, asinhrone funkcije (tj. funkcije koje vraćaju Promiseinstance) mogu se
+pozivati kao da su sinhrone. Promena funkcije iz sync u async ne prekida rad nijednog
+_hyperscript koda koji je poziva. To se postiže proverom obećanja prilikom izvršavanja
+bilo kog izraza i suspendovanjem pokrenutog skripta ako postoji (suspenduje se samo
+trenutni rukovalac događajima, a glavna nit nije blokirana). Umesto toga, JavaScript
+zahteva ili eksplicitnu upotrebu povratnih poziva ili upotrebu eksplicitnih asyncanotacija
+(koje se ne mogu mešati sa sinhronim kodom).
+
+Pristup svojstvu niza
+
+U _hyperscript-u, pristup svojstvu niza (osim lengthili broja) vratiće niz vrednosti svojstva
+svakog člana tog niza, čineći da pristup svojstvima niza deluje kao operacija ravne mape.
+jQuery ima sličnu funkciju, ali samo za sopstvenu strukturu podataka.
+
+Nativna CSS sintaksa
+
+U _hyperscript-u, možete koristiti stvari poput CSS klasnih i ID literala, ili CSS upitnih
+literala, direktno u jeziku, umesto da morate da pozivate opširni DOM API, kao što to
+radite u JavaScript-u.
+
+Dubinska podrška za događaje
+
+Rad sa događajima u _hyperscript-u je daleko prijatniji nego rad sa njima u JavaScript-u,
+sa izvornom podrškom za odgovaranje na događaje i njihovo slanje, kao i za uobičajene
+obrasce obrade događaja kao što su "debouncing" ili događaji sa ograničenjem brzine.
+_hyperscript takođe pruža deklarativne mehanizme za sinhronizaciju događaja unutar
+datog elementa i između više elemenata.
+
+Ponovo želimo da naglasimo da u ovom primeru ne izlazimo van okvira aplikacije vođene
+hipermedijom: mi samo dodajemo funkcionalnost na strani klijenta pomoću našeg skriptovanja.
+Ne kreiramo i ne upravljamo velikom količinom stanja van samog DOM-a, niti komuniciramo sa
+serverom u razmeni koja nije hipermedijska.
+
+Pored toga, pošto se _hyperscript tako dobro uklapa u HTML, fokus se zadržava na hipermediji,
+a ne na logici skriptovanja.
+
+Možda ne odgovara svim stilovima ili potrebama skriptovanja, ali _hyperscript može pružiti
+odlično iskustvo skriptovanja za aplikacije vođene hipermedijom. To je mali i nejasan
+programski jezik koji vredi pogledati da bi se razumelo šta pokušava da postigne.
+
+Korišćenje gotovih komponenti
+Ovim završavamo naš pregled tri različite opcije za vašu infrastrukturu skriptovanja, odnosno
+koda koji pišete da biste poboljšali svoju aplikaciju vođenu hipermedijom. Međutim, postoji još
+jedno važno područje koje treba uzeti u obzir kada se govori o skriptovanju na strani klijenta:
+"gotove" komponente. To jest, JavaScript biblioteke koje su drugi ljudi kreirali, a koje nude neku
+vrstu funkcionalnosti, kao što je prikazivanje modalnih dijaloga.
+
+
+
+Komponente su postale veoma popularne u svetu veb razvoja, a biblioteke poput DataTables
+pružaju bogato korisničko iskustvo sa vrlo malo JavaScript koda od strane korisnika. Nažalost,
+ako ove biblioteke nisu dobro integrisane u veb lokaciju, mogu početi da čine da aplikacija deluje
+"skrpljeno". Štaviše, neke biblioteke idu dalje od jednostavne DOM manipulacije i zahtevaju da
+se integrišete sa krajnjom tačkom servera, gotovo uvek sa JSON API-jem za podatke. To znači da
+više ne pravite aplikaciju vođenu hipermedijom, jednostavno zato što određeni vidžet zahteva
+nešto drugačije. Šteta!
+
+Opcije integracije
+
+Najbolje JavaScript biblioteke za rad kada pravite aplikaciju vođenu hipermedijom su one koje:
+
+- Mutiraj DOM, ali ne komuniciraj sa serverom preko JSON-a
+
+- Poštujte HTML norme (npr. korišćenje inputelemenata za čuvanje vrednosti)
+
+- Pokrenite mnoge prilagođene događaje dok biblioteka ažurira stvari
+
+Poslednja tačka, pokretanje mnogih prilagođenih događaja (umesto korišćenja mnoštva metoda
+i povratnih poziva) je posebno važna, jer se ovi prilagođeni događaji mogu otpremiti ili slušati
+bez dodatnog povezujućeg koda napisanog u skriptnom jeziku.
+
+Hajde da pogledamo dva različita pristupa pisanju skripti, jedan koji koristi povratne pozive
+JavaSkripta, a drugi koji koristi događaje.
+
+Da bismo stvari učinili konkretnijim, implementirajmo bolji dijalog za potvrdu za DELETEdugme
+koje smo kreirali u Alpine-u u prethodnom odeljku. U originalnom primeru koristili smo
+confirm()funkciju ugrađenu u JavaScript, koja prikazuje prilično jednostavan sistemski dijalog
+za potvrdu. Zamenićemo ovu funkciju popularnom JavaScript bibliotekom, SweetAlert2, koja
+prikazuje mnogo lepši dijalog za potvrdu. Za razliku od funkcije confirm(), koja blokira i vraća
+bulovsku vrednost ( trueako je korisnik potvrdio, falseu suprotnom), SweetAlert2 vraća
+Promiseobjekat, što je JavaScript mehanizam za povezivanje povratnog poziva kada se završi
+asinhrona akcija (kao što je čekanje da korisnik potvrdi ili odbije akciju).
+
+Integracija pomoću povratnih poziva
+
+Kada je SweetAlert2 instaliran kao biblioteka, imate pristup objektu Swal, koji ima fire()funkciju
+za pokretanje prikazivanja upozorenja. Možete proslediti argumente metodi fire()da biste
+konfigurisali kako tačno izgledaju dugmad u dijalogu za potvrdu, kako je naslov dijaloga i tako
+dalje. Nećemo previše ulaziti u ove detalje, ali ćete uskoro videti kako dijalog izgleda.
+
+Dakle, s obzirom da smo instalirali biblioteku SweetAlert2, možemo je zameniti umesto
+confirm()poziva funkcije. Zatim moramo restrukturirati kod da bismo prosledili povratni poziv
+metodi then()na Promisekoja Swal.fire()vraća vrednost. Detaljan pregled obećanja je van okvira
+ovog poglavlja, ali je dovoljno reći da će se ovaj povratni poziv pozivati kada korisnik potvrdi ili
+odbije akciju. Ako je korisnik potvrdio akciju, onda result.isConfirmedće svojstvo biti true.
+
+Uzimajući u obzir sve to, naš ažurirani kod će izgledati ovako:
+
+<button type="button" class="bad bg color border"
+@click="Swal.fire({ <1>
+
+    title: 'Delete these contacts?', <2>
+    showCancelButton: true,
+    confirmButtonText: 'Delete'
+  }).then((result) => { <3>
+    if (result.isConfirmed) htmx.ajax('DELETE', '/contacts',
+
+
+
+        { source: $root, target: document.body })
+  });"
+>Delete</button>
+
+Dijalog za potvrdu zasnovan na povratnom pozivu
+
+1. Pozovite Swal.fire()funkciju
+
+2. Konfigurišite dijalog
+
+3. Obradi rezultat korisničkog izbora
+
+I sada, kada se klikne na ovo dugme, dobijamo lep dijalog u našoj veb aplikaciji ( [fig-swal-
+screenshot] ) — mnogo lepši od dijaloga za potvrdu sistema. Ipak, ovo deluje malo pogrešno.
+Ovo je puno koda za pisanje samo da bi se pokrenuo malo lepši confirm(), zar ne? A htmlx
+JavaScript kod koji ovde koristimo deluje nespretno. Bilo bi prirodnije da htmlx premestimo u
+atribute na dugmetu, kao što smo do sada radili, a zatim pokrenemo zahtev putem događaja.
+
+Dijalog prozor SweetAlert
+
+Pa hajde da uzmemo drugačiji pristup i vidimo kako to izgleda.
+
+Integracija pomoću događaja
+
+Da bismo sredili ovaj kod, izvući ćemo ga Swal.fire()u prilagođenu JavaScript funkciju koju
+ćemo kreirati, a koja se zove sweetConfirm(). sweetConfirm()Uzeće opcije dijaloga koje se
+prosleđuju u fire()metodu, kao i element koji potvrđuje radnju. Velika razlika ovde je u tome što
+sweetConfirm()će nova funkcija, umesto da direktno poziva neki htmlx, umesto toga pokrenuti
+confirmeddogađaj na dugmetu kada korisnik potvrdi da želi da obriše.
+
+Evo kako izgleda naša JavaSkript funkcija:
+
+function sweetConfirm(elt, config) {
+  Swal.fire(config) <1>
+
+.then((result) => {
+if (result.isConfirmed) {
+
+        elt.dispatchEvent(new Event('confirmed')); <2>
+      }
+    });
+}
+
+Dijalog za potvrdu zasnovan na događaju
+
+1. Prosledite konfiguraciju funkciji fire().
+
+2. Ako korisnik potvrdi akciju, pokrenite confirmeddogađaj.
+
+
+
+Sa ovom dostupnom metodom, sada možemo znatno pooštriti naše dugme za brisanje. Možemo
+ukloniti sav SweetAlert2 kod koji smo imali u @clickatributu Alpine i jednostavno pozvati ovu
+novu sweetConfirm()metodu, prosleđujući argumente $el, što je Alpine sintaksa za dobijanje
+"trenutnog elementa" na kojem se nalazi skripta, a zatim tačne konfiguracije koju želimo za naš
+dijalog.
+
+Ako korisnik potvrdi akciju, confirmeddogađaj će biti pokrenut na dugmetu. To znači da se
+možemo vratiti korišćenju naših pouzdanih htmx atributa! Naime, možemo preći DELETEna hx-
+deleteatribut i možemo ga koristiti hx-targetda ciljamo telo. A zatim, i ovo je ključni korak,
+možemo koristiti confirmeddogađaj koji se pokreće u sweetConfirm()funkciji da pokrenemo
+zahtev, ali dodajući ` hx-triggerfor it`.
+
+Evo kako izgleda naš kod:
+
+<button type="button" class="bad bg color border"
+  hx-delete="/contacts" hx-target="body" hx-trigger="confirmed" <1>
+  @click="sweetConfirm($el, { <2>
+    title: 'Delete these contacts?', <3>
+    showCancelButton: true,
+    confirmButtonText: 'Delete'
+  })">
+
+Dijalog za potvrdu zasnovan na događaju
+
+1. Naši htmlx atributi su vraćeni.
+
+2. Prosleđujemo dugme funkciji, tako da se na njemu može pokrenuti događaj.
+
+3. Prolazimo kroz informacije o konfiguraciji SweetAlert2.
+
+Kao što vidite, ovaj kod zasnovan na događajima je mnogo čistiji i svakako više "HTML-ovski".
+Ključ ove čistije implementacije je u tome što naša nova sweetConfirm()funkcija pokreće događaj
+koji htmx može da osluškuje.
+
+Zbog toga je važno tražiti bogat model događaja pri izboru biblioteke za rad, kako sa htmlx-om,
+tako i sa hipermedijskim aplikacijama uopšte.
+
+Nažalost, zbog rasprostranjenosti i dominacije načina razmišljanja koji je danas usmeren ka
+JavaScript-u, mnoge biblioteke su poput SweetAlert2: očekuju da prosledite povratni poziv u
+prvom stilu. U tim slučajevima možete koristiti tehniku koju smo ovde demonstrirali,
+umotavanjem biblioteke u funkciju koja pokreće događaje u povratnom pozivu, kako bi
+biblioteka bila hipermedijalnija i prilagođenija htmlx-u.
+
+Pragmatično skriptovanje
+U slučaju sukoba, razmotrite korisnike umesto autora, umesto realizatora, umesto
+specifikatora, umesto teorijske čistoće.
+
+— W3C, Principi HTML dizajna § 3.2 Prioritet izbornih jedinica
+
+Razmotrili smo nekoliko alata i tehnika za skriptovanje u aplikaciji vođenoj hipermedijom. Kako
+bi trebalo da izaberete između njih? Tužna istina je da nikada neće postojati jedan, uvek tačan
+odgovor na ovo pitanje.
+
+Da li ste posvećeni samo običnom JavaScript-u, možda zbog politike kompanije? Pa, možete
+efikasno koristiti običan JavaScript za skriptovanje vaše aplikacije vođene hipermedijom.
+
+
+
+Da li imate više slobode i sviđa vam se izgled Alpine.js-a? To je odličan način da dodate
+strukturiraniji, lokalizovaniji JavaScript kod svojoj aplikaciji, a nudi i neke lepe reaktivne
+funkcije.
+
+Da li ste malo smeliji u svojim tehničkim izborima? Možda vredi razmotriti _hyperscript.
+(Svakako mislimo da jeste.)
+
+Ponekad biste čak mogli razmotriti izbor dva (ili više) ovih pristupa u okviru jedne aplikacije.
+Svaki ima svoje snage i slabosti, a svi su relativno mali i samostalni, tako da bi izbor pravog alata
+za dati posao mogao biti najbolji pristup.
+
+Generalno, podstičemo pragmatičan pristup pisanju skripti: šta god vam se čini ispravnim,
+verovatno je ispravno (ili barem dovoljno ispravno ) za vas. Umesto da se brinemo o tome koji je
+konkretan pristup usvojen za vaše pisanje skripti, fokusiraćemo se na ove opštije probleme:
+
+- Izbegavajte komunikaciju sa serverom putem JSON API-ja za podatke.
+
+- Izbegavajte čuvanje velikih količina stanja van DOM-a.
+
+- Poželjno je koristiti događaje, umesto čvrsto kodiranih povratnih poziva ili poziva metoda.
+
+Čak i kada su u pitanju ove teme, ponekad veb programer mora da uradi ono što veb programer
+mora da uradi. Ako savršen vidžet za vašu aplikaciju postoji, ali koristi JSON API za podatke? U
+redu je.
+
+Samo nemoj da to postane navika.
+
+HTML napomene: HTML je za aplikacije
+Rasprostranjeni mem među programerima sugeriše da je HTML dizajniran za "dokumente" i da
+nije pogodan za "aplikacije". U stvarnosti, hipermedija nije samo sofisticirana, moderna
+arhitektura za aplikacije, već nam može omogućiti da se zauvek rešimo ove veštačke podele na
+aplikacije/dokumente.
+
+Kada kažem hipertekst, mislim na istovremeno predstavljanje informacija i kontrola
+tako da informacija postaje sredstvo kroz koje korisnik dobija izbore i bira akcije.
+
+— Roj Filding, Malo odmora i opuštanja
+
+HTML omogućava dokumentima da sadrže bogat multimedijalni sadržaj, uključujući slike,
+audio, video, JavaScript programe, vektorsku grafiku i (uz određenu pomoć) 3D okruženja.
+Međutim, što je još važnije, omogućava ugrađivanje interaktivnih kontrola u ove dokumente,
+omogućavajući da same informacije budu aplikacija preko koje im se pristupa.
+
+Razmislite: Zar nije zapanjujuće da jedna aplikacija — koja radi na svim vrstama računara i
+operativnih sistema — može da vam omogući čitanje vesti, obavljanje video poziva, pisanje
+dokumenata, ulazak u virtuelne svetove i obavljanje gotovo svakog drugog svakodnevnog
+računarskog zadatka?
+
+Nažalost, interaktivne mogućnosti HTML-a su njegov najmanje razvijen aspekt. Iz nama
+nepoznatih razloga, iako je HTML stigao do verzije 5 i postao živi standard, usput dobijajući
+mnoge revolucionarne funkcije, interakcije podataka u njemu su i dalje uglavnom ograničene na
+linkove i obrasce. Na programerima je da prošire HTML, a mi to želimo da uradimo na način
+koji ne apstrahuje njegovu jednostavnost imitacijom klasičnih "izvornih" alata.
+
+
+
+- Softver nije trebalo da koristi izvorne alate
+
+- Godinama korišćenja Windows UI biblioteka, ali nije pronađena primena u
+stvarnom svetu za prelazak na niži nivo od veba.
+
+- Ionako ste želeli prozor, zabave radi? Imali smo alat za to: zvao se " Elektron ".
+
+- "Da, voleo bih da napišem 4 različite kopije istog korisničkog interfejsa" - Izjave
+koje je smislio Potpuno Poremećeni
+
+— Lija Klark, @leah@tilde.zone
+
+1. Renderovanje se ovde odnosi na generisanje HTML-a. Podrška frejmvorka za renderovanje
+na strani servera nije potrebna u HDA-u jer je generisanje HTML-a na serveru
+podrazumevano. ↩
+
+2. Imajte na umu da je Shadow DOM novija funkcija veb platforme koja je još uvek u razvoju
+u vreme pisanja ovog teksta. Posebno se mogu javiti neke greške u pristupačnosti kada
+elementi unutar i izvan shadow root-a interaguju. ↩
