@@ -1,9 +1,9 @@
 ﻿
 # Poglavlje 24: Anonimne funkcije i zatvaranja
 
-[Greške][23]  
-[Sadržaj][00]  
-[JSON i XML][25]
+[23 Greške][23]  
+[00 Sadržaj][00]  
+[25 JSON i XML][25]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -553,9 +553,9 @@ func (a Authenticator) IsValidJWT(jwt string) bool {
 - Anonimna funkcija može da koristi elemente (promenljive, tipove, konstante) koji su definisani u njenom okružujućem opsegu važenja
   - Kažemo da anonimna funkcija obuhvata leksički kontekst okolne funkcije.
 
-[Greške][23]  
-[Sadržaj][00]  
-[JSON i XML][25]
+[23 Greške][23]  
+[00 Sadržaj][00]  
+[25 JSON i XML][25]
 
 [23]: 23_Greške.md
 [00]: 00_Sadržaj.md

@@ -1,9 +1,9 @@
 
 # 27 Enum, Iota & Bitmask
 
-[Osnovni HTTP server][26]  
-[Sadržaj][00]  
-[Datumi i vreme][28]
+[26 Osnovni HTTP server][26]  
+[00 Sadržaj][00]  
+[28 Datumi i vreme][28]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -981,9 +981,9 @@ const (
   funkciji ili metodi.
   - Možemo koristiti bitske operatore da proverimo vrednost tih bulovih argumenata.
 
-[Osnovni HTTP server][26]  
-[Sadržaj][00]  
-[Datumi i vreme][28]
+[26 Osnovni HTTP server][26]  
+[00 Sadržaj][00]  
+[28 Datumi i vreme][28]
 
 [26]: 26_Osnovni_HTTP_server.md
 [00]: 00_Sadržaj.md

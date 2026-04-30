@@ -1,9 +1,9 @@
 
 # Poglavlje 33: Konfiguracija aplikacije
 
-[Šabloni][32]  
-[Sadržaj][00]  
-[Referentne vrednosti][34]
+[32 Šabloni][32]  
+[00 Sadržaj][00]  
+[34 Referentne vrednosti][34]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -492,9 +492,9 @@ Postoje neka rešenja otvorenog koda koja se bave ovim veoma specifičnim proble
 
 - Posebno rešenje za upravljanje tajnim podacima trebalo bi da obrađuje tajne aplikacija.
 
-[Šabloni][32]  
-[Sadržaj][00]  
-[Referentne vrednosti][34]
+[32 Šabloni][32]  
+[00 Sadržaj][00]  
+[34 Referentne vrednosti][34]
 
 [32]: 32_Šabloni.md
 [00]: 00_Sadržaj.md

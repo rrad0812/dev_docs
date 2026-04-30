@@ -1,8 +1,8 @@
 
 # Poglavlje 42: Cheatsheet
 
-[Preporuke za dizajn][41]  
-[Sadržaj][00]
+[41 Preporuke za dizajn][41]  
+[00 Sadržaj][00]
 
 ## Napravite program
 
@@ -546,8 +546,8 @@ if !found {
 
 `LookupEnv` vam omogućava da proverite da li okruženje postoji pre nego što ga upotrebite.
 
-[Preporuke za dizajn][41]  
-[Sadržaj][00]
+[41 Preporuke za dizajn][41]  
+[00 Sadržaj][00]
 
 [41]: 41_Preporuke_za_dizajn.md  
 [00]: 00_Sadržaj.md

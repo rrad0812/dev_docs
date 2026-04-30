@@ -1,6 +1,10 @@
 
 # Poglavlje 39: Objektno orijentisani programski jezik
 
+[38 Generici][38]  
+[00 Sadržaj][00]  
+[40 Nadogradnja ili vraćanje na stariju verziju][40]  
+
 **Šta ćete naučiti u ovom poglavlju?**
 
 - Šta su objektno orijentisani jezici?
@@ -693,3 +697,11 @@ func main() {
     fmt.Println(u.Cart.ID)
 }
 ```
+
+[38 Generici][38]  
+[00 Sadržaj][00]  
+[40 Nadogradnja ili vraćanje na stariju verziju][40]  
+
+[38]: 38_Generici.md
+[00]: 00_Sadržaj.md
+[40]: 40_Nadogradnja_ili_vraćanje_na%20staru_verziju.md

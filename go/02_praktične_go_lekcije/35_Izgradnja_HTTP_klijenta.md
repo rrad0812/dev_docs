@@ -1,9 +1,9 @@
 
 # Poglavlje 35: Izgradnja HTTP klijenta
 
-[Referentne vrednosti][34]  
-[Sadržaj][00]  
-[Profilisanje programa][36]
+[34 Referentne vrednosti][34]  
+[00 Sadržaj][00]  
+[36 Profilisanje programa][36]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -726,9 +726,9 @@ Kod statusa odgovora je 2... što znači da je naš zahtev bio uspešan. Obrisal
 - Podrazumevano, klijent nema podešeno vreme čekanja. Važno je da u vašoj aplikaciji uvek konfigurišete ovu opciju (postavite polje Timeoutsa odgovarajućim trajanjem).
 - Možete dodati dodatne zaglavlje zahtevu pomoćurequest.Header.Add.
 
-[Referentne vrednosti][34]  
-[Sadržaj][00]  
-[Profilisanje programa][36]
+[34 Referentne vrednosti][34]  
+[00 Sadržaj][00]  
+[36 Profilisanje programa][36]
 
 [34]: 35_Izgradnja_HTTP_klijenta.md
 [00]: 00_Sadržaj.md

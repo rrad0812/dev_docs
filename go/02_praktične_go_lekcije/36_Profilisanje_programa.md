@@ -1,9 +1,9 @@
 
 # Poglavlje 36: Profilisanje programa
 
-[Izgradnja HTTP klijenta][35]  
-[Sadržaj][00]  
-[Kontekst][37]
+[35 Izgradnja HTTP klijenta][35]  
+[00 Sadržaj][00]  
+[37 Kontekst][37]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1885,9 +1885,9 @@ go tool pprof -http localhost:9898 profile.pb.gz
   go tool pprof -http localhost:9898 profile.pb.gz
   ```
 
-[Izgradnja HTTP klijenta][35]  
-[Sadržaj][00]  
-[Kontekst][37]
+[35 Izgradnja HTTP klijenta][35]  
+[00 Sadržaj][00]  
+[37 Kontekst][37]
 
 [35]: 35_Izgradnja_HTTP_klijenta.md
 [00]: 00_Sadržaj.md

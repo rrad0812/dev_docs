@@ -1,9 +1,9 @@
 
 # Poglavlje 37: Kontekst
 
-[Profilisanje programa][36]  
-[Sadržaj][00]  
-[Generici][38]
+[36 Profilisanje programa][36]  
+[00 Sadržaj][00]  
+[38 Generici][38]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1145,9 +1145,9 @@ reqID, ok := ctx.Value(requestID).(string)
 - Kada se ne preuzmu vrednosti sa datim ključem `ctx.Value` vratiće `nil`.
 - Obično se kao ključ koristi globalna neizvezena promenljiva/konstanta neizvezenog tipa.
 
-[Profilisanje programa][36]  
-[Sadržaj][00]  
-[Generici][38]
+[36 Profilisanje programa][36]  
+[00 Sadržaj][00]  
+[38 Generici][38]
 
 [36]: 36_Profilisanje_programa.md
 [00]: 00_Sadržaj.md

@@ -1,9 +1,9 @@
 
 # Poglavlje 40: Nadogradnja ili vraćanje na stariju verziju programa Go
 
-[OO Prgramski jezik][39]  
-[Sadržaj][00]  
-[Preporuke za dizajn][41]
+[39 OOP jezik][39]  
+[00 Sadržaj][00]  
+[41 Preporuke za dizajn][41]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -130,9 +130,9 @@ Preuzeli ste instalater. On će automatski instalirati izabranu verziju. Samo dv
 
 Preuzeli ste instalater. On će automatski instalirati izabranu verziju. Samo dvaput kliknite na preuzetu datoteku.
 
-[OO Prgramski jezik][39]  
-[Sadržaj][00]  
-[Preporuke za dizajn][41]
+[39 OOP jezik][39]  
+[00 Sadržaj][00]  
+[41 Preporuke za dizajn][41]
 
 [39]: 39_Objektno_orijentisani_programski_jezik.md
 [00]: 00_Sadržaj.md

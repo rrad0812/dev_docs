@@ -1,9 +1,9 @@
 
 # Poglavlje 32: Šabloni
 
-[Evidencija][31]  
-[Sadržaj][00]  
-[Konfiguracija aplikacije][33]
+[31 Evidencija][31]  
+[00 Sadržaj][00]  
+[33 Konfiguracija aplikacije][33]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1006,9 +1006,9 @@ main.Product{Name:"Red Tea Pot 250ml", Price:"19.99", Description:"Test",Shippin
   //...
   ```
   
-[Evidencija][31]  
-[Sadržaj][00]  
-[Konfiguracija aplikacije][33]
+[31 Evidencija][31]  
+[00 Sadržaj][00]  
+[33 Konfiguracija aplikacije][33]
 
 [31]: 31_Evidencija.md
 [00]: 00_Sadržaj.md

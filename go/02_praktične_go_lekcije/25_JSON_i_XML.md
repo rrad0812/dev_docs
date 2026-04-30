@@ -1,9 +1,9 @@
 ﻿
 # Poglavlje 25: JSON i XML
 
-[Anonimne funkcije i zatvaranja][24]  
-[Sadržaj][00]  
-[Osnovni HTTP server][26]
+[24 Anonimne funkcije i zatvaranja][24]  
+[00 Sadržaj][00]  
+[26 Osnovni HTTP server][26]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1071,9 +1071,9 @@ Evo implementacije json.Marshaller interfejsa za tip Time. Ideja je da se vredno
 
     1. Panika se ne preporučuje u stvarnom programu; trebalo bi da obradite grešku i koristite odgovarajuću logiku izlaska.
 
-[Anonimne funkcije i zatvaranja][24]  
-[Sadržaj][00]  
-[Osnovni HTTP server][26]
+[24 Anonimne funkcije i zatvaranja][24]  
+[00 Sadržaj][00]  
+[26 Osnovni HTTP server][26]
 
 [24]: 24_Anonimne_funkcije_i_zatvaranje.md
 [00]: 00_Sadržaj.md
