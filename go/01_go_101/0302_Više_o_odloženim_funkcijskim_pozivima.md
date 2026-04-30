@@ -1,9 +1,9 @@
 
 # Više o odloženim pozivima funkcija
 
--[Pravila za prelom reda][0301]
--[Sadržaj][00]
--[Panic i restore][0303]
+- [Pravila za prelom reda][0301]  
+- [Sadržaj][00]  
+- [Panic i restore][0303]  
 
 Odloženi pozivi funkcija su već predstavljeni. Zbog ograničenog znanja o jeziku Go u to vreme, neki detalji i slučajevi upotrebe odloženih poziva funkcija nisu obrađeni u tom članku. Ovi detalji i slučajevi upotrebe biće obrađeni u ostatku ovog članka.
 
@@ -236,9 +236,9 @@ func writeManyFiles(files []File) error {
 }
 ```
 
--[Pravila za prelom reda][0301]
--[Sadržaj][00]
--[Panic i restore][0303]
+- [Pravila za prelom reda][0301]
+- [Sadržaj][00]
+- [Panic i restore][0303]
 
 [0301]: 0301_Pravila%20za%20prelom%20reda.md
 [00]: 00_Sadrzaj.md

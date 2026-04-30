@@ -35,6 +35,10 @@
   - [14 Refleksije][0214]
 - **05 Neka specijalna poglavlja**
   - [01 Pravila za prelom reda][0301]
+  - [02 Više o defer pozivima][0302]
+  - [03 Panic i Restore][0303]
+  - [04 Blokovi koda i opsezi identifikatora][0304]
+  - [05 Poredak izračunavanja izraza][0305]
 
 [0001]: 0001_Uvod.md
 [0002]: 0002_Go_alati.md
@@ -66,6 +70,12 @@
 [0214]: 0214_Refleksije.md
 
 [0301]: 0301_Pravila%20za%20prelom%20reda.md
+[0302]: 0302_Više_o_odloženim_funkcijskim_pozivima.md
+[0303]: 0303_Panic_Restore.md
+[0304]: 0304_Blokovi_koda_i%20_opsezi_identifikatora.md
+[0305]: 0305_Poredak_izračunavanja_izraza.md
+
+---
 
 [Nazad](../README.md)
 

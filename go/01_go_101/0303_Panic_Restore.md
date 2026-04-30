@@ -1,9 +1,9 @@
 
 # Detaljno o mehanizmu panic/restore
 
--[Više o odloženim funkcijskim pozivima][0302]
--[Sadržaj][00]
--[Blokovi koda i opsezi identifikatora][0304]
+- [Više o odloženim funkcijskim pozivima][0302]  
+- [Sadržaj][00]  
+- [Blokovi koda i opsezi identifikatora][0304]  
 
 Mehanizam panike i oporavka je već predstavljen, a nekoliko slučajeva upotrebe panike/oporavka je prikazano u poslednjem članku. Ovaj članak će detaljno objasniti mehanizam panike/oporavka. Izlazne faze poziva funkcija će takođe biti detaljno objašnjene.
 
@@ -278,9 +278,9 @@ U redu, sada, hajde da pokušamo da napravimo kratak opis koji recoverće pozivi
 
 Poziv **recover** stupa na snagu samo ako je direktni pozivalac poziva **recover** odloženi poziv i ako se direktni pozivalac odloženog poziva povezuje sa najnovijom neotkrivenom panikom u trenutnoj gorutini. Efektivan **recover** poziv odvaja najnoviju neotkrivenu paniku od poziva funkcije koja je sa njom povezana i vraća vrednost prosleđenu pozivu **panic** koji je proizveo najnoviju neotkrivenu paniku.
 
--[Više o odloženim funkcijskim pozivima][0302]
--[Sadržaj][00]
--[Blokovi koda i opsezi identifikatora][0304]
+- [Više o odloženim funkcijskim pozivima][0302]  
+- [Sadržaj][00]  
+- [Blokovi koda i opsezi identifikatora][0304]  
 
 [0302]: 0302_Više_o_odloženim_funkcijskim_pozivima.md
 [00]: 00_Sadrzaj.md

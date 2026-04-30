@@ -3,7 +3,6 @@
 
 - [Blokovi koda i opsezi identifikatora][0304]
 - [Sadržaj][00]
-- []()
 
 Ovaj članak će objasniti redoslede evaluacije izraza u svim vrstama scenarija.
 
@@ -393,7 +392,6 @@ Imajte na umu da je izraz *fptr("ccc")poslednji izračunati izraz u gornjem prim
 
 - [Blokovi koda i opsezi identifikatora][0304]
 - [Sadržaj][00]
-- []()
 
 [0304]: 0304_Blokovi_koda_i%20_opsezi_identifikatora.md
 [00]: 00_Sadrzaj.md
