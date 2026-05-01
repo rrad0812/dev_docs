@@ -1,9 +1,7 @@
 
-# 4 Podesite svoje razvojno okruženje
+# 04 Podesite svoje razvojno okruženje
 
-[03 Terminal][03]  
-[00 Sadržaj][00]  
-[05 Prva Go aplikacija][05]
+[03 Terminal][03] | [00 Sadržaj][00] | [05 Prva Go aplikacija][05]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -466,9 +464,7 @@ Preuzmite verziju koja odgovara vašem operativnom sistemu i arhitekturi vašeg 
 - Nakon instaliranja Go alata, možete pokrenuti go komandu pomoću svog omiljenog terminala.
   - Možda ćete morati da dodate binarnu datoteku go u svoju promenljivu okruženja PATH
 
-[03 Terminal][03]  
-[00 Sadržaj][00]  
-[05 Prva Go aplikacija][05]
+[03 Terminal][03] | [00 Sadržaj][00] | [05 Prva Go aplikacija][05]
 
 [03]: 03_Terminal.md
 [00]: 00_Sadržaj.md

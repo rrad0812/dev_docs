@@ -1,9 +1,7 @@
 
 # 18 Proksiji Go modula
 
-[17 Go moduli][17]  
-[00 Sadržaj][00]  
-[19 Jedinični testovi][19]
+[17 Go moduli][17] | [00 Sadržaj][00] | [19 Jedinični testovi][19]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -186,9 +184,7 @@ neće ga uvek odmah preuzeti. Servis ima keš memoriju radi poboljšanja perform
 - Da biste koristili određeni proksi, moraćete da izmenite promenljivu
   GOPROXY.
 
-[17 Go moduli][17]  
-[00 Sadržaj][00]  
-[19 Jedinični testovi][19]
+[17 Go moduli][17] | [00 Sadržaj][00] | [19 Jedinični testovi][19]
 
 [17]: 17_Go_moduli.md
 [00]: 00_Sadržaj.md

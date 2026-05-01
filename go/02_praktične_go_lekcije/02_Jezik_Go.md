@@ -1,9 +1,7 @@
 
-# 2 Jezik Go
+# 02 Jezik Go
 
-[01 Programiranje računara][01]  
-[00 Sadržaj][00]  
-[03 Terminal][03]
+[01 Programiranje računara][01] | [00 Sadržaj][00] | [03 Terminal][03]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -110,9 +108,7 @@ U anketi za programere na Stackoverflow-a 2018, 2019. i 2020. godine, Go je međ
 - pogledajte ovu stranicu <https://github.com/golang/go/wiki/Conferences>
 - Ovi brojevi su preuzeti sa veb stranice <https://github.com/golang/go/wiki/Conferences>, provereno 13. avgusta 2019.
 
-[01 Programiranje računara][01]  
-[00 Sadržaj][00]  
-[03 Terminal][03]
+[01 Programiranje računara][01] | [00 Sadržaj][00] | [03 Terminal][03]
 
 [01]: 01_Programiranje%20računara.md
 [00]: 00_Sadržaj.md

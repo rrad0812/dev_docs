@@ -1,9 +1,7 @@
 
-# 3 Terminal
+# 03 Terminal
 
-[02 Jezik Go][02]  
-[00 Sadržaj][00]  
-[04 Podesite svoje okruženje][04]
+[02 Jezik Go][02] | [00 Sadržaj][00] | [04 Podesite svoje okruženje][04]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -161,9 +159,7 @@ Recimo da želimo da prikažemo sadržaj vaše radne površine. Unesite sledeću
 - Možete pokrenuti komande tako što ćete uneti ime komande i eventualno opcije, a zatim pritisnuti enter.
 - Koristićemo terminal za pokretanje komandi specifičnih za go.
 
-[02 Jezik Go][02]  
-[00 Sadržaj][00]  
-[04 Podesite svoje okruženje][04]
+[02 Jezik Go][02] | [00 Sadržaj][00] | [04 Podesite svoje okruženje][04]
 
 [02]: 02_Jezik_Go.md
 [00]: 00_Sadržaj.md

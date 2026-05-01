@@ -1,9 +1,7 @@
 
 # 5 Aplikacija za prvi pokušaj
 
-[04 Podesite svoje okruženje][04]  
-[00 Sadržaj][00]  
-[06 Binarni i decimalni][06]
+[04 Podesite svoje okruženje][04] | [00 Sadržaj][00] | [06 Binarni i decimalni][06]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -221,9 +219,7 @@ Napomene:
     ./main
     ```
 
-[04 Podesite svoje okruženje][04]  
-[00 Sadržaj][00]  
-[06 Binarni i decimalni][06]
+[04 Podesite svoje okruženje][04] | [00 Sadržaj][00] | [06 Binarni i decimalni][06]
 
 [04]: 04_Podesite_svoje_okružnje.md
 [00]: 00_Sadržaj.md

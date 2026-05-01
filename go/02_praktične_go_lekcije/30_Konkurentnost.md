@@ -1,9 +1,7 @@
 
 # 30 Konkurentnost
 
-[29 Skladištenje podataka][29]  
-[00 Sadržaj][00]  
-[31 Evidencija][31]
+[29 Skladištenje podataka][29] | [00 Sadržaj][00] | [31 Evidencija][31]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1824,9 +1822,7 @@ func count() {
   w8.Wait()
   ```
 
-[29 Skladištenje podataka][29]  
-[00 Sadržaj][00]  
-[31 Evidencija][31]
+[29 Skladištenje podataka][29] | [00 Sadržaj][00] | [31 Evidencija][31]
 
 [29]: 29_Skladištenje_podataka.md
 [00]: 00_Sadržaj.md

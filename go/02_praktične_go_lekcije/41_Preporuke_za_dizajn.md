@@ -1,9 +1,7 @@
 
 # Poglavlje 41: Preporuke za dizajn
 
-[40 Nadogradnja ili vraćanje na stariju verziju][40]  
-[00 Sadržaj][00]  
-[42 Cheetsheat][42]
+[40 Nadogradnja ili vraćanje na stariju verziju][40] | [00 Sadržaj][00] | [42 Cheetsheat][42]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -831,9 +829,7 @@ func subFct1(a, b int) {
   - Smanjite ciklomatsku složenost
   - Smanjite broj nivoa ugnežđenja
 
-[40 Nadogradnja ili vraćanje na stariju verziju][40]  
-[00 Sadržaj][00]  
-[42 Cheetsheat][42]
+[40 Nadogradnja ili vraćanje na stariju verziju][40] | [00 Sadržaj][00] | [42 Cheetsheat][42]
 
 [40]: 40_Nadogradnja_ili_vraćanje_na%20staru_verziju.md
 [00]: 00_Sadržaj.md

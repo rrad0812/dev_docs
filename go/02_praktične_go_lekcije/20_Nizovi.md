@@ -1,9 +1,7 @@
 
 # 20 Nizovi
 
-[19 Jedinični testovi][19]  
-[00 Sadržaj][00]  
-[21 Isečci][21]
+[19 Jedinični testovi][19] | [00 Sadržaj][00] | [21 Isečci][21]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -581,9 +579,7 @@ U stvarnom svetu, podaci koje želite da sačuvate retko imaju fiksnu veličinu 
 - Kada funkciji prosledite pokazivač na niz, omogućavate funkciji da menja niz.
 - Ne postoji ugrađena funkcija za pronalaženje elementa u nizu.
 
-[19 Jedinični testovi][19]  
-[00 Sadržaj][00]  
-[21 Isečci][21]
+[19 Jedinični testovi][19] | [00 Sadržaj][00] | [21 Isečci][21]
 
 [19]: 19_Jedinični_testovi.md
 [00]: 00_Sadržaj.md

@@ -1,9 +1,7 @@
 
 # Poglavlje 38: Generici
 
-[37 Kontekst][37]  
-[00 Sadržaj][00]  
-[39 OOP jezik][39]  
+[37 Kontekst][37] | [00 Sadržaj][00] | [39 OOP jezik][39]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -763,9 +761,7 @@ Evo liste biblioteka u kojima možete koristiti neke zanimljive generičke metod
 - Najbolje bi bilo da ne forsirate generike u svom kodu.
 - Ne zaboravite da i dalje možete koristiti čiste interfejse!
 
-[37 Kontekst][37]  
-[00 Sadržaj][00]  
-[39 OOP jezik][39]
+[37 Kontekst][37] | [00 Sadržaj][00] | [39 OOP jezik][39]
 
 [37]: 37_Kontekst.md
 [00]: 00_Sadržaj.md

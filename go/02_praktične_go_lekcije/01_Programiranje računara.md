@@ -1,8 +1,7 @@
 
-# 1 Programiranje računara
+# 01 Programiranje računara
 
-[00 Sadržaj][00]  
-[02 Jezik Go][02]
+[00 Sadržaj][00] | [02 Jezik Go][02]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -257,8 +256,7 @@ Imajte na umu da se neki programski jezici interpretiraju. Kada su izvorne datot
 - Mašinski jezik i asemblerski jezik su niskog nivoa. Instrukcije napisane u tim jezicima su usko povezane sa organizacijom i mogućnostima hardvera. One pružaju malo apstrakcija.
 - Go je programski jezik visokog nivoa koji se kompajlira.
 
-[00 Sadržaj][00]  
-[02 Jezik Go][02]
+[00 Sadržaj][00] | [02 Jezik Go][02]
 
 [0101]: ./_images/0101.png
 [0102]: ./_images/0102.png

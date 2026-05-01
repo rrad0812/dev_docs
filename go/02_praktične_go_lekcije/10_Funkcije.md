@@ -1,9 +1,7 @@
 
 # 10 Funkcije
 
-[09 Kontrolni iskazi][09]  
-[00 Sadržaj][00]  
-[11 Paketi i uvoz][11]
+[09 Kontrolni iskazi][09] | [00 Sadržaj][00] | [11 Paketi i uvoz][11]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -855,9 +853,7 @@ Imena funkcija treba jasno da odražavaju operaciju koju će funkcija izvršiti
   - Rezultate: izlaz
 - Naredba return prekida izvršavanje funkcije i opciono dostavlja rezultate pozivaocu.
 
-[09 Kontrolni iskazi][09]  
-[00 Sadržaj][00]  
-[11 Paketi i uvoz][11]
+[09 Kontrolni iskazi][09] | [00 Sadržaj][00] | [11 Paketi i uvoz][11]
 
 [09]: 09_Kontrolni_izrazi.md
 [00]: 00_Sadržaj.md

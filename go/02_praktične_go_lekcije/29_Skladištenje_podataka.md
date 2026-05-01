@@ -1,9 +1,7 @@
 
 # 29 Skladištenje podataka - Datoteke i baze podataka
 
-[28 Datumi i vreme][28]  
-[00 Sadržaj][00]  
-[30 Konkurentnost][30]
+[28 Datumi i vreme][28] | [00 Sadržaj][00] | [30 Konkurentnost][30]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1008,9 +1006,7 @@ Jedina razlika u odnosu na MySQL je format rezervisanih mesta. Umesto "?" trebal
 
   - Rezultate upita možete pretvoriti u promenljive pomoću metode Scan.
 
-[28 Datumi i vreme][28]  
-[00 Sadržaj][00]  
-[30 Konkurentnost][30]
+[28 Datumi i vreme][28] | [00 Sadržaj][00] | [30 Konkurentnost][30]
 
 [28]: 28_Datumi_i_vreme.md
 [00]: 00_Sadržaj.md

@@ -1,9 +1,7 @@
 
 # Poglavlje 34: Referentne vrednosti
 
-[33 Konfiguracija aplikacije][33]  
-[00 Sadržaj][00]  
-[35 Izgradnja HTTP klijenata][35]
+[33 Konfiguracija aplikacije][33] | [00 Sadržaj][00] | [35 Izgradnja HTTP klijenata][35]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -690,9 +688,7 @@ Ti rezultati se veoma razlikuju od onih koje smo prikupili sa dva fiksna niza: 1
   }
   ```
 
-[33 Konfiguracija aplikacije][33]  
-[00 Sadržaj][00]  
-[35 Izgradnja HTTP klijenata][35]
+[33 Konfiguracija aplikacije][33] | [00 Sadržaj][00] | [35 Izgradnja HTTP klijenata][35]
 
 [33]: 33_Konfigurqacija_aplikacije.md
 [00]: 00_Sadržaj.md

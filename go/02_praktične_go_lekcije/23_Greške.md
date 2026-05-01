@@ -1,9 +1,7 @@
 
 # 23 Greške
 
-[22 Mape][22]  
-[00 Sadržaj][00]  
-[24 Anonimne funkcije i zatvaranja][24]
+[22 Mape][22] | [00 Sadržaj][00] | [24 Anonimne funkcije i zatvaranja][24]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1507,9 +1505,7 @@ Kada se pozove log.Fatal, odložene funkcije se ne pokreću. U našem slučaju, 
 
 - `errors.Is` je korisna funkcija za testiranje da li je određena greška prisutna u lancu grešaka
 
-[22 Mape][22]  
-[00 Sadržaj][00]  
-[24 Anonimne funkcije i zatvaranja][24]
+[22 Mape][22] | [00 Sadržaj][00] | [24 Anonimne funkcije i zatvaranja][24]
 
 [22]: 22_Mape.md
 [00]: 00_Sadržaj.md

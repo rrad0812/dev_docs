@@ -1,9 +1,7 @@
 
 # 13 Tipovi
 
-[12 Inicijalizacija paketa][12]  
-[00 Sadržaj][00]  
-[14 Metode][14]
+[12 Inicijalizacija paketa][12] | [00 Sadržaj][00] | [14 Metode][14]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -461,9 +459,7 @@ Ime ugrađenog polja je njegovo ime tipa.
   log.Println(hotel.Country.CapitalCity)
   ```
   
-[12 Inicijalizacija paketa][12]  
-[00 Sadržaj][00]  
-[14 Metode][14]
+[12 Inicijalizacija paketa][12] | [00 Sadržaj][00] | [14 Metode][14]
 
 [12]: 12_Inicijalizacija_paketa.md
 [00]: 00_Sadržaj.md

@@ -1,9 +1,7 @@
 
 # 28 Datumi i vreme
 
-[27 Enum iota i bitmask][27]  
-[00 Sadržaj][00]  
-[29 Skladištenje podataka][29]
+[27 Enum iota i bitmask][27] | [00 Sadržaj][00] | [29 Skladištenje podataka][29]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -462,9 +460,7 @@ Umesto da dodamo jedan dan datumu, dodajemo 2 minuta. Stoga će nas petlja for o
 - Možete predstaviti vreme u drugoj vremenskoj zoni metodom Inkoja uzima *time.Locationkao ulaz
   (koji se može učitati sa time.LoadLocation(tzName))
 
-[27 Enum iota i bitmask][27]  
-[00 Sadržaj][00]  
-[29 Skladištenje podataka][29]
+[27 Enum iota i bitmask][27] | [00 Sadržaj][00] | [29 Skladištenje podataka][29]
 
 [27]: 27_Enum_iota_i_bitmask.md
 [00]: 00_Sadržaj.md

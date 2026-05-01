@@ -1,9 +1,7 @@
 
 # 22 Mape
 
-[21 Isečcci][21]  
-[00 Sadržaj][00]  
-[23 Greške][23]
+[21 Isečcci][21] | [00 Sadržaj][00] | [23 Greške][23]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -724,9 +722,7 @@ Dvodimenzionalne mape su, po mom mišljenju, previše komplikovane. Možda bi bi
   - Zatim možete iterirati preko isečka i preuzeti svaku vrednost redosledom umetanja.
 - Unošenje i pretraživanje na mapi su veoma brzi , čak i ako mapa ima mnogo unosa.
 
-[21 Isečcci][21]  
-[00 Sadržaj][00]  
-[23 Greške][23]
+[21 Isečcci][21] | [00 Sadržaj][00] | [23 Greške][23]
 
 [21]: 21_Isečci.md
 [00]: 00_Sadržaj

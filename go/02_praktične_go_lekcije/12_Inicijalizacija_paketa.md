@@ -1,9 +1,7 @@
 
 # 12 Inicijalizacija paketa
 
-[11 Paketi i uvoz][11]  
-[00 Sadržaj][00]  
-[13 Tipovi][13]
+[11 Paketi i uvoz][11] | [00 Sadržaj][00] | [13 Tipovi][13]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -422,9 +420,7 @@ Ovaj proces se završava kada više nema promenljive za inicijalizaciju.
 
 - init funkcije se izvršavaju sekvencijalno.
 
-[11 Paketi i uvoz][11]  
-[00 Sadržaj][00]  
-[13 Tipovi][13]
+[11 Paketi i uvoz][11] | [00 Sadržaj][00] | [13 Tipovi][13]
 
 [11]: 11_Paketi_i_uvoz.md
 [00]: 00_Sadržaj.md

@@ -1,9 +1,7 @@
 ﻿
 # Poglavlje 26: Osnovni HTTP server
 
-[25 JSON i XML][25]  
-[00 Sadržaj][00]  
-27 [Enum iota i bitmask][27]
+[25 JSON i XML][25] | [00 Sadržaj][00] | [27 Enum iota i bitmask][27]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1060,9 +1058,7 @@ A/B server za testiranje
   - parametar w vam omogućava da napišete odgovor
   - parametar r vam omogućava pristup zahtevu
 
-[25 JSON i XML][25]  
-[00 Sadržaj][00]  
-[27 Enum iota i bitmask][27]
+[25 JSON i XML][25] | [00 Sadržaj][00] | [27 Enum iota i bitmask][27]
 
 [25]: 25_JSON_i_XML.md
 [00]: 00_Sadržaj.md

@@ -1,9 +1,7 @@
 
 # Poglavlje 31: Evidencija
 
-[30 Konkurentnost][30]  
-[00 Sadržaj][00]  
-[32 Šabloni][32]
+[30 Konkurentnost][30] | [00 Sadržaj][00] | [32 Šabloni][32]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -429,9 +427,7 @@ Dodaćemo log u sistemske logove mašine. Pošto je u pitanju vanredna situacija
 - Modul `logrus` nudi zanimljive funkcije kao što su nivoi logova, opcije formatiranja i polja
 - Dodavanje parsabilnih polja u vaše logove je dobra praksa; olakšava ih analizu.
 
-[30 Konkurentnost][30]  
-[00 Sadržaj][00]  
-[32 Šabloni][32]
+[30 Konkurentnost][30] | [00 Sadržaj][00] | [32 Šabloni][32]
 
 [30]: 30_Konkurentnost.md
 [00]: 00_Sadržaj.md

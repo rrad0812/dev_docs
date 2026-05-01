@@ -1,9 +1,7 @@
 
-# 8 Promenljive, konstante i osnovni tipovi
+# 08 Promenljive, konstante i osnovni tipovi
 
-[07 Heksadecimalni, oktalni, ASCII, Unicode, UTF-8 i rune][07]  
-[00 Sadržaj][00]  
-[09 Kontrolni izrazi][09]
+[07 Heksadecimalni, oktalni, ASCII, Unicode, UTF-8 i rune][07] | [00 Sadržaj][00] | [09 Kontrolni izrazi][09]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -592,9 +590,7 @@ occupancy = 12
   - Netipizirane  
     Nemaju tip osim podrazumevanog i mogu premašiti u vrednosti svoj podrazumevani tip.
 
-[07 Heksadecimalni, oktalni, ASCII, Unicode, UTF-8 i rune][07]  
-[00 Sadržaj][00]  
-[09 Kontrolni izrazi][09]
+[07 Heksadecimalni, oktalni, ASCII, Unicode, UTF-8 i rune][07] | [00 Sadržaj][00] | [09 Kontrolni izrazi][09]
 
 [07]: 07_Hexadecimal_octal_ASCII_UTF8_Unicode_rune.md
 [00]: 00_Sadržaj.md

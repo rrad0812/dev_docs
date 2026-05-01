@@ -1,9 +1,7 @@
 
 # 17 Go moduli
 
-[16 Interfejsi][16]  
-[00 Sadržaj][00]  
-[18 Proksiji Go modula][18]
+[16 Interfejsi][16] | [00 Sadržaj][00] | [18 Proksiji Go modula][18]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1347,9 +1345,7 @@ gitlab.com/loir402/foo v1.0.1: zip has been modified
   exclude gitlab.com/loir402/bluesodium v2.0.1
   ```
 
-[16 Interfejsi][16]  
-[00 Sadržaj][00]  
-[18 Proksiji Go modula][18]
+[16 Interfejsi][16] | [00 Sadržaj][00] | [18 Proksiji Go modula][18]
 
 [16]: 16_Interfejsi.md
 [00]: 00_Sadržaj.md

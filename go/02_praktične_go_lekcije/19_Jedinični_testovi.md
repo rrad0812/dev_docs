@@ -1,9 +1,7 @@
 
 # 19 Jedinični testovi
 
-[18 Proksiji Go modula][18]  
-[00 Sadržaj][00]  
-[20 Nizovi][20]
+[18 Proksiji Go modula][18] | [00 Sadržaj][00] | [20 Nizovi][20]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1208,9 +1206,7 @@ Nadam se da ste ubeđeni.
   - Jedinični test se piše pre stvarne implementacije
   - Jedinični test prvo ne uspe; cilj je onda da se on postigne.
 
-[18 Proksiji Go modula][18]  
-[00 Sadržaj][00]  
-[20 Nizovi][20]
+[18 Proksiji Go modula][18] | [00 Sadržaj][00] | [20 Nizovi][20]
 
 [18]: 18_Proksiji_Go_modula.md
 [00]: 00_Sadržaj.md

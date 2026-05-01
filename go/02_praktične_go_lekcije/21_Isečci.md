@@ -1,9 +1,7 @@
 
 # 21 Isečci
 
-[20 Nizovi][20]  
-[00 Sadržaj][00]  
-[22 Mape][22]
+[20 Nizovi][20] | [00 Sadržaj][00] | [22 Mape][22]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -937,9 +935,7 @@ U prethodnom primeru, možda možemo koristiti drugu strukturu podataka... Pogle
 - Da biste pronašli element u isečku, potrebno je da iterirate kroz taj isečak
   Ako je potrebno, možda možete umesto toga koristiti mapu.
 
-[20 Nizovi][20]  
-[00 Sadržaj][00]  
-[22 Mape][22]
+[20 Nizovi][20] | [00 Sadržaj][00] | [22 Mape][22]
 
 [20]: 20_Nizovi.md
 [00]: 00_Sadržaj.md

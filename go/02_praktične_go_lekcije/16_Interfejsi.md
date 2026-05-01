@@ -1,9 +1,7 @@
 
 # 16 Interfejsi
 
-[15 Pokazivači][15]  
-[00 Sadržaj][00]  
-[17 Go moduli][17]
+[15 Pokazivači][15] | [00 Sadržaj][00] | [17 Go moduli][17]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -771,9 +769,7 @@ fmt.Println(users)
   interfejs.  
   Npr: Skladištenje (možemo koristiti MySQL, Postgres, DynamoDB, Redis bazu podataka za skladištenje istih podataka).
 
-[15 Pokazivači][15]  
-[00 Sadržaj][00]  
-[17 Go moduli][17]
+[15 Pokazivači][15] | [00 Sadržaj][00] | [17 Go moduli][17]
 
 [15]: 15_Pokazivači.md
 [00]: 00_Sadržaj.md

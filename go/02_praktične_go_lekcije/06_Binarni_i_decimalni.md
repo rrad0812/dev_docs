@@ -1,9 +1,7 @@
 
-# 6 Binarni i decimalni brojevi
+# 06 Binarni i decimalni brojevi
 
-[05 Prva Go aplikacija][05]  
-[00 Sadržaj][00]  
-[07 Hexadecimal, octal,ASCII, UTF8, Unicode, rune][07]
+[05 Prva Go aplikacija][05] | [00 Sadržaj][00] | [07 Hexadecimal, octal,ASCII, UTF8, Unicode, rune][07]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -344,12 +342,11 @@ Kao posledica toga, 16 exabajta je teoretski maksimalna količina RAM-a koja se 
 - Bajt ima osam bitova
 - 64-bitni sistem može da adresira daleko više memorije nego 32-bitni sistem.
 
-[05 Prva Go aplikacija][05]  
-[00 sadržaj][00]  
-[07 Hexadecimal, octal,ASCII, UTF8, Unicode, rune][07]
+[05 Prva Go aplikacija][05] | [00 Sadržaj][00] | [07 Hexadecimal, octal,ASCII, UTF8, Unicode, rune][07]
 
 [0601]: ./_images/0601.png
 [0602]: ./_images/0602.png
+
 [05]: 05_Prva_aplikacija.md
 [00]: 00_Sadržaj.md
 [07]: 07_Hexadecimal_octal_ASCII_UTF8_Unicode_rune.md

@@ -1,9 +1,7 @@
 
 # 15 Tip pokazivača
 
-[14 metode][14]  
-[00 Sadržaj][00]  
-[16 Interfejsi][16]
+[14 metode][14] | [00 Sadržaj][00] | [16 Interfejsi][16]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -588,9 +586,7 @@ Kada pozovemo "RenameV2" metodu, koja ima prijemnik vrednosti, ime originalne ma
   Možete direktno napisati:`cartPtr.Items = "1234"`
   Promenljiva `cart` je efikasno modifikovana.
 
-[14 metode][14]  
-[00 Sadržaj][00]  
-[16 Interfejsi][16]
+[14 metode][14] | [00 Sadržaj][00] | [16 Interfejsi][16]
 
 [14]: 14_Metode.md
 [00]: 00_Sadržaj.md

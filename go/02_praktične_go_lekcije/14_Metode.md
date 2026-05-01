@@ -1,9 +1,7 @@
 
 # 14: Metode
 
-[13 Tipovi][13]  
-[00 Sadržaj][00]  
-[15 Pokazivači][15]  
+[13 Tipovi][13] | [00 Sadržaj][00] | [15 Pokazivači][15]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -624,9 +622,7 @@ func (c *Cart) Lock() error {
 
 - Imena metoda treba da budu jedinstvena u skupu metoda
 
-[13 Tipovi][13]  
-[00 Sadržaj][00]  
-[15 Pokazivači][15]  
+[13 Tipovi][13] | [00 Sadržaj][00] | [15 Pokazivači][15]  
 
 [13]: 13_Tipovi.md
 [00]: 00_Sadržaj.md

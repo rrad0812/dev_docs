@@ -1,9 +1,7 @@
 
-# 7 Heksadecimalni, oktalni, ASCII, UTF8, Unicode, rune
+# 07 Heksadecimalni, oktalni, ASCII, UTF8, Unicode, rune
 
-[06 Binarni i decimalni][06]  
-[00 Sadržaj][00]  
-[08 Promenljive, konstante i osnovni tipovi][08]
+[06 Binarni i decimalni][06] | [00 Sadržaj][00] | [08 Promenljive, konstante i osnovni tipovi][08]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -541,9 +539,7 @@ func main() {
 
 - U Go programu, stringovi su nepromenljivi, što znači da se ne mogu menjati kada se jednom kreiraju.
 
-[06 Binarni i decimalni][06]  
-[00 Sadržaj][00]  
-[08 Promenljive, konstante i osnovni tipovi][08]
+[06 Binarni i decimalni][06] | [00 Sadržaj][00] | [08 Promenljive, konstante i osnovni tipovi][08]
 
 [0701]:./_images/0701.png
 [0702]: ./_images/0702.png

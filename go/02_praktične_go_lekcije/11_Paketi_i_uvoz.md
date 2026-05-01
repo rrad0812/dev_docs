@@ -1,9 +1,7 @@
 
 # 11 Paketi i uvoz
 
-[10 Funkcije][10]  
-[00 Sadržaj][00]  
-[12 Inicijalizacija paketa][12]
+[10 Funkcije][10] | [00 Sadržaj][00] | [12 Inicijalizacija paketa][12]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -957,9 +955,7 @@ invoice.Create(customerName, nights, 145.32)
 - Paketi koji se nalaze unutar "internal" direktorijuma mogu se koristiti unutar paketa vašeg modula. Međutim, ne mogu ih koristiti drugi moduli.
 - Modul je kolekcija Go paketa smeštenih u stablu datoteka sa "go.mod" datotekom u korenu.
 
-[10 Funkcije][10]  
-[00 Sadržaj][00]  
-[12 Inicijalizacija paketa][12]
+[10 Funkcije][10] | [00 Sadržaj][00] | [12 Inicijalizacija paketa][12]
 
 [10]: 10_Funkcije.md
 [00]: 00_Sadržaj.md

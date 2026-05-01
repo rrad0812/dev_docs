@@ -1,9 +1,7 @@
 
 # Poglavlje 39: Objektno orijentisani programski jezik
 
-[38 Generici][38]  
-[00 Sadržaj][00]  
-[40 Nadogradnja ili vraćanje na stariju verziju][40]  
+[38 Generici][38] | [00 Sadržaj][00] | [40 Nadogradnja ili vraćanje na stariju verziju][40]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -698,9 +696,7 @@ func main() {
 }
 ```
 
-[38 Generici][38]  
-[00 Sadržaj][00]  
-[40 Nadogradnja ili vraćanje na stariju verziju][40]  
+[38 Generici][38] | [00 Sadržaj][00] | [40 Nadogradnja ili vraćanje na stariju verziju][40]  
 
 [38]: 38_Generici.md
 [00]: 00_Sadržaj.md

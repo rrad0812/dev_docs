@@ -1,9 +1,7 @@
 
-# 9 Kontrolni iskazi
+# 09 Kontrolni iskazi
 
-[08 Promenljive, konstante i osnovni tipovi][08]  
-[00 Sadržaj][00]  
-[10 Funkcije][10]  
+[08 Promenljive, konstante i osnovni tipovi][08] | [00 Sadržaj][00] | [10 Funkcije][10]
 
 **Šta ćete naučiti u ovom poglavlju?**
 
@@ -1457,9 +1455,7 @@ Sada, uzmimo opšti slučaj: broj raspoloživih soba se čuva u promenljivoj "ro
     switch case?)
 - Često ćete videti konstrukciju `if without else` u Go kodu (obično da bi se proverile greške).
 
-[08 Promenljive, konstante i osnovni tipovi][08]  
-[00 Sadržaj][00]  
-[10 Funkcije][10]
+[08 Promenljive, konstante i osnovni tipovi][08] | [00 Sadržaj][00] | [10 Funkcije][10]
 
 [08]: 08_Promenljive_konstante_i_osnovni_tipovi.md
 [00]: 00_Sadržaj.md
