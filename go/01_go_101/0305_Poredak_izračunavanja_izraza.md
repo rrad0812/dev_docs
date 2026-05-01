@@ -1,8 +1,7 @@
 
 # Poredka evaluacije izraza
 
-- [Blokovi koda i opsezi identifikatora][0304]
-- [Sadržaj][00]
+[Blokovi koda i opsezi identifikatora][0304] | [Sadržaj][00]
 
 Ovaj članak će objasniti redoslede evaluacije izraza u svim vrstama scenarija.
 
@@ -390,8 +389,7 @@ ccc
 
 Imajte na umu da je izraz *fptr("ccc")poslednji izračunati izraz u gornjem primeru. Izračunava se nakon što <-fchan("ddd", c)je izabrana odgovarajuća operacija prijema.
 
-- [Blokovi koda i opsezi identifikatora][0304]
-- [Sadržaj][00]
+[Blokovi koda i opsezi identifikatora][0304] | [Sadržaj][00]
 
 [0304]: 0304_Blokovi_koda_i%20_opsezi_identifikatora.md
 [00]: 00_Sadrzaj.md

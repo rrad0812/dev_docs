@@ -1,9 +1,7 @@
 
 # Refleksije u Gou
 
-- [Generici][0213]
-- [Sadržaj][00]
-- [Pravila za prelom reda][0301]
+[Generici][0213] | [Sadržaj][00] | [Pravila za prelom reda][0301]
 
 Go je statički jezik sa dobrom podrškom za refleksiju. Ostatak ovog članka će objasniti funkcionalnosti refleksije koje su obezbeđene u **reflect** standardnom paketu.
 
@@ -547,9 +545,7 @@ func main() {
 
 Postoje i druge **reflect.Value** srodne funkcije i metode koje se ne koriste u gornjim primerima, molimo vas da pročitate dokumentaciju **reflect** paketa za njihovu upotrebu. Pored toga, imajte na umu da postoje neki detalji vezani za refleksiju pomenuti u detaljima o programu Go 101.
 
-- [Generici][0213]
-- [Sadržaj][00]
-- [Pravila za prelom reda][0301]
+[Generici][0213] | [Sadržaj][00] | [Pravila za prelom reda][0301]
 
 [0213]: 0213_Generici.md
 [00]: 00_Sadrzaj.md

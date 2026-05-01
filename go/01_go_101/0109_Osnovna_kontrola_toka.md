@@ -1,9 +1,7 @@
 
 # Osnovni tokovi upravljanja
 
-- [Izrazi i iskazi][0108]  
-- [Sadržaj][00]  
-- [Gorutine,Odloženi funkcijski pozivi i Panic/Recover][0110]
+[Izrazi i iskazi][0108] | [Sadržaj][00] | [Gorutine,Odloženi funkcijski pozivi i Panic/Recover][0110]
 
 Blokovi koda za kontrolu toka u jeziku Go su veoma slični drugim popularnim programskim jezicima, ali postoje i mnoge razlike. Ovaj članak će pokazati te sličnosti i razlike.
 
@@ -635,10 +633,8 @@ func main() {
 }
 ```
 
-- [Izrazi i iskazi][0108]  
-- [Sadržaj][00]  
-- [Gorutine,Odloženi funkcijski pozivi i Panic/Recover][0110]
+[Izrazi i iskazi][0108] | [Sadržaj][00] | [Gorutine,Odloženi funkcijski pozivi i Panic/Recover][0110]
 
 [0108]: 0108_Izrazi_i_iskazi.md
 [00]: 00_Sadrzaj.md
-[0110]: 0110_Goroutine_Odloženi_Funkcijski_pozivi_i_Panic-Recover
+[0110]: 0110_Goroutine_Odloženi_Funkcijski_pozivi_i_Panic-Recover.md

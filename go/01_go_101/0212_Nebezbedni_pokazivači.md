@@ -1,9 +1,7 @@
 
 # Pokazivači nebezbedni po tipu
 
-- [Ugrađivanje tipa][0211]
-- [Sadržaj][00]
-- [Generici][0213]
+[Ugrađivanje tipa][0211] | [Sadržaj][00] | [Generici][0213]
 
 U poređenju sa C pokazivačima, postoje mnoga ograničenja za pokazivače na Go jeziku. Na primer, pokazivači na Go jeziku ne mogu da učestvuju u aritmetičkim operacijama, a za dva proizvoljna tipa pokazivača, vrlo je moguće da se njihove vrednosti ne mogu konvertovati jedna u drugu.
 
@@ -719,9 +717,7 @@ I ponovo, trebalo bi da budemo svesni da se gore predstavljeni nebezbedni mehani
 
 Na kraju, vredi napomenuti da -gcflags=all=-d=checkptrje opcija dinamičke analize kompajlera podržana od Go Toolchain 1.14 (preporučuje se korišćenje ove opcije na Windows-u sa Go Toolchain 1.15+). Kada se koristi ova opcija, neke (ali ne sve) pogrešne nebezbedne upotrebe pokazivača biće otkrivene tokom izvršavanja. Kada se takva nepravilna upotreba otkrije, doći će do panike. Hvala Metjuu Dempskom na implementaciji ove sjajne funkcije!
 
-- [Ugrađivanje tipa][0211]
-- [Sadržaj][00]
-- [Generici][0213]
+[Ugrađivanje tipa][0211] | [Sadržaj][00] | [Generici][0213]
 
 [0211]: 0211_Ugradjivanje_tipa.md
 [00]: 00_Sadrzaj.md

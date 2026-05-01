@@ -1,9 +1,7 @@
 
 # Pregled sistema tipova u Go
 
-- [Gorutine, Odloženi pozivi funkcija i Panic/Recover][0110]  
-- [Sadržaj][00]  
-- [Pokazivači][0202]  
+[Gorutine, Odloženi pozivi funkcija i Panic/Recover][0110] | [Sadržaj][00] | [Pokazivači][0202]
 
 Ovaj članak će predstaviti sve vrste tipova u jeziku Go i koncepte vezane za sistem tipova u jeziku Go. Bez poznavanja ovih osnovnih koncepata, teško je imati temeljno razumevanje jezika Go.
 
@@ -421,9 +419,7 @@ Go nije objektno orijentisan programski jezik sa svim funkcionalnostima, ali Go 
 
 Pre Go 1.18, generičke funkcionalnosti u Go-u su bile ograničene na ugrađene tipove i funkcije. Od Go 1.18, prilagođeni generici su već podržani. Molimo vas da pročitate članak o genericima u Go -u za ugrađene generike i knjigu Go Generics 101 za prilagođene generike.
 
-- [Gorutine, Odloženi pozivi funkcija i Panic/Recover][0110]  
-- [Sadržaj][00]  
-- [Pokazivači u Gou][0202]
+[Gorutine, Odloženi pozivi funkcija i Panic/Recover][0110] | [Sadržaj][00] | [Pokazivači][0202]
 
 [0110]: 0110_Goroutine_Odloženi_Funkcijski_pozivi_i_Panic-Recover.md
 [00]: 00_Sadrzaj.md

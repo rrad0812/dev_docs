@@ -1,9 +1,7 @@
 
 # Uvod u elemente izvornog koda
 
-- [Go alati][0002]  
-- [Sadržaj][00]  
-- [Ključne reči i indentifikatori][0102]
+[Go alati][0002] | [Sadržaj][00] | [Ključne reči i indentifikatori][0102]
 
 Go je poznat po svojoj jednostavnoj i čistoj sintaksi. Ovaj članak predstavlja uobičajene elemente izvornog koda u programiranju kroz jednostavan primer. Ovo će pomoći novim "goferima" (Go programerima) da steknu osnovnu predstavu o upotrebi Go elemenata.
 
@@ -141,9 +139,7 @@ Više o pravilima preloma reda možemo saznati u kasnijem članku. Trenutno bi t
 > [!Note]
 > Ali, imajte na umu da ovo nije univerzalno pravilo.
 
-- [Go alati][0002]  
-- [Sadržaj][00]  
-- [Ključne reči i indentifikatori][0102]
+[Go alati][0002] | [Sadržaj][00] | [Ključne reči i indentifikatori][0102]
 
 [0002]: 0002_Go_alati.md
 [00]: 00_Sadrzaj.md

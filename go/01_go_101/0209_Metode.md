@@ -1,9 +1,7 @@
 
 # Metode
 
-- [Kanali][0208]
-- [Sadržaj][00]
-- [Interfejsi][0210]
+[Kanali][0208] | [Sadržaj][00] | [Interfejsi][0210]
 
 Go podržava neke funkcije objektno orijentisanog programiranja. Metod je jedna od tih funkcija. Ovaj članak će predstaviti koncepte vezane za metode u Gou.
 
@@ -491,9 +489,7 @@ Za slučajeve kada su i prijemnici vrednosti i prijemnici pokazivača prihvatlji
 
 Ako je teško doneti odluku da li metod treba da koristi prijemnik pokazivača ili prijemnik vrednosti, onda jednostavno izaberite način prijema pokazivača.
 
-- [Kanali][0208]
-- [Sadržaj][00]
-- [Interfejsi][0210]
+[Kanali][0208] | [Sadržaj][00] | [Interfejsi][0210]
 
 [0208]: 0208_Kanali.md
 [00]: 00_Sadrzaj.md

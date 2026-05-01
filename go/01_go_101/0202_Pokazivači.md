@@ -1,9 +1,7 @@
 
 # Pokazivači u Gou
 
-- [Pregled sistema tipova u Gou][0201]
-- [Sadržaj][00]
-- [Strukture u Gou](0203)
+[Pregled sistema tipova u Gou][0201] | [Sadržaj][00] | [Strukture u Gou][0203]
 
 Iako Go apsorbuje mnoge karakteristike iz svih vrsta drugih jezika, Go se uglavnom smatra jezikom iz porodice C. Jedan od dokaza je da Go takođe podržava pokazivače. Go pokazivači i C pokazivači su veoma slični u mnogim aspektima, ali postoje i neke razlike između Go pokazivača i C pokazivača. Ovaj članak će navesti sve vrste koncepata i detalja vezanih za pokazivače u Gou.
 
@@ -310,10 +308,8 @@ Uslovi za dodeljivanje vrednosti pokazivača drugoj vrednosti pokazivača su ist
 
 Kao što je pomenuto na početku ovog članka, mehanizmi (tačnije, tip **unsafe.Pointer**) koje pruža standardni unsafepaket mogu se koristiti za prevazilaženje ograničenja napravljenih za pokazivače u programskom jeziku Go. Tip **unsafe.Pointer** je sličan tipu **void*** u C-u. Generalno, nebezbedni načini se ne preporučuju za upotrebu.
 
-- [Pregled sistema tipova u Gou][0201]
-- [Sadržaj][00]
-- [Strukture u Gou][0203]
+[Pregled sistema tipova u Gou][0201] | [Sadržaj][00] | [Strukture u Gou][0203]
 
-[0201]: 0201_Pregled_sistema_tipova%20u_Go.md
+[0201]: 0201_Pregled_sistema_tipova.md
 [00]: 00_Sadrzaj.md
-[0203]: 0203_Strukture_u_Gou.md
+[0203]: 0203_Strukture.md

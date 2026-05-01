@@ -1,9 +1,7 @@
 
 # Gorutine, odloženi pozivi funkcija i panika/oporavak
 
-- [Osnovna kontrola tok][0109]  
-- [Sadržaj][00]  
-- [Pregled sistema tipova u Go][0201]
+[Osnovna kontrola tok][0109] | [Sadržaj][00] | [Pregled sistema tipova u Go][0201]
 
 Ovaj članak će predstaviti gorutine i odložene pozive funkcija. Gorutine i odloženi poziv funkcija su dve jedinstvene karakteristike u jeziku Go. Ovaj članak takođe objašnjava mehanizme za paniku i oporavak. Nisu sva znanja u vezi sa ovim karakteristikama obuhvaćena ovim člankom, više će biti predstavljeno u budućim člancima.
 
@@ -482,10 +480,8 @@ Kasnije možemo naučiti neke slučajeve upotrebe **panic/recover** i više o me
 
 Za standardni Go kompajler, neke fatalne greške, kao što su prelivanje steka i nedostatak memorije, nisu popravljive. Kada se pojave, program će se srušiti.
 
-- [Osnovna kontrola tok][0109]  
-- [Sadržaj][00]  
-- [Pregled sistema tipova u Go][0201]
+[Osnovna kontrola tok][0109] | [Sadržaj][00] | [Pregled sistema tipova u Go][0201]
 
 [0109]: 0109_Osnovna_kontrola_toka.md
 [00]: 00_Sadrzaj.md
-[0201]: 0201_Pregled_sistema_tipova%20u_Go.md
+[0201]: 0201_Pregled_sistema_tipova.md

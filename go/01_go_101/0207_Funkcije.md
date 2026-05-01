@@ -1,9 +1,7 @@
 
 # Funkcije u programu Go
 
-- [Stringovi][0206]
-- [Sadržaj][00]
-- [Kanali][0208]
+[Stringovi][0206] | [Sadržaj][00] | [Kanali][0208]
 
 Deklaracije i pozivi funkcija su već objašnjeni. U ovom članku ćemo se više baviti konceptima i detaljima vezanim za funkcije u Go jeziku.
 
@@ -494,9 +492,7 @@ Međutim, imajte na umu da u nekim drugim slučajevima takva ekvivalencija možd
 
 Molimo vas da pročitate ovaj zvanični članak na blogu i ovaj članak za više informacija o iteratorima u Go jeziku.
 
-- [Stringovi][0206]
-- [Sadržaj][00]
-- [Kanali][0208]
+[Stringovi][0206] | [Sadržaj][00] | [Kanali][0208]
 
 [0206]: 0206_Stringovi.md
 [00]: 00_Sadrzaj.md

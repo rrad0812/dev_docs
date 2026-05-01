@@ -1,9 +1,7 @@
 
 # Osnovni tipovi i osnovni vrednosni literali
 
-- [Ključne reči i identfikatori][0102]  
-- [Sadržaj][00]  
-- [Konstante i promenljive][0104]
+[Ključne reči i identfikatori][0102] | [Sadržaj][00] | [Konstante i promenljive][0104]
 
 Tipovi se mogu posmatrati kao šabloni vrednosti, a vrednosti se mogu posmatrati kao instance tipova. Ovaj članak će predstaviti ugrađene osnovne tipove i njihove literale vrednosti u jeziku Go. Kompozitni tipovi neće biti predstavljeni u ovom članku.
 
@@ -453,9 +451,7 @@ Neki primeri:
 > vrednost koja može biti tačno predstavljena u memoriji kada se koristi kao
 > vrednost **float32** tipova.
 
-- [Ključne reči i identfikatori][0102]  
-- [Sadržaj][00]  
-- [Konstante i promenljive][0104]
+[Ključne reči i identfikatori][0102] | [Sadržaj][00] | [Konstante i promenljive][0104]
 
 [0102]: 0102_Ključne_reči_i_identifikatori.md
 [00]: 00_Sadrzaj.md

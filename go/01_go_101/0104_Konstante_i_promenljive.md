@@ -1,9 +1,7 @@
 
 # Konstante i promenljive
 
-- [Osnovni tipovi i osnovni vrednosni literali][0103]  
-- [Sadržaj][00]  
-- [Uobičajeni operatori][0105]
+[Osnovni tipovi i osnovni vrednosni literali][0103] | [Sadržaj][00] | [Uobičajeni operatori][0105]
 
 Ovaj članak će predstaviti deklaracije konstanti i promenljivih u jeziku Go. Takođe će biti predstavljen koncept netipizovanih vrednosti i eksplicitnih konverzija.
 
@@ -705,9 +703,7 @@ func main() {
 }
 ```
 
-- [Osnovni tipovi i osnovni vrednosni literali][0103]  
-- [Sadržaj][00]  
-- [Uobičajeni operatori][0105]
+[Osnovni tipovi i osnovni vrednosni literali][0103] | [Sadržaj][00] | [Uobičajeni operatori][0105]
 
 [0103]: 0103_Osnovni_tipovi_%20i_osnovni_vrednosni_literali.md
 [00]: 00_Sadrzaj.md

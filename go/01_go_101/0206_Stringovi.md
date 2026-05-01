@@ -1,9 +1,7 @@
 
 # Stringovi
 
-- [Nizovi, isečci i mape][0205]
-- [Sadržaj][00]
-- [Funkcije][0207]
+[Nizovi, isečci i mape][0205] | [Sadržaj][00] | [Funkcije][0207]
 
 Kao i mnogi drugi programski jezici, stringovi su takođe jedna važna vrsta tipova u Gou. Ovaj članak će navesti sve činjenice o stringovima.
 
@@ -377,9 +375,7 @@ trajanje za (s1 == s2): 136ns
 
 1ms je 1000000ns! Zato pokušajte da izbegavate poređenje dva dugačka niza ako ne dele isti osnovni bajtni niz.
 
-- [Nizovi, isečci i mape][0205]
-- [Sadržaj][00]
-- [Funkcije][0207]
+[Nizovi, isečci i mape][0205] | [Sadržaj][00] | [Funkcije][0207]
 
 [0205]: 0205_Nizovi_isečci_i_mape.md
 [00]: 00_Sadrzaj.md

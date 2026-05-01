@@ -1,9 +1,7 @@
 
 # Kanali u Go-u
 
-- [Funkcije][0207]
-- [Sadržaj][00]
-- [Metode][0209]
+[Funkcije][0207] | [Sadržaj][00] | [Metode][0209]
 
 Kanal je važna ugrađena funkcija u Gou. To je jedna od karakteristika koje Go čine jedinstvenim. Zajedno sa još jednom jedinstvenom funkcijom, goroutine , kanal čini istovremeno programiranje praktičnim, zabavnim i smanjuje teškoće istovremenog programiranja.
 
@@ -507,9 +505,7 @@ Iako nam kanali mogu pomoći da lako napišemo ispravan konkurentni kod, kao i d
 
 Kanal možda nije uvek najbolje rešenje za sve slučajeve upotrebe za sinhronizaciju podataka. Molimo vas da pročitate ovaj članak i ovaj članak za više tehnika sinhronizacije u Go-u.
 
-- [Funkcije][0207]
-- [Sadržaj][00]
-- [Metode][0209]
+[Funkcije][0207] | [Sadržaj][00] | [Metode][0209]
 
 [0207]: 0207_Funkcije.md
 [00]: 00_Sadrzaj.md

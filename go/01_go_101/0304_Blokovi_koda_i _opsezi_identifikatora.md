@@ -1,9 +1,7 @@
 
 # Blokovi koda i opsezi identifikatora
 
-- [Panic i restore][0303]
-- [Sadržaj][00]
-- [Poredak izračunavanja izraza][0305]
+[Panic i restore][0303] | [Sadržaj][00] | [Poredak izračunavanja izraza][0305]
 
 Ovaj članak će objasniti blokove koda i opsege identifikatora u Go-u.
 
@@ -387,9 +385,7 @@ Izlaz:
 
 Da, ovaj primer je ekstreman. Sadrži mnogo loših praksi. Zasenčivanje identifikatora je korisno, ali molim vas da ga ne zloupotrebljavate.
 
-- [Panic i restore][0303]
-- [Sadržaj][00]
-- [Poredak izračunavanja izraza][0305]
+[Panic i restore][0303] | [Sadržaj][00] | [Poredak izračunavanja izraza][0305]
 
 [0303]: 0303_Panic_Restore.md
 [00]: 00_Sadrzaj.md

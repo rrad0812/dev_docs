@@ -1,9 +1,7 @@
 
 # Izrazi, iskazi i jednostavni iskazi
 
-- [Paketi i uvoz paketa][0107]  
-- [Sadržaj][00]  
-- [Osnovna kontrola toka][0109]
+[Paketi i uvoz paketa][0107] | [Sadržaj][00] | [Osnovna kontrola toka][0109]
 
 Ovaj članak će predstaviti izraze i iskaze u jeziku Go.
 
@@ -108,9 +106,7 @@ f()
 <-c // a channel receive operation
 ```
 
-- [Paketi i uvoz paketa][0107]  
-- [Sadržaj][00]  
-- [Osnovna kontrola toka][0109]
+[Paketi i uvoz paketa][0107] | [Sadržaj][00] | [Osnovna kontrola toka][0109]
 
 [0107]: 0107_Paketi_i_uvoz_paketa.md
 [00]: 00_Sadrzaj.md

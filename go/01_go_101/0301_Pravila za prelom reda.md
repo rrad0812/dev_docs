@@ -1,9 +1,7 @@
 
 # Pravila za prelom reda
 
-- [Refleksije][0214]  
-- [Sadržaj][00]  
-- [Više o defer pozivima][0302]
+[Refleksije][0214] | [Sadržaj][00] | [Više o defer pozivima][0302]
 
 Ako ste mnogo pisali Go kod, trebalo bi da znate da ne možemo koristiti proizvoljne stilove koda u Go programiranju. Konkretno, ne možemo prekinuti red koda na proizvoljnoj poziciji razmaka. U ostatku ovog članka biće navedena detaljna pravila za prelom reda u Go-u.
 
@@ -317,9 +315,7 @@ U programu Go, prelom reda je u redu (neće uticati na ponašanje koda) ako:
 
 Kao i neki drugi detalji dizajna u Go jeziku, postoje i pohvale i kritike za pravila umetanja tačke-zareza. Nekim programerima se ne sviđaju pravila, jer misle da ograničavaju slobodu stilova koda. Hvalitelji smatraju da pravila ubrzavaju kompajliranje koda i da kod koji su napisali različiti programeri izgleda slično, tako da je lako razumeti kod koji su napisali jedni drugi.
 
-- [Refleksije][0214]  
-- [Sadržaj][00]  
-- [Više o defer pozivima][0302]  
+[Refleksije][0214] | [Sadržaj][00] | [Više o defer pozivima][0302]  
 
 [0214]: 0214_Refleksije.md  
 [00]: 00_Sadrzaj.md  

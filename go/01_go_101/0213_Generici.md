@@ -1,9 +1,7 @@
 
 # Generici
 
-- [Nebezbedni pokazivači][0212]
-- [Sadržaj][00]
-- [Refleksije][0214]
+[Nebezbedni pokazivači][0212] | [Sadržaj][00] | [Refleksije][0214]
 
 Pre verzije Go 1.18, Go je podržavao samo ugrađene generike. Od verzije Go 1.18, Go takođe podržava prilagođene generike. Ovaj članak predstavlja samo ugrađene generike.
 
@@ -192,9 +190,7 @@ Pored ugrađenih generičkih funkcija za kompozitne tipove, postoji nekoliko ugr
 
 Od verzije 1.18, Go već podržava prilagođene generike. Molimo vas da pročitate knjigu „Go Generics 101“ da biste saznali kako se koriste prilagođeni generici.
 
-- [Nebezbedni pokazivači][0212]
-- [Sadržaj][00]
-- [Refleksije][0214]
+[Nebezbedni pokazivači][0212] | [Sadržaj][00] | [Refleksije][0214]
 
 [0212]: 0212_Nebezbedni_pokazivači.md
 [00]: 00_Sadrzaj.md

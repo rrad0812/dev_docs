@@ -1,9 +1,7 @@
 
 # Nizovi, isečci i mape u Gou
 
-- [Delovi vrednosti][0204]  
-- [Sadržaj][00]
-- [Stringovi][0206]  
+[Delovi vrednosti][0204] | [Sadržaj][00] | [Stringovi][0206]
 
 Strogo govoreći, u Go-u postoje tri vrste kontejnera prvog reda:
 
@@ -1514,9 +1512,7 @@ Go ne podržava ugrađene tipove skupova. Međutim, lako je koristiti tip mape z
 
 Imajte u vidu da se sve operacije kontejnera ne sinhronizuju interno. Bez korišćenja bilo kakve tehnike sinhronizacije podataka, u redu je da više gorutina istovremeno čita kontejner, ali nije u redu da više gorutina istovremeno manipuliše kontejnerom i da barem jedna gorutina modifikuje kontejner. Potonji slučaj će izazvati trke podataka, čak i paniku među gorutinama. Moramo ručno sinhronizovati operacije kontejnera. Molimo vas da pročitate članke o sinhronizaciji podataka za detalje.
 
-- [Delovi vrednosti][0204]  
-- [Sadržaj][00]  
-- [Stringovi][0206]  
+[Delovi vrednosti][0204] | [Sadržaj][00] | [Stringovi][0206]  
 
 [0204]: 0204_Delovi_vrednosti.md
 [00]: 00_Sadrzaj.md

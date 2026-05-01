@@ -1,9 +1,7 @@
 
 # Delovi Vrednosti
 
-- [Strukture u Gou][0203]
-- [Sadržaj][00]
-- [Nizovi isečci i mape u Gou][0205]
+[Strukture u Gou][0203] | [Sadržaj][00] | [Nizovi isečci i mape u Gou][0205]
 
 Članci koji slede nakon ovog će predstaviti više vrsta Go tipova. Da biste lako i dublje razumeli te članke, najbolje je prvo pročitati sledeći sadržaj u trenutnom članku pre čitanja tih članaka.
 
@@ -160,10 +158,8 @@ Reč referenca u Go svetu je velika zbrka. Donosi mnogo zabune Go zajednici. Nek
 
 Ne mislim da su terminologije referentnog tipa ili referentne vrednosti potpuno beskorisne za Go, samo mislim da nisu baš bitne i da donose mnogo zabune pri korišćenju Goa. Ako nam ove terminologije i trebaju, više volim da ih definišem kao držače pokazivača. I, moje lično mišljenje je da je najbolje ograničiti reč reference samo na predstavljanje odnosa između vrednosti koristeći je kao glagol ili imenicu, a nikada je ne koristiti kao pridev. Ovo će izbeći mnoge zabune u učenju, podučavanju i korišćenju Goa.
 
-- [Strukture u Gou][0203]
-- [Sadržaj][00]
-- [Nizovi isečci i mape u Gou][0205]
+[Strukture u Gou][0203] | [Sadržaj][00] | [Nizovi isečci i mape u Gou][0205]
 
-[0203]: 0203_Strukture_u_Gou.md
+[0203]: 0203_Strukture.md
 [00]: 00_Sadrzaj.md
-[0205]: 0205_Nizovi_isečci_i_mape_u_Gou.md
+[0205]: 0205_Nizovi_isečci_i_mape.md

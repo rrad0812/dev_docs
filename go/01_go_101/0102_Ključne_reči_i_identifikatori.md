@@ -1,9 +1,7 @@
 
 # Ključne reči i identifikatori u Go-u
 
-- [Elementi koda][0101]  
-- [Sadržaj][00]  
-- [Osnovni tipovi i osnovni vrednosni literali][0103]
+[Elementi koda][0101] | [Sadržaj][00] | [Osnovni tipovi i osnovni vrednosni literali][0103]
 
 Ovaj članak će predstaviti ključne reči i identifikatore u Go-u.
 
@@ -88,9 +86,7 @@ type
 range
 ```
 
-- [Elementi koda][0101]  
-- [Sadržaj][00]  
-- [Osnovni tipovi i osnovni vrednosni literali][0103]
+[Elementi koda][0101] | [Sadržaj][00] | [Osnovni tipovi i osnovni vrednosni literali][0103]
 
 [0101]: 0101_Elementi_koda.md
 [00]: 00_Sadrzaj.md

@@ -1,9 +1,7 @@
 
 # Uobičajeni operatori
 
-- [Konstante i promenljive][0104]  
-- [Sadržaj][00]  
-- [Deklaracije i pozivi funkcija][0106]
+[Konstante i promenljive][0104] | [Sadržaj][00] | [Deklaracije i pozivi funkcija][0106]
 
 Operatorske operacije su operacije koje koriste sve vrste operatora. Ovaj članak će predstaviti uobičajene operatore u jeziku Go. Više operatora biće predstavljeno u drugim člancima kasnije.
 
@@ -410,7 +408,7 @@ Go podržava šest binarnih operatora za poređenje:
 | > | veći od | [2] |
 | >= | veće ili jednako | [2] |
 
-> [!Note]  
+> [!Note]
 > [1] - Generalno, tipovi njegova dva operanda moraju biti isti. Za detaljna
 > pravila, pročitajte pravila poređenja u Go-u.  
 > [2] - Oba operanda moraju biti vrednosti istog celobrojnog tipa, tipa sa
@@ -458,13 +456,11 @@ func main() {
 
 ## Više operatora
 
-Isto kao i u C/C++, postoje dva operatora vezana za pokazivače, `*` i `&`. Da, isti simboli operatora kao i kod operatora množenja i bitskog AND. `&` se koristi za uzimanje adrese adresabilne vrednosti a `*` koristi se za dereferenciranje vrednosti pokazivača. Za razliku od C/C++, u Go-u, vrednosti tipova pokazivača ne podržavaju aritmetičke operacije. Za više detalja, pročitajte o pokazivačima u Go-u kasnije.
+Isto kao i u C/C++, postoje dva operatora vezana za pokazivače, `*` i `&`. `&` se koristi za uzimanje adrese adresabilne vrednosti a `*` koristi se za dereferenciranje vrednosti pokazivača. Za razliku od C/C++, u Go-u, vrednosti tipova pokazivača ne podržavaju aritmetičke operacije. Za više detalja, pročitajte o pokazivačima u Go-u kasnije.
 
 Postoje i neki drugi operatori u Gou. Oni će biti predstavljeni i objašnjeni u drugim Go 101 člancima.
 
-- [Konstante i promenljive][0104]  
-- [Sadržaj][00]  
-- [Deklaracije i pozivi funkcija][0106]
+[Konstante i promenljive][0104] | [Sadržaj][00] | [Deklaracije i pozivi funkcija][0106]
 
 [0104]: 0104_Konstante_i_promenljive.md
 [00]: 00_Sadrzaj.md

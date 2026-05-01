@@ -1,9 +1,7 @@
 
 # Interfejsi
 
-- [Metode][0209]
-- [Sadržaj][00]
-- [Ugradjeni tipovi][0211]
+[Metode][0209] | [Sadržaj][00] | [Ugradjeni tipovi][0211]
 
 Tipovi interfejsa su jedna posebna vrsta tipova u Gou. Interfejsi igraju nekoliko važnih uloga u Gou. U osnovi, tipovi interfejsa omogućavaju Gou da podrži „vrednosno boksovanje“. Shodno tome, kroz „vrednosno boksovanje“ se podržavaju refleksija i polimorfizam.
 
@@ -741,10 +739,8 @@ func main() {
 }
 ```
 
-- [Metode][0209]
-- [Sadržaj][00]
-- [Ugradjeni tipovi][0211]
+[Metode][0209] | [Sadržaj][00] | [Ugradjeni tipovi][0211]
 
 [0209]: 0209_Metode.md
 [00]: 00_Sadrzaj.md
-[0211]: 0211_Ugradjeni_tipovi.md
+[0211]: 0211_Ugradjivanje_tipa.md

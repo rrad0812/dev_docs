@@ -1,9 +1,7 @@
 
 # Strukture u Gou
 
-- [Pokazivači u Gou][0202]
-- [Sadržaj][00]
-- [Delovi vrednosti][0204]
+[Pokazivači u Gou][0202] | [Sadržaj][00] | [Delovi vrednosti][0204]
 
 Baš kao i C, Go takođe podržava strukturne tipove. Ovaj članak će predstaviti osnovna znanja o strukturnim tipovima i vrednostima u Go-u.
 
@@ -340,9 +338,7 @@ Generalno, radi bolje čitljivosti, ne preporučuje se korišćenje anonimnih li
 
 Postoje neke napredne teme koje se odnose na strukturne tipove. One će biti objašnjene kasnije u odeljcima o ugrađivanju tipova i rasporedu memorije.
 
-- [Pokazivači u Gou][0202]
-- [Sadržaj][00]
-- [Delovi vrednosti][0204]
+[Pokazivači u Gou][0202] | [Sadržaj][00] | [Delovi vrednosti][0204]
 
 [0202]: 0202_Pokazivači.md
 [00]: 00_Sadrzaj.md

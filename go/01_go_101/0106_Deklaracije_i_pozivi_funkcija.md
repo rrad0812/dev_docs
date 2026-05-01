@@ -1,9 +1,7 @@
 
 # Deklaracije funkcija i pozivi funkcija
 
-- [Uobičajeni operatori][0105]  
-- [Sadržaj][00]  
-- [Paketi i uvoz paketa][0107]
+[Uobičajeni operatori][0105] | [Sadržaj][00] | [Paketi i uvoz paketa][0107]
 
 Osim operatorskih operacija predstavljenih u prethodnom članku, funkcionalne operacije su još jedna vrsta popularnih operacija u programiranju. Funkcionalne operacije se često nazivaju pozivima funkcija. Ovaj članak će predstaviti kako se deklarišu funkcije i pozivaju funkcije.
 
@@ -235,9 +233,7 @@ Više ugrađenih funkcija biće predstavljeno kasnije u drugim člancima o Go 10
 
 Postoji više o konceptima i detaljima vezanim za funkcije koji nisu obrađeni u ovom članku. Te koncepte i detalje možemo kasnije naučiti u članku o tipovima i vrednostima funkcija.
 
-- [Uobičajeni operatori][0105]  
-- [Sadržaj][00]  
-- [Paketi i uvoz paketa][0107]
+[Uobičajeni operatori][0105] | [Sadržaj][00] | [Paketi i uvoz paketa][0107]
 
 [0105]: 0105_Uobičajeni_operatori.md
 [00]: 00_Sadrzaj.md

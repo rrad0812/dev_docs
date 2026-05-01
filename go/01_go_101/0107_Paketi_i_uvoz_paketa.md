@@ -1,9 +1,7 @@
 
 # Paketi i uvoz paketa
 
-- [Deklaracije i pozivi funkcija][0106]  
-- [Sadržaj][00]  
-- [Izrazi i iskazi][0108]
+[Deklaracije i pozivi funkcija][0106] | [Sadržaj][00] | [Izrazi i iskazi][0108]
 
 Kao i mnogi moderni programski jezici, Go kod je takođe organizovan kroz pakete. Da biste koristili izvezene elemente koda (funkcije, tipove, promenljive i imenovane konstante itd.) u određenom paketu, paket prvo mora biti uvezen, osim **builtin** standardnog paketa koda (koji je univerzalni paket). Ovaj članak će objasniti pakete i uvoz paketa u Go-u.
 
@@ -344,9 +342,7 @@ func main() {
 
 Modul je kolekcija nekoliko paketa. Nakon preuzimanja na lokalnu mapu, svi ovi paketi se nalaze u istoj fascikli, koja se naziva korenska fascikla modula. Modul može imati mnogo verzija, koje prate specifikaciju semantičkog verzionisanja. Za više koncepata vezanih za module i kako upravljati i koristiti module, pročitajte zvaničnu dokumentaciju.
 
-- [Deklaracije i pozivi funkcija][0106]  
-- [Sadržaj][00]  
-- [Izrazi i iskazi][0108]
+[Deklaracije i pozivi funkcija][0106] | [Sadržaj][00] | [Izrazi i iskazi][0108]
 
 [0106]: 0106_Deklaracije_i_pozivi_funkcija.md
 [00]: 00_Sadrzaj.md

@@ -1,6 +1,8 @@
 
 # Ugrađivanje tipa
 
+[Interfejsi][0210] | [Sadržaj][00] | [Nebezbedni pokazivači][0212]
+
 Iz članka o strukturama u Go-u , znamo da strukturni tip može imati mnogo polja. Svako polje se sastoji od jednog imena polja i jednog tipa polja. U stvari, ponekad, strukturno polje može biti sastavljeno samo od jednog tipa polja. Način deklarisanja strukturnih polja naziva se ugrađivanje tipa.
 
 Ovaj članak će objasniti svrhu ugrađivanja tipova i sve vrste detalja o ugrađivanju tipova.
@@ -504,10 +506,8 @@ Tipovi interfejsa mogu da ugrađuju sve vrste tipova. Molimo vas da pročitate o
 
 Na kraju, pogledajmo jedan zanimljiv primer. Primer programa će dovesti do mrtve petlje i prelivanja steka. Ako ste razumeli gore navedeni sadržaj i polimorfizam i ugrađivanje tipova, lako je razumeti zašto će doći do mrtve petlje.
 
-- [Interfejsi][0210]
-- [sadržaj][00]
-- [Nebezbedni pokazivači][0212]
+[Interfejsi][0210] | [Sadržaj][00] | [Nebezbedni pokazivači][0212]
 
 [0210]: 0210_Interfejsi.md
-[00]: 00_Sadrzaj.md
+[00]: 0001_Uvod.md
 [0212]: 0212_Nebezbedni_pokazivači.md
