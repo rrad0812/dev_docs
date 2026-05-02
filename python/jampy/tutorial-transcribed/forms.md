@@ -116,4 +116,3 @@ In the same way, events are generated for other types of forms, with the excepti
 [2]: Hierarchical event processing is what distinguishes Jam.py most, contributes to the small size of the code and some kind of inheritance behavior.
 
 [< Data aware](data_aware.md) | [Table of content](index.md)
-

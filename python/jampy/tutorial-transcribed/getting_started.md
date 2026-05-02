@@ -7,25 +7,31 @@
 
 ### Python installation
 
-Jam.py requires *Python*. If it is not installed you can get the latest version of Python at [Python 3.7.7](<https://www.python.org/downloads/release/python-377>). From now on, we will only consider working with version 3 of the Python interpreter.
+Jam.py requires Python. If it is not installed you can get the latest version of Python at [Python 3.7.7](<https://www.python.org/downloads/release/python-377>). From now on, we will only consider working with version 3 of the Python interpreter.
 
 #### Virtual enviroment installation
 
 In a working directory we should create virtual environment:
 
-    > mkdir myenv
-    > cd my myenv
-    > py -3.7 -m venv .
-  
+```sh
+mkdir myenv
+cd my myenv
+py -3.7 -m venv .
+```
+
 Now, we activating our virtual enviroment:
 
-    >> Scripts\activate.bat
+```sh
+Scripts\activate.bat
+```
   
 ### Jampy installation
 
 Now, we can installing `Jam.py` package
 
-    > (myenv) > pip install jam.py
+```sh
+(myenv) > pip install jam.py
+```
 
 ## Creating a project
 
@@ -33,13 +39,17 @@ We want to make a simple CRM application.
 
 First we will create a folder for the new project, and in this folder we will run the `jam-project.py` script to create the project structures:
 
-    > (myenv) > mkdir crm
-    > (myenv) > cd crm
-    > (myenv) > python <where is myenv dir>\bin\jam-project.py
+```sh
+(myenv) > mkdir crm
+(myenv) > cd crm
+(myenv) > python <where is myenv dir>\bin\jam-project.py
+```
 
 Then run the `server.py` script created by `jam-project.py`.
 
-    > (myenv) > python server.py
+```sh
+(myenv) > python server.py
+```
 
 To complete the creation of the project we'll start [appbuilder page](http://localhost:8080/builder.html) in any browser:
 
@@ -130,7 +140,7 @@ Now, for convenience, we duplicate [appbuilder page](http://localhost:8080/build
 
 Let's create the `on_after_append` event handler, will be triggered when a new record  is added to the `Contacts` journal.
 
-```js 
+```js
 function on_after_append(item) {
   item.date.value = new Date();
   item.status.value = 1;
