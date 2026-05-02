@@ -1,5 +1,5 @@
 
-# Poglavlje 37: Kontekst
+# 37 Kontekst
 
 [36 Profilisanje programa][36] | [00 Sadržaj][00] | [38 Generici][38]
 

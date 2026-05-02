@@ -1,5 +1,5 @@
 
-# Poglavlje 31: Evidencija
+# 31 Evidencija
 
 [30 Konkurentnost][30] | [00 Sadržaj][00] | [32 Šabloni][32]
 

@@ -14,7 +14,7 @@
 - Kako definisati konstantu?
 - Kako koristiti konstante?
 
-**Obrađeni tehnički koncepti
+**Obrađeni tehnički koncepti**:
 
 - Promenljiva
 - Konstantno

@@ -1,5 +1,5 @@
 
-# Poglavlje 32: Šabloni
+# 32 Šabloni
 
 [31 Evidencija][31] | [00 Sadržaj][00] | [33 Konfiguracija aplikacije][33]
 

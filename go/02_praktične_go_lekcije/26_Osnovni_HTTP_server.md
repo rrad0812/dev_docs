@@ -1,5 +1,5 @@
 ﻿
-# Poglavlje 26: Osnovni HTTP server
+# 26 Osnovni HTTP server
 
 [25 JSON i XML][25] | [00 Sadržaj][00] | [27 Enum iota i bitmask][27]
 

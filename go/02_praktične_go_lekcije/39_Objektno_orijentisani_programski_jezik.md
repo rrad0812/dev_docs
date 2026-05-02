@@ -1,5 +1,5 @@
 
-# Poglavlje 39: Objektno orijentisani programski jezik
+# 39 Objektno orijentisani programski jezik
 
 [38 Generici][38] | [00 Sadržaj][00] | [40 Nadogradnja ili vraćanje na stariju verziju][40]
 

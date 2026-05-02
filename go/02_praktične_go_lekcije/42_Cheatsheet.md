@@ -1,5 +1,5 @@
 
-# Poglavlje 42: Cheatsheet
+# 42 Cheatsheet
 
 [41 Preporuke za dizajn][41] | [00 Sadržaj][00]
 

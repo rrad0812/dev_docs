@@ -1,5 +1,5 @@
 
-# Poglavlje 33: Konfiguracija aplikacije
+# 33 Konfiguracija aplikacije
 
 [32 Šabloni][32] | [00 Sadržaj][00] | [34 Referentne vrednosti][34]
 

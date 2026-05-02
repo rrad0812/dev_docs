@@ -429,11 +429,16 @@ It is false that John and Paul have the same age
 
 Naredba `if-else` vam omogućava da izvršite instrukciju(e) kada je vrednost bulovog izraza tačna (`true`). Kada je vrednost bulovog izraza netačna (`false`), program izvršava `else` skup instrukcija.
 
-> **if boolean-expression {**  
-    ... instruction executed if boolean-expression is true ...  
-**} else {**  
-    ... instruction executed if boolean-expression is false ...  
-**}**
+> [!Note]
+> **Sintaksa**
+>
+> ```go
+> if boolean-expression {
+>   ... instruction executed if boolean-expression is true ...
+> } else {
+>   ... instruction executed if boolean-expression is false ...  
+> }
+> ```
 
 **Primer**:
 
@@ -576,9 +581,14 @@ Paul is younger than John
 
 ### If bez else
 
-> **if boolean-expression {**  
-    ... instruction executed if boolean-expression is true ...  
-**}
+> [!Note]
+> **Sintaksa**
+>
+> ```go
+> if boolean-expression {
+>   ... instruction executed if boolean-expression is true ...
+> }
+> ```
 
 Ova vrsta naredbe je veoma česta. Ista je kao `if/else` naredba, bez bloka `else`. Ova naredba će kreirati granu koja će se izvršiti ako se bulov izraz proceni kao tačno.
 
@@ -648,15 +658,20 @@ Međutim, u drugom izvršavanju, izraz se procenjuje kao tačno (7 2<1 072<10(ta
 
 Ponekad ćete morati da izračunate više od jednog bulovog izraza i kreirate više od dve grane.
 
-> **if boolean-expression-1 {**  
-    ... instruction executed if boolean-expression-1 is true ...  
-**} else if boolean-expression-2 {**  
-    ... instruction executed if boolean-expression-2 is true ...  
-**} else if boolean-expression-3 {**  
-    ... instruction executed if boolean-expression-3 is true ...  
-**} else {**  
-    ... instruction executed if all of boolean-expression are false ...  
-**}**
+> [!Note]
+> **Sintaksa**  
+>
+> ```go
+> if boolean-expression-1 {  
+>     ... instruction executed if boolean-expression-1 is true ...
+> } else if boolean-expression-2 {
+>     ... instruction executed if boolean-expression-2 is true ...
+> } else if boolean-expression-3 {
+>     ... instruction executed if boolean-expression-3 is true ...
+> } else {
+>     ... instruction executed if all of boolean-expression are false ...
+> }
+> ```
 
 Kada se prvi proceni kao tačan, izvršiće se blok koda jedan. U suprotnom slučaju, procenjuje se drugi bulov izraz. Kada je tačan, izvršava se blok koda dva. Naprotiv, izvršava se treći bulov izraz... Četvrti blok koda (else) se izvršava kada se sva tri bulova izraza procene kao netačna.
 
@@ -735,31 +750,41 @@ Pomoću `switch` naredbe možete kreirati grane u vašem programu koje će se iz
 - agePaul > ageJohn
 - fmt.Println("this is a text")
 
-**Sintaksa**:
+> [!Note]
+> **Sintaksa**:
+>
+> ```go
+> switch: stmt; main_expr {
+> case: expr-1**  
+>   ... instructions-1 ...  
+> case expr-2**  
+>   ... instructions-2 ...  
+> case expr-3**  
+>   ... instructions-3 ...  
+> ...  
+> default: (optional)
+> ... default instructions ...  
+> }
+> ```
 
-**switch: iskaz; glavni_izraz{**  
-  **case: izraz-1**  
-    ... instructions-1 ...  
-  **case izraz-2**  
-    ... instructions-2 ...  
-  **case izraz-3**  
-    ... instructions-3 ...  
-  ...  
-  **default: (optional)**  
-    ... default instructions ...  
-**}**
-
-Izrazi u granama će biti izračunati i upoređeni sa vrednošću glavnog izraza. Ako postoji jednakost, grana se izvršava.
+Izrazi u slučajevima će biti izračunati i upoređeni sa vrednošću glavnog izraza. Ako postoji jednakost, kod slučaja se izvršava.
 
 - U switch zaglavlju možete primetiti da imate dva OPCIONALNA elementa:
-  - iskaz praćen tačkom-zarezom,
-  - glavni izraz.
+  - stmt praćen tačkom-zarezom,
+  - main_expr.
 
 - Zatim imate niz slučajeva. Svaki slučaj ima isti format:
-  - case expression:
+  
+  ```go
+  case expression:
+    code
+  ```
 
 - Takođe možete staviti listu izraza u slučaj:
-  - case expression1, expression2, expression3:
+  
+  ```go
+  case expression1, expression2, expression3:
+  ```
 
 - Poslednji deo switch case-a je `default`. On je opcionalan.
 
@@ -771,33 +796,33 @@ Izrazi u granama će biti izračunati i upoređeni sa vrednošću glavnog izraza
 // switch expression
 switch ageJohn {  
 case 10:
-   fmt.Println("John is 10 years old")
+    fmt.Println("John is 10 years old")
 case 20:
-   fmt.Println("John is 20 years old")
+    fmt.Println("John is 20 years old")
 case 100:
-   fmt.Println("John is 100 years old")
+    fmt.Println("John is 100 years old")
 default:
-   fmt.Println("John has neither 10,20 nor 100 years old")
+    fmt.Println("John has neither 10,20 nor 100 years old")
 }
 
 // switch statement; expression
 switch ageSum := ageJohn + agePaul; ageSum { 
 case 10:
-   fmt.Println("ageJohn + agePaul = 10")
+    fmt.Println("ageJohn + agePaul = 10")
 case 20, 30, 40: 
-   fmt.Println("ageJohn + agePaul = 20 or 30 or 40")
+    fmt.Println("ageJohn + agePaul = 20 or 30 or 40")
 case 2 * agePaul:
-   fmt.Println("ageJohn + agePaul = 2 times agePaul")
+    fmt.Println("ageJohn + agePaul = 2 times agePaul")
 }
 
 // switch (without statement, without expression)
 switch { 
 case agePaul > ageJohn:
-   fmt.Println("agePaul > ageJohn")
+    fmt.Println("agePaul > ageJohn")
 case agePaul == ageJohn:
-   fmt.Println("agePaul == ageJohn")
+    fmt.Println("agePaul == ageJohn")
 case agePaul < ageJohn:
-   fmt.Println("agePaul < ageJohn")
+    fmt.Println("agePaul < ageJohn")
 }
 ```
 
@@ -805,23 +830,36 @@ case agePaul < ageJohn:
 U ovom primeru, izostavili smo definiciju funkcije `main` (kao i definiciju paketa). Definicija "agePaul" i "ageJohn" je takođe izostavljena. Kompletan kod možete pronaći u pratećem repozitorijumu koda.
 
 - Definisali smo `switch` naredbu:
+
   - sa izrazom "ageJohn":
-  - Program će proceniti vrednost ageJohn i uporediti je sa vrednošću izraza u slučajevima:
-    10, 20 i 100.
+
+  - Program će proceniti vrednost ageJohn i uporediti je sa vrednošću izraza u slučajevima: 10, 20 i 100.
+
   - Ovde su naši `case` izrazi samo vrednosti.
+
   - Ako vrednost ageJohn nije jednaka 10, 20 ili 100, onda se izvršava `default` slučaj.
 
 - Potom smo definisali smo `switch` iskaz:
+
   - sa definisanjem promenljive "ageSum" i dodelom "ageJohn + agePaul"
+
   - sa glavnim izrazom "ageSum".
-  - Program će prvo izvršiti naredbu koja definiše "ageSum" zatim će proceniti ageSum i uporediti
-    sa vrednošću izraza koje definiše u pojedinim slučajevima:
+
+  - Program će prvo izvršiti naredbu koja definiše "ageSum" zatim će
+    proceniti ageSum i uporediti sa vrednošću izraza koje definiše u pojedinim slučajevima:
+
   - 10, (20, 30, 40), i 2 * agePaul
+
   - Drugi slučaj je lista izraza.
+
   - Treći slučaj 2 * agePaul je izraz koji treba izračunati.
 
 - Zatim smo definisali `switch` iskaz bez ikakvog izraza.
-  - `Switch` bez izraza je ekvivalentan poređenju slučajeva sa vrednošću `true`.
+  
+  > [!Note]
+  > **Pravilo**  
+  > `Switch` bez izraza je ekvivalentan poređenju slučajeva sa vrednošću
+  > `true`.
 
     ```go
     switch {
@@ -839,7 +877,7 @@ U ovom primeru, izostavili smo definiciju funkcije `main` (kao i definiciju pake
     }
     ```
 
-    Bulovski izrazi se očekuju u slučajevima (kada nijedan izraz nije naveden u zaglavlju prekidača)
+    Bulovski izrazi se očekuju u slučajevima kada nijedan izraz nije naveden u zaglavlju switch-a.
 
 **Kompilacija i izvršavanje koda**:
 
@@ -857,9 +895,14 @@ Switch case se intenzivno koristi u Go programima. Lako se čita, a sintaksa je 
 
 ## For iskaz samo sa uslovom
 
-**for condition {**  
-    ... instructions ...  
-**}**
+> [!Note]
+> **Sintaksa**  
+>
+> ```go
+> for condition {
+>   ... instructions ...  
+> }
+> ```
 
 Pomoću for iskaza možete ponoviti izvršavanje bloka koda nekoliko puta. Broj izvršavanja zavisi od uslova. Dok uslov nije ispunjen, blok koda se izvršava. Kada je uslov ispunjen, ponavljanje se zaustavlja.
 
@@ -890,10 +933,15 @@ func main() {
 **Objašnjenje koda**:
 
 - Definišemo konstantu tipa ceo broj "emailToSend". Vrednost konstante je postavljena na 3.
+
 - Zatim, definišemo promenljivu "emailSent" koja je inicijalizovana vrednošću 0.
+
 - Zatim kreiramo for petlju:
+
   - Uslov za for petlju je "emailSent < emailToSend"
+
     - Izvršno okruženje procenjuje ovaj uslov.
+
     - Ako je rezultat evaluacije tačan, onda će iskazi
 
       ```go
@@ -919,7 +967,9 @@ end of program
 **Komentar**:
 
 - Dvaput proverite svoj bulov izraz da biste bili sigurni da će biti netačan u nekom trenutku.
+
 - Ako imate bulov izraz koji je uvek tačan, vaš program će se izvršavati neograničeno.
+
 - Možda ste primetili da je sintaksno uslov opcionalan. O tome ćemo kasnije govoriti.
 
 ## For iskaz sa inicijalnom klauzulom
@@ -929,9 +979,14 @@ Ova vrsta for iskaza je konceptualno ista kao i prethodna. U ovoj for petlji, mo
 - Init iskaz
 - Post iskaz
 
-**for init_statement; condition; post_statement {**  
-    ... instructions ...  
-**}**
+> [!Note]
+> **Sintaksa**
+>
+> ```go
+> for init_statement; condition; post_statement {
+>   ... instructions ...  
+> }
+> ```
 
 Pomoću for petlje možete ponoviti izvršavanje instrukcija. Broj ponavljanja je obično definisan brojačem (koji je promenljiva). Kada vrednost brojača pređe definisanu vrednost, ponavljanje se zaustavlja.
 
@@ -946,15 +1001,24 @@ for loopCounter := 1; loopCounter >  MAX; loopCounter++ {
 Hajde da detaljno opišemo proces koji ovde imamo:
 
 - Prvo definišemo MAX konstantu. To je broj. Na primer, inicijalizujemo je vrednošću 2.
+
 - Zatim definišemo brojač u petlji - loopCounter​​. ​​To je int promenljiva. Inicijalizujemo je na
   vrednost 1.
+
 - Testiramo da li brojač petlji prevazilazi MAX, što nije slučaj (loopCounter​​​​​​​​=1, MAX=2)
+
 - Izvršimo blok koda unutar for petlje
+
 - Izvršavam post iskaz, dodajemo 1 na loopCounter, sada je loopCounter = 2
+
 - Testiramo da li loopCounter prevazilazi ​​MAX što i dalje nije slučaj, tj. imaju istu vrednost = 2
+
 - Izvršimo blok koda unutar for petlje
+
 - Izvršavam post iskaz, dodajemo 1 na loopCounter, sada je loopCounter = 3
+
 - Testiramo da li je loopCounter > MAX. Ovaj put to je tačno, završavamo petlju.
+
 - Kraj programa
 
 Koliko puta je blok koda izvršen? 2 puta (ovo je vrednost MAX).
@@ -974,11 +1038,16 @@ Petlja for sa sobom nosi specifičan rečnik:
 
 Ključna reč koja se ovde koristi je **for**
 
-- Nakon ključne reči, dodaćete:
+- Nakon ključne reči **for**, dodaćete:
+
   - Init iskaz
+
   - Tačka-zarez
+
   - Condition
+
   - Tačka-zarez
+
   - Post iskaz.
 
 - Imajte na umu da su init iskaz, uslov i post iskaz svi opcioni. Ovaj slučaj ćemo obraditi u sledećem odeljku, zato ne brinite o tome.
@@ -1038,8 +1107,8 @@ Definišemo promenljivu "ageJohn" i inicijalizujemo je na slučajnu vrednost izm
   i++ je skraćenica za i = i + 1  
   Povećavamo vrednost i; drugim rečima, dodajemo 1 na i.
 
-- `fmt.Println("iteration N ", i)` će se izvršavati u svakoj petlji. Program će ispisati
-  "iteracija N X". Ako je starost Johna jednaka 3, onda ćemo na ekranu ispisati:
+- `fmt.Println("iteration N ", i)` će se izvršavati u svakoj petlji. Program
+  će ispisati "iteracija N X". Ako je starost Johna jednaka 3, onda ćemo na ekranu ispisati:
 
     iteracija n 0
     iteracija n 1
@@ -1064,10 +1133,13 @@ interation N 6
 
 **Komentar**:
 
-- Prva vrednost i je 0, a ne 1; zapamtite da je naša inicijalna naredba.i := 0
+- Prva vrednost i je 0, a ne 1; zapamtite da je naša inicijalna naredba.i :=
+  0
+  
   - Ako je inicijalna prva vrednost i = 1, prva rečenica ispisana na ekranu bila bi iteracija br. 1.
     Ovo je često zbunjujuće za početnike. U stvarnom svetu, započinjemo nabrajanje sa vrednošću jedan, a ne 0!  
     To (često) nije slučaj u računarstvu. Indeksi obično počinju vrednošću 0.
+
 - For petlje sa klauzulama opsega se intenzivno koriste.
 
 ## Praktična primena
@@ -1083,18 +1155,31 @@ Imajte na umu da smo predstavili istu aplikaciju u dve različite države.
 **Napomene**:
 
 - Ukupan broj soba je konstantan i jednak 134.
+
 - Broj dostupnih soba ćemo generisati nasumično.
+
 - Radi jednostavnosti: raspoložive sobe imaju lažni broj koji počinje sa 110
+
   - Ako su dostupne tri sobe, onda su sobe numerisane: 110, 111, 112
+
 - Broj ljudi koje možete smestiti u sobu i broj dostupnih noćenja biće generisani nasumično
+
   - Minimum je 1
+
   - Maksimum je 10
+
 - Stopa popunjenosti je definisana na sledeći način:
+
   - stopa popunjenosti​​​​​​
+
 - Broj zauzetih soba​ = Ukupan broj soba​​ ​-​ ​​​​​stopa popunjenosti
+
 - Nivo popunjenosti je definisan na sledeći način:
+
   - Stopa popunjenosti od 0% do 30%: Niska
+
   - Popunjenost od 30% do 60%: Srednja
+
   - Od 60% do 100% popunjenosti: Visoka
 
 **Rešenje**:
@@ -1155,9 +1240,15 @@ func main() {
   Počinjemo definisanjem tri konstante:
   
   - hotelName - drži ime našeg hotela
+
   - totalRooms - ukupan broj soba
-  - firstRoomNumber - broj prve sobe. Sobi će biti numerisane 110, 111,... Potrebno je da sačuvamo početnu tačku kasnijeg nabrajanja.  
+
+  - firstRoomNumber - broj prve sobe. Sobi će biti numerisane 110, 111,...
+  
+  Potrebno je da sačuvamo početnu tačku kasnijeg nabrajanja.  
+  
   Zašto konstante? Zato što se te vrednosti neće menjati tokom izvršavanja programa. One su fiksne.  
+
   Imajte na umu da su te tri konstante netipizovane.
 
 - Generisanje slučajnog celog broja (broj soba koje se trenutno iznajmljuju)
@@ -1177,7 +1268,9 @@ func main() {
   Stopa je procenat. Matematički, to je broj sa pokretnim zarezom koji varira od 0 do 1.
   
   - 1 je ekvivalentno 100%
+  
   - 0,5655 je ekvivalentno 56,55%
+  
   - 0,81115 je ekvivalentno 81,12% (zaokružili smo broj).
 
     Da biste dobili procenat, potrebno je da pomnožite sa 100. Da biste dobili procentualnu vrednost, možda ćete biti u iskušenju da napišete sledeći kod:
@@ -1189,7 +1282,9 @@ func main() {
   Ovim kodom "occupancyRate" je ceo broj. Promenljiva je definisana i dodeljena u istoj naredbi. NJen tip nije napisan. Shodno tome, njen tip će biti zaključen na osnovu vrednosti koja joj je dodeljena. U tom slučaju, vrednost je "(roomsOccupied / totalRooms) * 100".  Hajde da razložimo:
 
   - "roomsOccupied" je tipa int (rezultat "rand.Intn(totalRooms)").
+  
   - totalRoomsje netipizirana celobrojna konstanta.
+  
   - 100 je ceo broj.
 
   Kao posledica toga, vrednost "(roomsOccupied / totalRooms) * 100" je ceo broj.
@@ -1197,16 +1292,21 @@ func main() {
   Ne želimo ceo broj; sa celim brojem, izgubićemo brojeve posle decimalnog separatora. Umesto toga, želimo da koristimo broj sa pokretnim zarezom. Moramo da biramo između dva primitivna tipa:
 
   - float64  
+  
   - float32
 
   Moramo znati minimalne i maksimalne vrednosti oba tipa da bismo izabrali. Sa tim podacima možemo pronaći najbolje rešenje:
 
   - float32  
+  
     - Minimum:  1.401298464324817070923729583289916131280×10^(−45)  
+  
     - Maksimum:83.40282346638528859811704183484516925440×10^38
 
   - float64
+  
     - Minimum:  44.940656458412465441765687928682213723651×10^(−324)  
+  
     - Maksimum:​​​​ 81.797693134862315708145274237317043567981×10^308
 
   float32 savršeno odgovara našim potrebama.
@@ -1262,11 +1362,11 @@ Koristili smo naredbu `if / else if / else` da bismo postavili vrednost occupati
 var occupancyLevel string
 
 if occupancyRate > 70 {
-   occupancyLevel = "High"
+    occupancyLevel = "High"
 } else if occupancyRate > 20 {
-   occupancyLevel = "Medium"
+    occupancyLevel = "Medium"
 } else {
-   occupancyLevel = "Low"
+    occupancyLevel = "Low"
 }
 ```
 
@@ -1280,12 +1380,12 @@ Ako je "occupancyRate < 20", to znači da je između 0 i 20. U ovom slučaju, im
 
 ```go
 switch {
-    case occupancyRate > 70:
-       occupancyLevel = "High"
-    case occupancyRate > 20:
-       occupancyLevel = "Medium"
-    default:
-       occupancyLevel = "Low"
+case occupancyRate > 70:
+    occupancyLevel = "High"
+case occupancyRate > 20:
+    occupancyLevel = "Medium"
+default:
+    occupancyLevel = "Low"
 }
 ```
 
@@ -1305,10 +1405,10 @@ Takođe možemo da obrišemo podrazumevani slučaj inicijalizacijom vrednosti oc
 occupancyLevel := "Low"
 
 switch {
-    case occupancyRate > 70:
-       occupancyLevel = "High"
-    case occupancyRate > 20:
-       occupancyLevel = "Medium"
+case occupancyRate > 70:
+    occupancyLevel = "High"
+case occupancyRate > 20:
+    occupancyLevel = "Medium"
 }
 ```
 
@@ -1344,15 +1444,17 @@ Kada je vrednost "roomsAvailable" veća od 0, program će izvršiti petlju for:
 
 ```go
 for i := 0; roomsAvailable > i; i++ {
-   roomNumber := firstRoomNumber + i
-   size := rand.Intn(6) + 1
-   nights := rand.Intn(10) + 1
-   fmt.Println(roomNumber, ":", size, "people /", nights, " nights ")
+    roomNumber := firstRoomNumber + i
+    size := rand.Intn(6) + 1
+    nights := rand.Intn(10) + 1
+    fmt.Println(roomNumber, ":", size, "people /", nights, " nights ")
 }
 ```
 
 - Inicijalna naredba će inicijalizovati i sa 0.
+
 - Uslov je. "roomsAvailable > i". Petlja će prestati da se izvršava kada ovaj uslov postane netačan. Kada vrednost "i" postane jednaka "roomsAvailable" (ili veća).
+
 - Naredba post je "i++". Ekvivalentna je sa i = i + 1. Inkrementuje i na kraju svake petlje.
 
 Koliko iteracija će biti izvršeno?
@@ -1362,20 +1464,26 @@ Uzmimo primer:
 - Ako su dostupne tri sobe, telo for petlje (između vitičastih zagrada) će se izvršiti 3 puta. i će biti jednako 0, 1 i 2.
 
   - Prva petlja:  
+
     - i inicijalizovano na 0  
       Tri je veće od 0 ( i) => možemo pokrenuti izvršenje tela
 
     - i se inkrementira (naknadna naredba). Nova vrednost i je 1
 
   - Druga petlja:
+
     - Tri je veće od 1 ( i) => možemo pokrenuti izvršenje tela => možemo pokrenuti izvršenje tela
+
     - i se inkrementira (naknadna naredba). Nova vrednost i je 2
 
   - Treća petlja
+
     - Tri je veće od 2 ( i) => možemo pokrenuti izvršenje tela => možemo pokrenuti izvršenje tela
+
     - i se inkrementira (naknadna naredba). Nova vrednost i je 3
 
   - Četvrta petlja
+
     - Tri nije veće od tri => stajemo.
 
   - Kada su četiri sobe dostupne, kod se izvršava četiri puta.

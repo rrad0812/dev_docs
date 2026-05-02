@@ -1,5 +1,5 @@
 
-# Poglavlje 35: Izgradnja HTTP klijenta
+# 35 Izgradnja HTTP klijenta
 
 [34 Referentne vrednosti][34] | [00 Sadržaj][00] | [36 Profilisanje programa][36]
 

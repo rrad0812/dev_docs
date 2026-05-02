@@ -1,5 +1,5 @@
 
-# Poglavlje 38: Generici
+# 38 Generici
 
 [37 Kontekst][37] | [00 Sadržaj][00] | [39 OOP jezik][39]
 

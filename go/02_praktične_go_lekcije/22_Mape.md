@@ -725,5 +725,5 @@ Dvodimenzionalne mape su, po mom mišljenju, previše komplikovane. Možda bi bi
 [21 Isečcci][21] | [00 Sadržaj][00] | [23 Greške][23]
 
 [21]: 21_Isečci.md
-[00]: 00_Sadržaj
+[00]: 00_Sadržaj.md
 [23]: 23_Greške.md

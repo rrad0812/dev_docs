@@ -1,5 +1,5 @@
 ﻿
-# Poglavlje 24: Anonimne funkcije i zatvaranja
+# 24 Anonimne funkcije i zatvaranja
 
 [23 Greške][23] | [00 Sadržaj][00] | [25 JSON i XML][25]
 

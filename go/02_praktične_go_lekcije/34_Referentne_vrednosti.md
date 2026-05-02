@@ -1,5 +1,5 @@
 
-# Poglavlje 34: Referentne vrednosti
+# 34 Referentne vrednosti
 
 [33 Konfiguracija aplikacije][33] | [00 Sadržaj][00] | [35 Izgradnja HTTP klijenata][35]
 

@@ -1,5 +1,5 @@
 
-# Poglavlje 40: Nadogradnja ili vraćanje na stariju verziju programa Go
+# 40 Nadogradnja ili vraćanje na stariju verziju programa Go
 
 [39 OOP jezik][39] | [00 Sadržaj][00] | [41 Preporuke za dizajn][41]
 

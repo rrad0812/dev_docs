@@ -1,5 +1,5 @@
 ﻿
-# Poglavlje 25: JSON i XML
+# 25 JSON i XML
 
 [24 Anonimne funkcije i zatvaranja][24] | [00 Sadržaj][00] | [26 Osnovni HTTP server][26]
 

@@ -1,5 +1,5 @@
 
-# Poglavlje 41: Preporuke za dizajn
+# 41 Preporuke za dizajn
 
 [40 Nadogradnja ili vraćanje na stariju verziju][40] | [00 Sadržaj][00] | [42 Cheetsheat][42]
 

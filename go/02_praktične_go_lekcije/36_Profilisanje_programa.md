@@ -1,5 +1,5 @@
 
-# Poglavlje 36: Profilisanje programa
+# 36 Profilisanje programa
 
 [35 Izgradnja HTTP klijenta][35] | [00 Sadržaj][00] | [37 Kontekst][37]
 
