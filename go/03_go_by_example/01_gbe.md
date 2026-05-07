@@ -13,6 +13,7 @@ package main
 import "fmt"
 
 func main() {
+    
     fmt.Println("hello world")
 }
 ```
@@ -143,6 +144,7 @@ import (
 const s string = "constant"
 
 func main() {
+    
     fmt.Println(s)
 
     // A const statement can also appear inside a function body.
@@ -353,7 +355,7 @@ func main() {
         }
     }
 
-whatAmI(true)
+    whatAmI(true)
     whatAmI(1)
     whatAmI("hey")
 }
@@ -462,14 +464,13 @@ func main() {
 
     // Unlike arrays, slices are typed only by the elements they contain (not the number
     // of elements). An uninitialized slice equals to nil and has length 0.
-
     var s []string
     fmt.Println("uninit:", s, s == nil, len(s) == 0)
     
-    // To create a slice with non-zero length, use the builtin make. Here we make a slice of strings 
-    // of length 3 (initially zero-valued). By default a new slice’s capacity is equal to its 
-    // length; if we know the slice is going to grow ahead of time, it’s possible to pass a capacity 
-    // explicitly as an additional parameter to make.
+    // To create a slice with non-zero length, use the builtin make. Here we make a slice of 
+    // strings of length 3 (initially zero-valued). By default a new slice’s capacity is equal to 
+    // its length; if we know the slice is going to grow ahead of time, it’s possible to pass a 
+    // capacity explicitly as an additional parameter to make.
     s = make([]string, 3)
     fmt.Println("emp:", s, "len:", len(s), "cap:", cap(s))
 
@@ -519,8 +520,8 @@ func main() {
         fmt.Println("t == t2")
     }
 
-    // Slices can be composed into multi-dimensional data structures. The length of the inner slices 
-    // can   vary, unlike with multi-dimensional arrays.
+    // Slices can be composed into multi-dimensional data structures. The length of the inner 
+    // slices can vary, unlike with multi-dimensional arrays.
     twoD := make([][]int, 3)
     for i := range 3 {
         innerLen := i + 1
@@ -724,12 +725,12 @@ import "fmt"
 
 // Here’s a function that will take an arbitrary number of ints as arguments.
 func sum(nums ...int) {
+
     fmt.Print(nums, " ")
     total := 0
 
     // Within the function, the type of nums is equivalent to []int. We can call len(nums), iterate 
     // over it with range, etc.
-
     for _, num := range nums {
         total += num
     }
@@ -744,7 +745,6 @@ func main() {
 
     // If you already have multiple args in a slice, apply them to a variadic function using func
     // (slice...) like this.
-
     nums := []int{1, 2, 3, 4}
     sum(nums...)
 }
@@ -770,9 +770,10 @@ package main
 
 import "fmt"
 
-// This function intSeq returns another function, which we define anonymously in the body of intSeq. 
-// The returned function closes over the variable i to form a closure.
+// This function intSeq returns another function, which we define anonymously in the body of 
+// intSeq. The returned function closes over the variable i to form a closure.
 func intSeq() func() int {
+
     i := 0
     return func() int {
         i++
@@ -820,6 +821,7 @@ import "fmt"
 
 // This fact function calls itself until it reaches the base case of fact(0).
 func fact(n int) int {
+
     if n == 0 {
         return 1
     }
@@ -827,6 +829,7 @@ func fact(n int) int {
 }
 
 func main() {
+    
     fmt.Println(fact(7))
 
     // Anonymous functions can also be recursive, but this requires explicitly declaring a variable 
@@ -928,6 +931,7 @@ import "fmt"
 // zeroval has an int parameter, so arguments will be passed to it by value. zeroval will get a 
 // copy of ival distinct from the one in the calling function.
 func zeroval(ival int) {
+
     ival = 0
 }
 
@@ -936,10 +940,12 @@ func zeroval(ival int) {
 // at that address. Assigning a value to a dereferenced pointer changes the value at the referenced 
 // address.
 func zeroptr(iptr *int) {
+
     *iptr = 0
 }
 
 func main() {
+
     i := 1
     fmt.Println("initial:", i)
 
@@ -1015,7 +1021,7 @@ func main() {
         fmt.Printf("%#U starts at %d\n", runeValue, i)
         w = width
 
-    // This demonstrates passing a rune value to a function.
+        // This demonstrates passing a rune value to a function.
         examineRune(runeValue)
     }
 }
@@ -1067,8 +1073,6 @@ package main
 import "fmt"
 
 // This person struct type has name and age fields.
-
-
 type person struct {
     name string
     age  int
@@ -1156,16 +1160,19 @@ type rect struct {
 
 // This area method has a receiver type of *rect.
 func (r *rect) area() int {
+
     return r.width * r.height
 }
 
 // Methods can be defined for either pointer or value receiver types. Here’s an example of a value 
 // receiver.
 func (r rect) perim() int {
+    
     return 2*r.width + 2*r.height
 }
 
 func main() {
+    
     r := rect{width: 10, height: 5}
 
     // Here we call the 2 methods defined for our struct.
@@ -1223,25 +1230,30 @@ type circle struct {
 // To implement an interface in Go, we just need to implement all the methods in the interface. 
 // Here we implement geometry on rects.
 func (r rect) area() float64 {
+    
     return r.width * r.height
 }
 
 func (r rect) perim() float64 {
+    
     return 2*r.width + 2*r.height
 }
 
 // The implementation for circles.
 func (c circle) area() float64 {
+    
     return math.Pi * c.radius * c.radius
 }
 
 func (c circle) perim() float64 {
+    
     return 2 * math.Pi * c.radius
 }
 
 // If a variable has an interface type, then we can call methods that are in the named interface. 
 // Here’s a generic measure function taking advantage of this to work on any geometry.
 func measure(g geometry) {
+    
     fmt.Println(g)
     fmt.Println(g.area())
     fmt.Println(g.perim())
@@ -1250,12 +1262,14 @@ func measure(g geometry) {
 // Sometimes it’s useful to know the runtime type of an interface value. One option is using a type 
 // assertion as shown here; another is a type switch.
 func detectCircle(g geometry) {
+    
     if c, ok := g.(circle); ok {
         fmt.Println("circle with radius", c.radius)
     }
 }
 
 func main() {
+    
     r := rect{width: 3, height: 4}
     c := circle{radius: 5}
 
@@ -1279,8 +1293,6 @@ go run interfaces.go
 31.41592653589793
 circle with radius 5
 ```
-
-To understand how Go’s interfaces work under the hood, check out this blog post.
 
 [Sadržaj][00]
 
@@ -1319,12 +1331,14 @@ var stateName = map[ServerState]string{
 }
 
 func (ss ServerState) String() string {
+    
     return stateName[ss]
 }
 
 // If we have a value of type int, we cannot pass it to transition - the compiler will complain 
 // about type mismatch. This provides some degree of compile-time type safety for enums.
 func main() {
+    
     ns := transition(StateIdle)
     fmt.Println(ns)
 
@@ -1335,6 +1349,7 @@ func main() {
 // transition emulates a state transition for a server; it takes the existing state and returns a 
 // new state.
 func transition(s ServerState) ServerState {
+    
     switch s {
     case StateIdle:
         return StateConnected
@@ -1371,6 +1386,7 @@ type base struct {
 }
 
 func (b base) describe() string {
+    
     return fmt.Sprintf("base with num=%v", b.num)
 }
 
@@ -1436,8 +1452,8 @@ import "fmt"
 // present. The comparable constraint means that we can compare values of this type with the == and 
 // != operators. For a more thorough explanation of this type signature, see this blog post. Note 
 // that this function exists in the standard library as slices.Index.
-
 func SlicesIndex[S ~[]E, E comparable](s S, v E) int {
+    
     for i := range s {
         if v == s[i] {
             return i
@@ -1459,6 +1475,7 @@ type element[T any] struct {
 // We can define methods on generic types just like we do on regular types, but we have to keep the 
 // type parameters in place. The type is List[T], not List.
 func (lst *List[T]) Push(v T) {
+    
     if lst.tail == nil {
         lst.head = &element[T]{val: v}
         lst.tail = lst.head
@@ -1471,6 +1488,7 @@ func (lst *List[T]) Push(v T) {
 // AllElements returns all the List elements as a slice. In the next example we’ll see a more 
 // idiomatic way of iterating over all elements of custom types.
 func (lst *List[T]) AllElements() []T {
+    
     var elems []T
     for e := lst.head; e != nil; e = e.next {
         elems = append(elems, e.val)
@@ -1479,6 +1497,7 @@ func (lst *List[T]) AllElements() []T {
 }
 
 func main() {
+    
     var s = []string{"foo", "bar", "zoo"}
 
     // When invoking generic functions, we can often rely on type inference. Note that we don’t 
@@ -1532,6 +1551,7 @@ type element[T any] struct {
 }
 
 func (lst *List[T]) Push(v T) {
+
     if lst.tail == nil {
         lst.head = &element[T]{val: v}
         lst.tail = lst.head
@@ -1542,13 +1562,13 @@ func (lst *List[T]) Push(v T) {
 }
 
 // All returns an iterator, which in Go is a function with a special signature.
-
 func (lst *List[T]) All() iter.Seq[T] {
+
     return func(yield func(T) bool) {
 
-    // The iterator function takes another function as a parameter, called yield by convention (but 
-    // the name can be arbitrary). It will call yield for every element we want to iterate over, 
-    // and note yield’s return value for a potential early termination.
+       // The iterator function takes another function as a parameter, called yield by convention 
+       // (but the name can be arbitrary). It will call yield for every element we want to iterate 
+       // over, and note yield’s return value for a potential early termination.
         for e := lst.head; e != nil; e = e.next {
             if !yield(e.val) {
                 return
@@ -1561,7 +1581,9 @@ func (lst *List[T]) All() iter.Seq[T] {
 // Here’s a function returning an iterator over Fibonacci numbers: it keeps running as long as 
 // yield keeps returning true.
 func genFib() iter.Seq[int] {
+    
     return func(yield func(int) bool) {
+        
         a, b := 0, 1
 
         for {
@@ -1574,6 +1596,7 @@ func genFib() iter.Seq[int] {
 }
 
 func main() {
+    
     lst := List[int]{}
     lst.Push(10)
     lst.Push(13)

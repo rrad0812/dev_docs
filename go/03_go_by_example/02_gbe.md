@@ -4,9 +4,7 @@
 
 ## 26 Errors
 
-In Go it’s idiomatic to communicate errors via an explicit, separate return value. This contrasts with the exceptions used in languages like Java, Python and Ruby and the overloaded single result / error value sometimes used in C. Go’s approach makes it easy to see which functions return errors and to handle them using the same language constructs employed for other, non-error tasks.
-
-See the documentation of the errors package and this blog post for additional details.
+In Go it’s idiomatic to communicate errors via an explicit, separate return value. This contrasts with the exceptions used in languages like Java, Python and Ruby and the overloaded single result/error value sometimes used in C. Go’s approach makes it easy to see which functions return errors and to handle them using the same language constructs employed for other, non-error tasks.
 
 ```go
 package main
@@ -18,6 +16,7 @@ import (
 
 // By convention, errors are the last return value and have type error, a built-in interface.
 func f(arg int) (int, error) {
+    
     if arg == 42 {
 
         // errors.New constructs a basic error value with the given error message.
@@ -29,11 +28,11 @@ func f(arg int) (int, error) {
 }
 
 // A sentinel error is a predeclared variable that is used to signify a specific error condition.
-
 var ErrOutOfTea = errors.New("no more tea available")
 var ErrPower = errors.New("can't boil water")
 
 func makeTea(arg int) error {
+    
     if arg == 2 {
         return ErrOutOfTea
     } else if arg == 4 {
@@ -47,6 +46,7 @@ func makeTea(arg int) error {
 }
 
 func main() {
+    
     for _, i := range []int{7, 42} {
 
         // It’s idiomatic to use an inline error check in the if line.
@@ -110,10 +110,12 @@ type argError struct {
 
 // Adding this Error method makes argError implement the error interface.
 func (e *argError) Error() string {
+    
     return fmt.Sprintf("%d - %s", e.arg, e.message)
 }
 
 func f(arg int) (int, error) {
+    
     if arg == 42 {
 
         // Return our custom error.
@@ -285,6 +287,7 @@ import (
 // This is the function we’ll run in a goroutine. The done channel will be used to notify another 
 // goroutine that this function’s work is done.
 func worker(done chan bool) {
+
     fmt.Print("working...")
     time.Sleep(time.Second)
     fmt.Println("done")
@@ -335,6 +338,7 @@ func pong(pings <-chan string, pongs chan<- string) {
 }
 
 func main() {
+    
     pings := make(chan string, 1)
     pongs := make(chan string, 1)
     ping(pings, "passed message")
@@ -401,8 +405,7 @@ received one
 received two
 ```
 
-Note that the total execution time is only ~2 seconds since both the 1 and 2 second Sleeps
-execute concurrently.
+Note that the total execution time is only ~2 seconds since both the 1 and 2 second Sleeps execute concurrently.
 
 ```sh
 real    0m2.245s
@@ -481,6 +484,7 @@ package main
 import "fmt"
 
 func main() {
+    
     messages := make(chan string)
     signals := make(chan bool)
 
@@ -749,6 +753,7 @@ import (
 // work on the jobs channel and send the corresponding results on results. We’ll sleep a second per 
 // job to simulate an expensive task.
 func worker(id int, jobs <-chan int, results chan<- int) {
+    
     for j := range jobs {
         fmt.Println("worker", id, "started  job", j)
         time.Sleep(time.Second)
@@ -819,6 +824,7 @@ import (
 
 // This is the function we’ll run in every goroutine.
 func worker(id int) {
+    
     fmt.Printf("Worker %d starting\n", id)
 
     // Sleep to simulate an expensive task.
@@ -1001,8 +1007,6 @@ go run atomic-counters.go
 ops: 50000
 ```
 
-Next we’ll look at mutexes, another tool for managing state.
-
 [Sadržaj][00]
 
 ## 44 Mutexes
@@ -1076,8 +1080,6 @@ Running the program shows that the counters updated as expected.
 go run mutexes.go
 map[a:20000 b:10000]
 ```
-
-Next we’ll look at implementing this same state management task using only goroutines and channels.
 
 [Sadržaj][00]
 
