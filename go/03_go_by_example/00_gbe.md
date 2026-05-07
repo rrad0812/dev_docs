@@ -26,7 +26,7 @@
 - [22 Enums][22]
 - [23 Struct Embedding][23]
 - [24 Generics][24]
-- [25 Range over Iterators][25] |
+- [25 Range over Iterators][25]
 - [26 Errors][26]
 - [27 Custom Errors][27]
 - [28 Goroutines][28]
@@ -52,6 +52,41 @@
 - [48 Panic][48]
 - [49 Defer][49]
 - [50 Recover][50]
+- [51 String Functions][51]
+- [52 String Formatting][52]
+- [53 Text Templates][53]
+- [54 Regular Expressions][54]
+- [55 JSON][55]
+- [56 XML][56]
+- [57 Time][57]
+- [58 Epoch][58]
+- [59 Time Formatting / Parsing][59]
+- [60 Random Numbers][60]
+- [61 Number Parsing][61]
+- [62 URL Parsing][62]
+- [63 SHA256 Hashes][63]
+- [64 Base64 Encoding][64]
+- [65 Reading Files][65]
+- [66 Writing Files][66]
+- [67 Line Filters][67]
+- [68 File Paths][68]
+- [69 Directories][69]
+- [70 Temporary Files and Directories][70]
+- [71 Embed Directive][71]
+- [72 Testing and Benchmarking][72]
+- [73 Command-Line Arguments][73]
+- [74 Command-Line Flags][74]
+- [75 Command-Line Subcommands][75]
+- [76 Environment Variables][76]
+- [77 Logging][77]
+- [78 HTTP Client][78]
+- [79 HTTP Server][79]
+- [80 TCP Server][80]
+- [81 Context][81]
+- [82 Spawning Processes][82]
+- [83 Exec'ing Processes][83]
+- [84 Signals][84]
+- [85 Exit][85]
 
 [01]: 01_gbe.md#01-hello-world
 [02]: 01_gbe.md#02-values
@@ -103,3 +138,38 @@
 [48]: 02_gbe.md#48-panic
 [49]: 02_gbe.md#49-defer
 [50]: 02_gbe.md#50-recover
+[51]: 03_gbe.md#51-string-functions
+[52]: 03_gbe.md#52-string-formatting
+[53]: 03_gbe.md#53-text-templates
+[54]: 03_gbe.md#54-regular-expressions
+[55]: 03_gbe.md#55-json
+[56]: 03_gbe.md#56-xml
+[57]: 03_gbe.md#57-time
+[58]: 03_gbe.md#58-epoch
+[59]: 03_gbe.md#59-time-formatting--parsing
+[60]: 03_gbe.md#60-random-numbers
+[61]: 03_gbe.md#61-number-parsing
+[62]: 03_gbe.md#62-url-parsing
+[63]: 03_gbe.md#63-sha256-hashes
+[64]: 03_gbe.md#64-base64-encoding
+[65]: 03_gbe.md#65-reading-files
+[66]: 03_gbe.md#66-writing-files
+[67]: 03_gbe.md#67-line-filters
+[68]: 03_gbe.md#68-file-paths
+[69]: 03_gbe.md#69-directories
+[70]: 03_gbe.md#70-temporary-files-and-directories
+[71]: 03_gbe.md#71-embed-directive
+[72]: 03_gbe.md#72-testing-and-benchmarking
+[73]: 03_gbe.md#73-command-line-arguments
+[74]: 03_gbe.md#74-command-line-flags
+[75]: 03_gbe.md#75-command-line-subcommands
+[76]: 03_gbe.md#76-environment-variables
+[77]: 03_gbe.md#77-logging
+[78]: 03_gbe.md#78-http-client
+[79]: 03_gbe.md#79-http-server
+[80]: 03_gbe.md#80-tcp-server
+[81]: 03_gbe.md#81-context
+[82]: 03_gbe.md#82-spawning-processes
+[83]: 03_gbe.md#83-execing-processes
+[84]: 03_gbe.md#84-signals
+[85]: 03_gbe.md#85-exit

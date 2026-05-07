@@ -20,22 +20,22 @@ func main() {
 To run the program, put the code in "hello-world.go" and use `go run`.
 
 ```sh
-$ go run hello-world.go
+go run hello-world.go
 hello world
 ```
 
 Sometimes we’ll want to build our programs into binaries. We can do this using go build.
 
 ```sh
-$ go build hello-world.go
-$ ls
+go build hello-world.go
+ls
 hello-world    hello-world.go
 ```
 
 We can then execute the built binary directly.
 
 ```sh
-$ ./hello-world
+./hello-world
 hello world
 ```
 
@@ -69,7 +69,7 @@ func main() {
 ```
 
 ```sh
-$ go run values.go
+go run values.go
 golang
 1+1 = 2
 7.0/3.0 = 2.3333333333333335
@@ -117,7 +117,7 @@ func main() {
 ```
 
 ```sh
-$ go run variables.go
+go run variables.go
 initial
 1 2
 true
@@ -164,7 +164,7 @@ func main() {
 ```
 
 ```sh
-$ go run constant.go 
+go run constant.go 
 constant
 6e+11
 600000000000
@@ -220,7 +220,7 @@ func main() {
 ```
 
 ```sh
-$ go run for.go
+go run for.go
 1
 2
 3
@@ -283,7 +283,7 @@ func main() {
 Note that you don’t need parentheses around conditions in Go, but that the braces are required.
 
 ```sh
-$ go run if-else.go
+go run if-else.go
 7 is odd
 8 is divisible by 4
 either 8 or 7 are even
@@ -360,7 +360,7 @@ whatAmI(true)
 ```
 
 ```sh
-$ go run switch.go 
+go run switch.go 
 Write 2 as two
 It's a weekday
 It's after noon
@@ -432,7 +432,7 @@ func main() {
 Note that arrays appear in the form [v1 v2 v3 ...] when printed with fmt.Println.
 
 ```sh
-$ go run arrays.go
+go run arrays.go
 emp: [0 0 0 0 0]
 set: [0 0 0 0 100]
 get: 100
@@ -536,7 +536,7 @@ func main() {
 Note that while slices are different types than arrays, they are rendered similarly by fmt.Println.
 
 ```sh
-$ go run slices.go
+go run slices.go
 uninit: [] true true
 emp: [  ] len: 3 cap: 3
 set: [a b c]
@@ -617,7 +617,7 @@ func main() {
 Note that maps appear in the form map[k:v k:v] when printed with fmt.Println.
 
 ```sh
-$ go run maps.go 
+go run maps.go 
 map: map[k1:7 k2:13]
 v1: 7
 v3: 0
@@ -666,7 +666,7 @@ func main() {
 ```
 
 ```sh
-$ go run functions.go 
+go run functions.go 
 1+2 = 3
 1+2+3 = 6
 ```
@@ -703,7 +703,7 @@ func main() {
 ```
 
 ```sh
-$ go run multiple-return-values.go
+go run multiple-return-values.go
 3
 7
 7
@@ -751,7 +751,7 @@ func main() {
 ```
 
 ```go
-$ go run variadic-functions.go 
+go run variadic-functions.go 
 [1 2] 3
 [1 2 3] 6
 [1 2 3 4] 10
@@ -798,7 +798,7 @@ func main() {
 ```
 
 ```sh
-$ go run closures.go
+go run closures.go
 1
 2
 3
@@ -847,7 +847,7 @@ func main() {
 ```
 
 ```sh
-$ go run recursion.go 
+go run recursion.go 
 5040
 13
 ```
@@ -902,7 +902,7 @@ func main() {
 ```
 
 ```sh
-$ go run range-over-built-in-types.go
+go run range-over-built-in-types.go
 sum: 9
 index: 1
 a -> apple
@@ -958,7 +958,7 @@ func main() {
 zeroval doesn’t change the i in main, but zeroptr does because it has a reference to the memory address for that variable.
 
 ```sh
-$ go run pointers.go
+go run pointers.go
 initial: 1
 zeroval: 1
 zeroptr: 0
@@ -1033,7 +1033,7 @@ func examineRune(r rune) {
 ```
 
 ```sh
-$ go run strings-and-runes.go
+go run strings-and-runes.go
 Len: 18
 e0 b8 aa e0 b8 a7 e0 b8 b1 e0 b8 aa e0 b8 94 e0 b8 b5 
 Rune count: 6
@@ -1127,7 +1127,7 @@ func main() {
 ```
 
 ```sh
-$ go run structs.go
+go run structs.go
 {Bob 20}
 {Alice 30}
 {Fred 0}
@@ -1182,7 +1182,7 @@ func main() {
 ```
 
 ```sh
-$ go run methods.go 
+go run methods.go 
 area:  50
 perim: 30
 area:  50
@@ -1270,7 +1270,7 @@ func main() {
 ```
 
 ```sh
-$ go run interfaces.go
+go run interfaces.go
 {3 4}
 12
 14
@@ -1350,7 +1350,7 @@ func transition(s ServerState) ServerState {
 ```
 
 ```sh
-$ go run enums.go
+go run enums.go
 connected
 idle
 ```
@@ -1413,7 +1413,7 @@ func main() {
 ```
 
 ```sh
-$ go run struct-embedding.go
+go run struct-embedding.go
 co={num: 1, str: some name}
 also num: 1
 describe: base with num=1
@@ -1498,7 +1498,7 @@ func main() {
 ```
 
 ```sh
-$ go run generics.go
+go run generics.go
 index of zoo: 2
 list: [10 13 23]
 ```
@@ -1607,7 +1607,7 @@ func main() {
 ```
 
 ```sh
-$ go run range-over-iterators.go
+go run range-over-iterators.go
 10
 13
 23

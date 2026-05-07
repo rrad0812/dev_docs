@@ -78,7 +78,7 @@ func main() {
 ```
 
 ```sh
-$ go run errors.go
+go run errors.go
 f worked: 10
 f failed: can't work with 42
 Tea is ready!
@@ -138,7 +138,7 @@ func main() {
 ```
 
 ```sh
-$ go run custom-errors.go
+go run custom-errors.go
 42
 can't work with it
 ```
@@ -188,7 +188,7 @@ func main() {
 When we run this program, we see the output of the blocking call first, then the output of the two goroutines. The goroutines’ output may be interleaved, because goroutines are being run concurrently by the Go runtime.
 
 ```sh
-$ go run goroutines.go
+go run goroutines.go
 direct : 0
 direct : 1
 direct : 2
@@ -229,7 +229,7 @@ func main() {
 When we run the program the "ping" message is successfully passed from one goroutine to another via our channel.
 
 ```sh
-$ go run channels.go 
+go run channels.go 
 ping
 ```
 
@@ -263,7 +263,7 @@ func main() {
 ```
 
 ```sh
-$ go run channel-buffering.go 
+go run channel-buffering.go 
 buffered
 channel
 ```
@@ -305,7 +305,7 @@ func main() {
 ```
 
 ```sh
-$ go run channel-synchronization.go      
+go run channel-synchronization.go      
 working...done                  
 ```
 
@@ -344,7 +344,7 @@ func main() {
 ```
 
 ```sh
-$ go run channel-directions.go
+go run channel-directions.go
 passed message
 ```
 
@@ -396,7 +396,7 @@ func main() {
 We receive the values "one" and then "two" as expected.
 
 ```sh
-$ time go run select.go 
+time go run select.go 
 received one
 received two
 ```
@@ -464,7 +464,7 @@ func main() {
 Running this program shows the first operation timing out and the second succeeding.
 
 ```sh
-$ go run timeouts.go 
+go run timeouts.go 
 timeout 1
 result 2
 ```
@@ -518,7 +518,7 @@ func main() {
 ```
 
 ```sh
-$ go run non-blocking-channel-operations.go 
+go run non-blocking-channel-operations.go 
 no message received
 no message sent
 no activity
@@ -581,7 +581,7 @@ func main() {
 ```
 
 ```sh
-$ go run closing-channels.go 
+go run closing-channels.go 
 sent job 1
 received job 1
 sent job 2
@@ -623,7 +623,7 @@ func main() {
 ```
 
 ```sh
-$ go run range-over-channels.go
+go run range-over-channels.go
 one
 two
 ```
@@ -675,7 +675,7 @@ func main() {
 The first timer will fire ~2s after we start the program, but the second should be stopped before it has a chance to fire.
 
 ```sh
-$ go run timers.go
+go run timers.go
 Timer 1 fired
 Timer 2 stopped
 ```
@@ -724,7 +724,7 @@ func main() {
 When we run this program the ticker should tick 3 times before we stop it.
 
 ```sh
-$ go run tickers.go
+go run tickers.go
 Tick at 2012-09-23 11:29:56.487625 -0700 PDT
 Tick at 2012-09-23 11:29:56.988063 -0700 PDT
 Tick at 2012-09-23 11:29:57.488076 -0700 PDT
@@ -787,7 +787,7 @@ func main() {
 Our running program shows the 5 jobs being executed by various workers. The program only takes about 2 seconds despite doing about 5 seconds of total work because there are 3 workers operating concurrently.
 
 ```sh
-$ time go run worker-pools.go 
+time go run worker-pools.go 
 worker 1 started  job 1
 worker 2 started  job 2
 worker 3 started  job 3
@@ -849,7 +849,7 @@ func main() {
 ```
 
 ```sh
-$ go run waitgroups.go
+go run waitgroups.go
 Worker 5 starting
 Worker 3 starting
 Worker 4 starting
@@ -933,7 +933,7 @@ func main() {
 Running our program we see the first batch of requests handled once every ~200 milliseconds as desired.
 
 ```sh
-$ go run rate-limiting.go
+go run rate-limiting.go
 request 1 2012-10-19 00:38:18.687438 +0000 UTC
 request 2 2012-10-19 00:38:18.887471 +0000 UTC
 request 3 2012-10-19 00:38:19.087238 +0000 UTC
@@ -997,7 +997,7 @@ func main() {
 We expect to get exactly 50,000 operations. Had we used a non-atomic integer and incremented it with ops++, we’d likely get a different number, changing between runs, because the goroutines would interfere with each other. Moreover, we’d get data race failures when running with the -race flag.
 
 ```sh
-$ go run atomic-counters.go
+go run atomic-counters.go
 ops: 50000
 ```
 
@@ -1073,7 +1073,7 @@ func main() {
 Running the program shows that the counters updated as expected.
 
 ```sh
-$ go run mutexes.go
+go run mutexes.go
 map[a:20000 b:10000]
 ```
 
@@ -1186,7 +1186,7 @@ func main() {
 Running our program shows that the goroutine-based state management example completes about 80,000 total operations.
 
 ```sh
-$ go run stateful-goroutines.go
+go run stateful-goroutines.go
 readOps: 71708
 writeOps: 7177
 ```
@@ -1227,7 +1227,7 @@ func main() {
 ```
 
 ```sh
-$ go run sorting.go
+go run sorting.go
 Strings: [a b c]
 Ints:    [2 4 7]
 Sorted:  true
@@ -1288,7 +1288,7 @@ func main() {
 ```
 
 ```sh
-$ go run sorting-by-functions.go 
+go run sorting-by-functions.go 
 [kiwi peach banana]
 [{TJ 25} {Jax 37} {Alex 72}]
 ```
@@ -1329,7 +1329,7 @@ Running this program will cause it to panic, print an error message and goroutin
 When first panic in main fires, the program exits without reaching the rest of the code. If you’d like to see the program try to create a temp file, comment the first panic out.
 
 ```sh
-$ go run panic.go
+go run panic.go
 panic: a problem
 
 goroutine 1 [running]:
@@ -1398,7 +1398,7 @@ func closeFile(f *os.File) {
 Running the program confirms that the file is closed after being written.
 
 ```sh
-$ go run defer.go
+go run defer.go
 creating
 writing
 closing
@@ -1444,7 +1444,7 @@ func main() {
 ```
 
 ```sh
-$ go run recover.go
+go run recover.go
 Recovered. Error:
  a problem
 ```
