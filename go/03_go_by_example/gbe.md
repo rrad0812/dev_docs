@@ -5,9 +5,9 @@
 
 | Basic Go | Advanced Go | Using GO |  
 | -------- | ----------- | -------- |  
-| [01 Hello World][01] | [30 Channel Buffering][30] | [59 Time Formatting / Parsing][59]|  
+| [01 Hello World][01] | [30 Channel Buffering][30] | [59 Time Formatting / Parsing][59] |  
 | [02 Values][02] | [31 Channel Synchronization][31] | [60 Random Numbers][60] |
-| [03 Variables][03] | [32 Channel Directions][32] | [61 Number Parsing][61]|
+| [03 Variables][03] | [32 Channel Directions][32] | [61 Number Parsing][61] |
 | [04 Constants][04] | [33 Select][33] | [62 URL Parsing][62] |
 | [05 For][05] | [34 Timeouts][34] | [63 SHA256 Hashes][63] |
 | [06 If/Else][06] | [35 Non-Blocking Channel Operations][35] | [64 Base64 Encoding][64] |
@@ -633,7 +633,9 @@ func main() {
     fmt.Println("map:", m)
 
     // The optional second return value when getting a value from a map indicates if the key was 
-    // present in the map. This can be used to disambiguate between missing keys and keys with zero values like 0 or "". Here we didn’t need the value itself, so we ignored it with the blank identifier _.
+    // present in the map. This can be used to disambiguate between missing keys and keys with zero
+    // values like 0 or "". Here we didn’t need the value itself, so we ignored it with the blank
+    // identifier _.
     _, prs := m["k2"]
     fmt.Println("prs:", prs)
 
