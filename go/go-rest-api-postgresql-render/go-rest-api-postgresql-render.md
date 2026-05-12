@@ -1,7 +1,7 @@
 
 # Building and Deploying a REST API with Golang, Postgres, and Render.com
 
-## 1 Deo prvi
+## 1 Basic setup
 
 In this tutorial, we will walk through the process of building a simple REST API using the Go programming language, following the Clean Architecture principles. Our API will use PostgreSQL as the database, and we will deploy it on render.com. To achieve this, we will leverage the following dependencies:
 
@@ -144,7 +144,7 @@ If everything is set up correctly, your terminal should display output similar t
 2023/08/10 11:09:42 connected to db with:  &{0xc000100d00 postgres false 0xc0000789f0}
 ```
 
-## 2 Deo drugi
+## 2 Build app
 
 Welcome back to the second part of our tutorial! In previous part, we set up very basic application to connect with postgreSQL.
 
@@ -560,7 +560,7 @@ func main() {
 }
 ```
 
-## 3 Deo treći
+## 3 Render
 
 Welcome to the third part of our tutorial series! In previous part, we created a basic REST API Go app using clean architecture principles.
 
