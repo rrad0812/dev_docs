@@ -53,82 +53,82 @@ We will now learn how we can create our very first Vue web page, in 5 basic step
 
 These steps are described in detail below, with the full code in a 'Try It Yourself' example in the end.
 
-#### Step 1: HTML page
+- Step 1: HTML page
 
-Start with a simple HTML page:
+  Start with a simple HTML page:
+  
+  ```html
+  <!DOCTYPE html> 
+  <html lang="en"> 
+  <head> 
+    <title>My first Vue page</title> 
+  </head> 
+  <body> 
+  
+  </body> 
+  </html>
+  ```
 
-```html
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-  <title>My first Vue page</title> 
-</head> 
-<body> 
+- Step 2: Add a `<div>`
 
-</body> 
-</html>
-```
+  Vue needs an HTML element on your page to connect to.
+  
+  Put a `<div>` tag inside the `<body>` tag and give it an id:
+  
+  ```html
+  <body> 
+    <div id="app"></div> 
+  </body>
+  ```
 
-#### Step 2: Add a `<div>`
+- Step 3: Add a link to Vue
 
-Vue needs an HTML element on your page to connect to.
+  To help our browser to interpret our Vue code, add this `<script>` tag:
+  
+  ```html
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  ```
 
-Put a `<div>` tag inside the `<body>` tag and give it an id:
+- Step 4: Add the Vue instance
 
-```html
-<body> 
-  <div id="app"></div> 
-</body>
-```
+  Now we need to add our Vue code.
+  
+  This is called the Vue instance and can contain data and methods and other things, but now it just contains a message.
+  
+  On the last line in this `<script>` tag our Vue instance is connected to the `<div id="app">` tag:
+  
+  ```html
+  <div id="app"></div> 
+  
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
+  
+  <script> 
+  
+    const app = Vue.createApp({ 
+      data() { 
+        return { 
+          message: "Hello World!" 
+        } 
+      } 
+    }) 
+  
+   app.mount('#app') 
+  
+  </script> 
+  ```
 
-#### Step 3: Add a link to Vue
+- Step 5: Display 'message' with Text Interpolation
 
-To help our browser to interpret our Vue code, add this `<script>` tag:
-
-```html
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-```
-
-#### Step 4: Add the Vue instance
-
-Now we need to add our Vue code.
-
-This is called the Vue instance and can contain data and methods and other things, but now it just contains a message.
-
-On the last line in this `<script>` tag our Vue instance is connected to the `<div id="app">` tag:
-
-```html
-<div id="app"></div> 
-
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> 
-
-<script> 
-
-  const app = Vue.createApp({ 
-    data() { 
-      return { 
-        message: "Hello World!" 
-      } 
-    } 
-  }) 
-
- app.mount('#app') 
-
-</script> 
-```
-
-#### Step 5: Display 'message' with Text Interpolation
-
-Finally, we can use text interpolation, a Vue syntax with double curly braces {{ }} as a placeholder for data.
-
-```html
-<div id="app"> {{ message }} </div> 
-```
-
-The browser will exchange {{ message }} with the text stored in the 'message' property inside the Vue instance.
-
+  Finally, we can use text interpolation, a Vue syntax with double curly braces {{ }} as a placeholder for data.
+  
+  ```html
+  <div id="app"> {{ message }} </div> 
+  ```
+  
+  The browser will exchange {{ message }} with the text stored in the 'message' property inside the Vue instance.
+  
 **Example: My first Vue page!**
-
+  
 Test this code with the 'Try it Yourself' button below.
 
 ```html
