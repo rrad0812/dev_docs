@@ -1105,3 +1105,530 @@ Ovim uslužnim programima možete pristupiti preko svojstva koje se poziva sa `_
 ```js
 Kalebporcio
 ```
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.9 x-modelable
+
+`x-modelable` omogućava vam da izložite bilo koju AlpineJS promenljivu stanja kao cilj direktive x-model.
+
+Evo jednostavnog primera korišćenja `x-modelable` za izlaganje promenljive za povezivanje sa `x-model`.
+
+```html
+<div x-data="{ number: 5 }">
+    <div x-data="{ count: 0 }" x-modelable="count" x-model="number">
+        <button @click="count++">Increment</button>
+    </div>
+ 
+    Number: <span x-text="number"></span>
+</div>
+```
+
+![3901](images/3901.png)
+
+Kao što vidite, svojstvo iz spoljašnjeg opsega važenja "number" je sada povezano sa svojstvom unutrašnjeg opsega važenja "count".
+
+Ova funkcija bi se obično koristila u kombinaciji sa bekend šablonskim frejmvorkom kao što je Laravel Blade. Korisna je za apstrahovanje AlpineJS komponenti u bekend šablone i prikazivanje stanja spolja `x-model` kao da je u pitanju izvorni unos.
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.10 x-for
+
+AlpineJS `x-for` direktiva vam omogućava da kreirate DOM elemente iteracijom kroz listu. Evo jednostavnog primera korišćenja za kreiranje liste boja na osnovu niza.
+
+```html
+<ul x-data="{ colors: ['Red', 'Orange', 'Yellow'] }">
+    <template x-for="color in colors">
+        <li x-text="color"></li>
+    </template>
+</ul>
+
+Red
+Orange
+Yellow
+```
+
+Takođe možete prosleđivati objekte u `x-for`.
+
+```html
+<ul x-data="{ car: { make: 'Jeep', model: 'Grand Cherokee', color: 'Black' } }">
+    <template x-for="(value, index) in car">
+        <li>
+            <span x-text="index"></span>: <span x-text="value"></span>
+        </li>
+    </template>
+</ul>
+
+make : Jeep
+model : Grand Cherokee
+color : Black
+```
+
+> [!Note]
+> Postoje dva pravila koja vredi napomenuti za x-for:
+>
+> - `x-for` MORA biti deklarisan na `<template>` elementu.
+> - Taj `<template>` element MORA da sadrži samo jedan korenski element.
+
+**Ključevi**:
+
+Važno je navesti jedinstvene ključeve za svaku `x-for` iteraciju ako ćete menjati redosled stavki. Bez dinamičkih ključeva, AlpineJS bi mogao imati poteškoća sa praćenjem šta se menja i to bi moglo izazvati čudne nuspojave.
+
+```html
+<ul x-data="{ colors: [
+    { id: 1, label: 'Red' },
+    { id: 2, label: 'Orange' },
+    { id: 3, label: 'Yellow' },
+]}">
+    <template x-for="color in colors" :key="color.id">
+        <li x-text="color.label"></li>
+    </template>
+</ul>
+```
+
+Sada, ako se boje dodaju, uklanjaju, preuređuju ili im se „identifikatori“ promene, Alpine će sačuvati ili uništiti iterirane `<li>` elemente u skladu sa tim.
+
+**Pristupanje indeksima**:
+
+Ako vam je potreban pristup indeksu svake stavke u iteraciji, to možete učiniti koristeći:
+
+```js
+([item], [index]) in [items] 
+```
+
+sintaksu kao što je prikazano:
+
+```html
+<ul x-data="{ colors: ['Red', 'Orange', 'Yellow'] }">
+    <template x-for="(color, index) in colors">
+        <li>
+            <span x-text="index + ': '"></span>
+            <span x-text="color"></span>
+        </li>
+    </template>
+</ul>
+```
+
+Takođe možete pristupiti indeksu unutar dinamičkog `:key` izraza.
+
+```html
+<template x-for="(color, index) in colors" :key="index">
+```
+
+**Ponavljanje kroz opseg**:
+
+Ako vam je potrebno samo da ponavljate niz u petlji više puta, umesto da iterirate kroz njega, AlpineJS nudi kratku sintaksu.
+
+```html
+<ul>
+    <template x-for="i in 10">
+        <li x-text="i"></li>
+    </template>
+</ul>
+```
+
+i u ovom slučaju može se nazvati bilo kako želite.
+
+> [!Note]
+> Iako nije uključen u gornji isečak, x-for se ne može koristiti ako nije x-data definisan roditeljski element.
+
+**Sadržaj `<template>`**:
+
+Kao što je gore pomenuto, `<template>` oznaka mora da sadrži samo jedan korenski element.
+
+Na primer, sledeći kod neće raditi:
+
+```html
+<template x-for="color in colors">
+    <span>The next color is </span><span x-text="color">
+</template>
+```
+
+ali ovaj kod će raditi:
+
+```html
+<template x-for="color in colors">
+    <p>
+        <span>The next color is </span><span x-text="color">
+    </p>
+</template>
+```
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.11 x-transition
+
+AlpineJS pruža robustan alat za prelaze odmah po instalaciji. Sa nekoliko `x-transition` direktiva možete kreirati glatke prelaze između prikazivanja i skrivanja elementa.
+
+Postoje dva osnovna načina za rukovanje tranzicijama u AlpineJS:
+
+- Pomoćnik u tranziciji
+- Primena CSS klasa:
+
+**Pomoćnik u tranziciji**:
+
+Najjednostavniji način da se postigne prelaz pomoću AlpineJS je dodavanjem `x-transition` elementu sa `x-show` na njemu. Na primer:
+
+```html
+<div x-data="{ open: false }">
+    <button @click="open = ! open">Toggle</button>
+ 
+    <div x-show="open" x-transition>
+        Hello
+    </div>
+</div>
+```
+
+Kao što vidite, podrazumevano `x-transition` primenjuje prijatna podrazumevana podešavanja prelaza za postepeno postepeno bleđenje i skaliranje otkrivajućeg elementa.
+
+Možete poništiti ove podrazumevane vrednosti modifikatorima priloženim na x-transition. Hajde da ih pogledamo.
+
+***Prilagođavanje trajanja***
+
+U početku je trajanje podešeno na 150 milisekundi pri ulasku i 75 milisekundi pri izlasku.
+
+Možete podesiti trajanja koje želite za prelaz pomoću `.duration` modifikatora:
+
+```html
+<div ... x-transition.duration.500ms>
+```
+
+Gore navedeno `<div>` će trajati 500 milisekundi pri ulasku i 500 milisekundi pri izlasku.
+
+Ako želite da prilagodite trajanje posebno za ulazak i izlazak, to možete učiniti na sledeći način:
+
+```html
+<div ...
+    x-transition:enter.duration.500ms
+    x-transition:leave.duration.400ms
+>
+```
+
+> [!Note]
+> Iako nije uključen u gornji isečak, `x-transition` ne može se koristiti ako nije `x-data` definisan roditeljski element.
+
+***Prilagođavanje kašnjenja***
+
+Možete odložiti prelaz koristeći `.delay` modifikator na sledeći način:
+
+```html
+<div ... x-transition.delay.50ms>
+```
+
+Gore navedeni primer će odložiti prelaz i ulazak i izlazak iz elementa za 50 milisekundi.
+
+***Prilagođavanje neprozirnosti***
+
+Podrazumevano, AlpineJS `x-transition` primenjuje i prelaz skaliranja i neprozirnosti kako bi postigao efekat "bledenja".
+
+Ako želite da primenite samo prelaz neprozirnosti (bez skaliranja), to možete postići na sledeći način:
+
+```html
+<div ... x-transition.opacity>
+```
+
+***Prilagođavanje skale***
+
+Slično modifikatoru `.opacity`, možete konfigurisati `x-transition` SAMO skaliranje (a ne i neprozirnost prelaza) na sledeći način:
+
+```html
+<div ... x-transition.scale>
+```
+
+Modifikator `.scale` takođe nudi mogućnost konfigurisanja vrednosti skale I vrednosti porekla:
+
+```html
+<div ... x-transition.scale.80>
+```
+
+Gornji isečak će skalirati element gore i dole za 80%.
+
+Ponovo, možete prilagoditi ove vrednosti odvojeno za prelaze ulaska i izlaska na sledeći način:
+
+```html
+<div ...
+    x-transition:enter.scale.80
+    x-transition:leave.scale.90
+>
+```
+
+Da biste prilagodili poreklo prelaza skaliranja, možete koristiti `.origin` modifikator:
+
+```html
+<div ... x-transition.scale.origin.top>
+```
+
+Sada će se skala primeniti koristeći vrh elementa kao poreklo, umesto centra podrazumevano.
+
+Kao što ste možda pretpostavili, moguće vrednosti za ovo prilagođavanje su: `top`, `bottom`, `left` i `right`.
+
+Ako želite, možete kombinovati i dve vrednosti porekla. Na primer, ako želite da poreklo skale bude "top right", možete koristiti: `.origin.top.right` kao modifikator.
+
+**Primena CSS klasa**:
+
+Za direktnu kontrolu nad tim šta tačno ulazi u vaše tranzicije, možete primeniti CSS klase u različitim fazama tranzicije.
+
+Sledeći primeri koriste pomoćne klase TailwindCSS-a:
+
+```html
+<div x-data="{ open: false }">
+    <button @click="open = ! open">Toggle</button>
+    <div
+        x-show="open"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-90"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-90"
+    >Hello!</div>
+</div>
+```
+
+| Direktiva | Opis |
+| --------- | ---- |
+| :enter | Primenjuje se tokom cele faze ulaska. |
+| :enter-start | Dodato pre nego što je element umetnut, uklonjeno jedan okvir nakon što je element umetnut. |
+| :enter-end | Dodat je jedan kadar nakon što je element umetnut (istovremeno kada enter-startje i uklonjen), uklanja se kada se završi tranzicija/animacija. |
+| :leave | Primenjuje se tokom cele faze odlaska. |
+| :leave-start | Dodaje se odmah kada se pokrene prelaz za odlazak, uklanja se nakon jednog kadra. |
+| :leave-end | Dodat je jedan kadar nakon što se pokrene tranzicija pri odlasku (istovremeno leave-startse uklanja), uklanja se kada se tranzicija/animacija završi. |
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.12 x-effect
+
+`x-effect` je korisna direktiva za ponovno izračunavanje izraza kada se promeni jedna od njegovih zavisnosti. Možete je zamisliti kao posmatrača gde ne morate da navodite koje svojstvo treba pratiti, već će pratiti sva svojstva koja se koriste u njoj.
+
+Ako vam je ova definicija zbunjujuća, u redu je. Bolje je objasniti kroz primer:
+
+```html
+<div x-data="{ label: 'Hello' }" x-effect="console.log(label)">
+    <button @click="label += ' World!'">Change Message</button>
+</div>
+```
+
+Kada se ova komponenta učita, `x-effect` izraz će biti pokrenut i "Hello" će biti zabeleženo u konzoli.
+
+Pošto AlpineJS zna za sve reference svojstava sadržane unutar `x-effect`, kada se klikne na dugme i `label` se promeni, `x-effect` će se ponovo pokrenuti i "Hello World!" će biti zabeleženo u konzoli.
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.13 x-ignore
+
+Podrazumevano, AlpineJS će pretražiti i inicijalizovati celo DOM stablo elementa koji sadrži `x-init` ili `x-data`.
+
+Ako iz nekog razloga ne želite da AlpineJS dodirne određeni deo vašeg HTML-a, možete to sprečiti koristeći `x-ignore`.
+
+```html
+<div x-data="{ label: 'From Alpine' }">
+    <div x-ignore>
+        <span x-text="label"></span>
+    </div>
+</div>
+```
+
+U gornjem primeru, `<span>` oznaka neće sadržati "From Alpine" jer smo rekli AlpineJS da potpuno ignoriše sadržaj oznake `div`.
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.14 x-ref
+
+`x-ref` u kombinaciji sa `$refs` je koristan alat za lak direktan pristup DOM elementima. Najkorisniji je kao zamena za API-je poput `getElementById` i `querySelector`.
+
+```html
+<button @click="$refs.text.remove()">Remove Text</button>
+ 
+<span x-ref="text">Hello !</span>
+```
+
+> [!Note]
+> Iako nije uključen u gornji isečak, `x-ref` ne može se koristiti ako nije `x-data` definisan roditeljski element.
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.15 x-cloak
+
+Ponekad, kada koristite AlpineJS za deo šablona, postoji "blip" gde možete videti svoj neinicijalizovani šablon nakon što se stranica učita, ali pre nego što se AlpineJS učita.
+
+`x-cloak` rešava ovaj scenario tako što skriva element za koji je pričvršćen dok se Alpine potpuno ne učita na stranici.
+
+Međutim, da bi `x-cloak` funkcionisao, morate dodati sledeći CSS kod na stranicu.
+
+```css
+[x-cloak] { display: none !important; }
+```
+
+Sledeći primer će sakriti oznaku `<span>` dok `x-show` se posebno ne podesi na vrednost "true", sprečavajući bilo kakvo "pojavljivanje" skrivenog elementa na ekranu dok se Alpine učitava.
+
+```html
+<span x-cloak x-show="false">This will not 'blip' onto screen at any point</span>
+```
+
+`x-cloak` ne radi samo na elementima skrivenim pomoću `x-show` ili `x-if`: takođe osigurava da su elementi koji sadrže podatke skriveni dok se podaci ne podese ispravno. Sledeći primer će sakriti oznaku `<span>` dok AlpineJS ne podesi svoj tekstualni sadržaj na `message` svojstvo.
+
+```html
+<span x-cloak x-text="message"></span>
+```
+
+Kada se Alpine učita na stranici, uklanja sva `x-cloak` svojstva iz elementa, što takođe uklanja i svojstva koja `display: none;` je primenio CSS, čime se element prikazuje.
+
+**Alternativa globalnoj sintaksi**:
+
+Ako želite da postignete isto ponašanje, ali da izbegnete uključivanje globalnog stila, možete koristiti sledeći zanimljiv, ali priznajem čudan trik:
+
+```html
+<template x-if="true">
+    <span x-text="message"></span>
+</template>
+```
+
+Ovim ćete postići isti cilj kao i `x-cloak` jednostavnim korišćenjem načina `x-if` rada.
+
+Pošto su `<template>` elementi podrazumevano "skriveni" u pregledačima, nećete videti `<span>` dok AlpineJS ne bude imao priliku da sa `x-if="true"` ih prikaže.
+
+Ponovo, ovo rešenje nije za svakoga, ali vredi ga pomenuti za posebne slučajeve.
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.16 x-teleport
+
+Direktiva `x-teleport` vam omogućava da deo vašeg AlpineJS šablona u potpunosti prenesete u drugi deo DOM-a na stranici.
+
+Ovo je korisno za stvari poput modalnih prozora (posebno njihovog ugnježđavanja), gde je korisno izdvojiti `z-index` trenutne AlpineJS komponente.
+
+Prikačivanjem `x-teleport` na `<template>` element, govorite AlpineJS da "doda" taj element na dati selektor.
+
+> [!Note]
+Selektor `x-teleport` može biti bilo koji string koji biste normalno prosledili nečemu poput `document.querySelector`. Pronaći će prvi element koji se podudara, bilo da je to naziv oznake ( `body` ), naziv klase ( `.my-class`), ID ( `#my-id` ) ili bilo koji drugi validan CSS selektor.
+
+Evo jednog izmišljenog modalnog primera:
+
+```html
+<body>
+    <div x-data="{ open: false }">
+        <button @click="open = ! open">Toggle Modal</button>
+ 
+        <template x-teleport="body">
+            <div x-show="open">
+                Modal contents...
+            </div>
+        </template>
+    </div>
+ 
+    <div>Some other content placed AFTER the modal markup.</div>
+ 
+    ...
+ 
+</body>
+```
+
+Neki drugi sadržaj postavljen POSLE modalnog označavanja.
+
+Primetite kako se prilikom uključivanja/isključivanja modalnog prozora, stvarni sadržaj modalnog prozora pojavljuje POSLE elementa „Neki drugi sadržaj...“? To je zato što kada se Alpine inicijalizuje, on vidi x-teleport="body"i dodaje i inicijalizuje taj element na dati selektor elemenata.
+
+**Preusmeravanje događaja**:
+
+AlpineJS se trudi da iskustvo teleportovanja učini besprekornim. Sve što biste normalno radili u šablonu, trebalo bi da možete da uradite i unutar `x-teleport` šablona. Teleportovani sadržaj može da pristupi normalnom AlpineJS opsegu komponente, kao i drugim funkcijama kao što su `$refs`, `$root`, itd...
+
+Međutim, izvorni DOM događaji nemaju koncept teleportacije, pa ako, na primer, pokrenete događaj "click" unutar teleportovanog elementa, taj događaj će se pojaviti u DOM stablu kao što bi to normalno učinio.
+
+Da biste ovo iskustvo učinili besprekornijim, možete "prosleđivati" događaje jednostavnim registrovanjem slušača događaja na `<template x-teleport...>` elementu na sledeći način:
+
+```html
+<div x-data="{ open: false }">
+    <button @click="open = ! open">Toggle Modal</button>
+ 
+    <template x-teleport="body" @click="open = false">
+        <div x-show="open">
+            Modal contents...
+            (click to close)
+        </div>
+    </template>
+</div>
+```
+
+Primetite kako sada možemo da slušamo događaje koji se šalju unutar teleportovanog elementa, a ne izvan `<template>` samog elementa?
+
+AlpineJS to radi tako što traži slušače događaja registrovane na `<template x-teleport...>` i sprečava širenje tih događaja pored živog, teleportovanog DOM elementa. Zatim kreira kopiju tog događaja i ponovo je šalje iz `<template x-teleport...>`.
+
+**Ugnežđavanje**:
+
+Teleportovanje je posebno korisno ako pokušavate da ugnezdite jedan modal unutar drugog. Alpine to olakšava:
+
+```html
+<div x-data="{ open: false }">
+    <button @click="open = ! open">Toggle Modal</button>
+ 
+    <template x-teleport="body">
+        <div x-show="open">
+            Modal contents...
+ 
+            <div x-data="{ open: false }">
+                <button @click="open = ! open">Toggle Nested Modal</button>
+ 
+                <template x-teleport="body">
+                    <div x-show="open">
+                        Nested modal contents...
+                    </div>
+                </template>
+            </div>
+        </div>
+    </template>
+</div>
+```
+
+Nakon uključivanja oba modalna prozora, oni se kreiraju kao deca, ali će se prikazivati kao srodni elementi na stranici, a ne jedan unutar drugog.
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.17 x-if
+
+`x-if` se koristi za prebacivanje elemenata na stranici, slično kao `x-show`, međutim, potpuno dodaje i uklanja element na koji se primenjuje, umesto da samo menja njegovo CSS svojstvo prikaza na `"none"`.
+
+Zbog ove razlike u ponašanju, `x-if` ne bi trebalo da se primenjuje direktno na element, već na `<template>` oznaku koja obuhvata element. Na ovaj način, Alpine može da sačuva evidenciju o elementu nakon što je uklonjen sa stranice.
+
+```html
+<template x-if="open">
+    <div>Contents...</div>
+</template>
+```
+
+> [!Note]
+>
+>- Iako nije uključen u gornji isečak, `x-if` ne može se koristiti ako nije `x-data` definisan roditeljski element.
+>- Za razliku od `x-show`, `x-if` NE podržava prelazne prekidače sa `x-transition`.
+>- `<template>` oznake mogu da sadrže samo jedan korenski element.
+
+[Sadržaj](00_Sadržaj.md)
+
+### 3.18 x-id
+
+`x-id` omogućava vam da deklarišete novi "opseg" za sve nove ID-ove generisane pomoću `$id()`. Prihvata niz stringova (imena ID-ova) i dodaje sufiks svakom `$id('...')` generisanom unutar njega koji je jedinstven za druge ID-ove na stranici.
+
+`x-id` je namenjen da se koristi u kombinaciji sa `$id(...)` magijom.
+
+Evo kratkog primera upotrebe ove direktive:
+
+```html
+<div x-id="['text-input']">
+    <label :for="$id('text-input')">Username</label>
+    <!-- for="text-input-1" -->
+ 
+    <input type="text" :id="$id('text-input')">
+    <!-- id="text-input-1" -->
+</div>
+ 
+<div x-id="['text-input']">
+    <label :for="$id('text-input')">Username</label>
+    <!-- for="text-input-2" -->
+ 
+    <input type="text" :id="$id('text-input')">
+    <!-- id="text-input-2" -->
+</div>
+```
+
+> [!Note]
+> Iako nije uključen u gornji isečak koda, x-id ne može se koristiti ako nije x-data definisan na roditeljskom elementu. → Pročitajte više ox-data
+
+[Sadržaj](00_Sadržaj.md)
