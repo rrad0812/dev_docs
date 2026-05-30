@@ -13,9 +13,9 @@
 [**SQLAlchemy**](./1701_sqlalchemy.md)  
 [**Jampy app scaffold**](./1801_jampy_app_scaffold.md)  
 [**Uni smart sync v31 for Neo4j**](./1901_uni_smart_sync_v3.1_for_Neo4j.md)  
-[**Pandas - pivot table**](./2001_pandas_pivot_tables.md)
-[**JSON**](./2101_json.md)
-[**Observer pattern u pajtonu**](2201_python_observer_pattern.md)
+[**Pandas - pivot table**](./2001_pandas_pivot_tables.md)  
+[**JSON**](./2101_json.md)  
+[**Python Observer pattern**](./2201_python_observer_pattern.md)  
 
 [Nazad](../README.md)
 

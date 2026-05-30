@@ -1,6 +1,8 @@
 
 # Kako implementirati obrazac posmatrača u Pajtonu
 
+[Nazad](../misc/README.md)
+
 Da li ste se ikada zapitali kako vas YouTube obaveštava kada vaš omiljeni kanal postavi novi video? Ili kako vas vaš imejl klijent obaveštava kada stignu nove poruke? Ovo su savršeni primeri obrasca posmatranja u akciji.
 
 Posmatrački obrazac je obrazac dizajna gde objekat (nazvan subjekat) održava listu zavisnih elemenata (nazvanih posmatrači) i automatski ih obaveštava kada se njegovo stanje promeni. To je kao da imate pretplatu na bilten: kada se objavi novi sadržaj, svi pretplatnici dobijaju obaveštenje.
@@ -401,3 +403,5 @@ Obrazac posmatrača stvara jasno razdvajanje između objekata koji proizvode dog
 Obradili smo osnovnu implementaciju, rukovanje pretplatama, korišćenje različitih tipova posmatrača i apstraktne osnovne klase. Počnite jednostavno sa osnovnim odnosom subjekt-posmatrač i dodajte složenost samo kada je potrebno.
 
 Srećno kodiranje!
+
+[Nazad](../misc/README.md)
