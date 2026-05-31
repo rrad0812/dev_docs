@@ -1,5 +1,7 @@
 
-# DATABASES
+# Baze podataka
+
+## Sadržaj
 
 [Nazad](../README.md)
 
@@ -10,3 +12,6 @@
 5. [**PostgreSQL i Docker - officijelni imidž**](Postgres_Docker_official_image.md)
 
 [Nazad](../README.md)
+
+April 2026. god.,  
+Radosav

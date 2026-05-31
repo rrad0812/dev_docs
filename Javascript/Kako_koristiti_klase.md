@@ -1,6 +1,8 @@
 
 # Kako koristiti klase u JSu
 
+[Nazad](README.md)
+
 Da li ste radoznali u vezi sa klasama u JSu, ali ste pomalo zbunjeni kako funkcionišu ili zašto biste ih uopšte koristili? Ako ste to vi, onda ste definitivno na pravom mestu. Mnogi programeri smatraju da su klase malo komplikovane u početku, i iskreno, i ja sam jednom bio u istoj situaciji.
 
 Ovaj članak je za vas ako vam nešto od ovoga zvuči poznato:
@@ -1149,3 +1151,5 @@ Izgradnjom iste aplikacije koristeći oba pristupa, zaista ćete shvatiti da su 
 Vaš sledeći korak? Eksperimentišite sa prototipskim pristupom i uporedite ga sa pristupom zasnovanim na klasama. Što više kodirate, ovi koncepti će postajati prirodniji. Srećno kodiranje i nastavite da pravite sjajne stvari.
 
 Ako imate bilo kakvih pitanja, slobodno me pronađite na Tviteru na @sprucekhalifa i ne zaboravite da me pratite za još saveta i novosti. Srećno kodiranje!
+
+[Nazad](README.md)

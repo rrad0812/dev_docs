@@ -3,25 +3,33 @@
 
 [Nazad](../README.md)
 
-##
+## Sadržaj
 
-### Django admin
+---
 
-[**Django-admin kuvar**](./django-admin/Kuvar/00_sadrzaj.md)  
-[**Django admin trikovi**](./django-admin/Trikovi/001%20Admin%20-%20Prilgodjavanje.md)
+- **Django admin**
 
-## `Jam.py` framework
+  - [Django-admin kuvar](./django-admin/Kuvar/00_sadrzaj.md)  
+  - [Django admin trikovi](./django-admin/Trikovi/001%20Admin%20-%20Prilgodjavanje.md)
 
-[**Jampy review - en**](./jampy/jampy-framework-review-en.md)  
-[**Jampy review - sr**](./jampy/jampy-framework-review-sr.md)  
+- **Jampy framework review**
 
-[**Jampy howto**](jampy/jampy_howto.md)
+  - [Jampy review - en](./jampy/jampy-framework-review-en.md)  
+  - [Jampy review - sr](./jampy/jampy-framework-review-sr.md)  
 
-[**Transcribed quick tutorial**](jampy/tutorial-transcribed/index.md)
+- Jampy HowTo
 
-## Misc about python
+  - [Jampy howto](jampy/jampy_howto.md)
 
-[**Misc**](./misc/README.md)
+- Transcribed quick Jampy tutorial
+
+  - [Transcribed quick Jampy tutorial](jampy/tutorial-transcribed/index.md)
+
+- Razno o pajtonu
+
+  - [Razno o pajtonu](./misc/README.md)
+
+---
 
 [Nazad](../README.md)
 

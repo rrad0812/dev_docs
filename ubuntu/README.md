@@ -6,7 +6,7 @@
 - [Gunicorn Nginx PostgreSQL Jampy](001_Gunicorn_Nginx_Postgresql_Jampy_Ubuntu.md)
 - [Upravljanje softverom](099_Upravljanje_softverom.md)
 
+[Nazad](../README.md)
+
 Radosav,  
 april 2026. god.
-
-[Nazad](../README.md)
