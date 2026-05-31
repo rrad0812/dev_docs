@@ -694,7 +694,7 @@ function DeveloperPersonConstructor(name, age, programmingLanguage) {
 }
 ```
 
-Vidite li taj red sa call? To je ključ nasleđivanja ovde. Hajde da ga razložimo: 
+Vidite li taj red sa call? To je ključ nasleđivanja ovde. Hajde da ga razložimo:
 
 ```js
 PersonConstructor.call(this, name, age);
@@ -784,7 +784,7 @@ Hajde da zaista shvatimo šta se dešava kada to uradimo "devPerson1.greet()":
 
 - JavaScript provere: Da li "devPerson1" sam po sebi ima "greet" svojstvo? Ne.
 - JavaScript pregleda "devPerson1" prototip: "DeveloperPersonConstructor.prototype". Da li ima "greet" svojstvo? Ne, u našem primeru smo samo direktno dodali metode ili svojstva specifične za programere "DeveloperPersonConstructor", a ne njegovom prototipu. (Kasnije bismo mogli dodati metode prototipa specifične za programere).
-- JavaScript ide uz lanac prototipova do "DeveloperPersonConstructor.prototype" prototipa "PersonConstructor.prototype". Da li ima "greet" svojstvo? Da. Definisali smo: 
+- JavaScript ide uz lanac prototipova do "DeveloperPersonConstructor.prototype" prototipa "PersonConstructor.prototype". Da li ima "greet" svojstvo? Da. Definisali smo:
 
   ```js
   PersonConstructor.prototype.greet = function() { ... };
@@ -904,7 +904,7 @@ class DeveloperPersonClass extends PersonClass {
 }
 ```
 
-Pogledajte to. Nasleđivanje u klasama se deklariše pomoću `extends` ključne reči: 
+Pogledajte to. Nasleđivanje u klasama se deklariše pomoću `extends` ključne reči:
 
 ```js
 class DeveloperPersonClass extends PersonClass {...}. 
@@ -912,7 +912,7 @@ class DeveloperPersonClass extends PersonClass {...}.
 
 Ova linija kaže: 'Hej JavaScript, "DeveloperPersonClass" trebalo bi da nasledi od "PersonClass".'
 
-Unutar "DeveloperPersonClass" konstruktora imamo ovu liniju: 
+Unutar "DeveloperPersonClass" konstruktora imamo ovu liniju:
 
 ```js
 super(name, age);. 
