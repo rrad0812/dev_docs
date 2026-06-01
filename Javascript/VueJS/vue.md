@@ -1,14 +1,14 @@
-# Vue tutorial
+# VueJS tutorial
 
 [Nazad](../README.md)
 
-## Vue Introduction
+## VueJS Introduction
 
 Vue is a JavaScript framework. It can be added to an HTML page with a `<script>` tag.
 
 Vue extends HTML attributes with `Directives`, and binds data to HTML with `Expressions`.
 
-### Vue - JavaScript Framework
+### VueJS - JavaScript Framework
 
 Vue is a front-end JavaScript framework written in JavaScript.
 
@@ -22,7 +22,7 @@ Vue is distributed as a JavaScript file, and can be added to a web page with a s
 </script>
 ```
 
-### Why Learn Vue?
+### Why Learn VueJS?
 
 - It is simple and easy to use.
 - It is able to handle both simple and complex projects.
